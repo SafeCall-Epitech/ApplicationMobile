@@ -10,7 +10,8 @@ const HomeScreen = ({navigation}) => {
                     title="parametre"
                     />
                 <Button
-                    title="my account"
+                    title="Profil"
+                    onPress={() => navigation.navigate('Profil')}
                     />
                 <Button
                     color={"red"}
