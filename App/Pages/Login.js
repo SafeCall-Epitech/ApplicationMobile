@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
             console.log(responseJson);
             setLoading(false);
             if (responseJson["success"]) {
-                navigation.navigate('Home');
+                navigation.navigate('Home', {username: responseJson["success"]});
             } else {
                 alert("Error: Incorrect password or username");
             }

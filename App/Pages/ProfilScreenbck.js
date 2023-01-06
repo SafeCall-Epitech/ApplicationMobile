@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Avatar } from "@react-native-material/core";
+import { Avatar } from "@react-native-material/core";
 import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -8,67 +8,53 @@ const ProfilScreen = ({navigation}) => {
     const route = useRoute();
     const ProfileAPI = route.params?.name;
     
-    const [isLoaded, setIsLoaded] = React.useState(true);
-    const [FullName, setFullName] = React.useState('none');
-    const [Description, setDescription] = React.useState('none');
-    const [PhoneNb, setPhoneNb] = React.useState('none');
-    const [Email, setEmail] = React.useState('none');
-    // const [ID, setID] = React.useState('none');
-    const [ProfilePic, setProfilePic] = React.useState('none');
+    const [FullName, setFullName] = React.useState("none");
+    // const FullName = "none";
+    const Description = "none";
+    const PhoneNb = "none";
+    const Email = "none";
 
-    const getProfile = async () => {
-        axios.get(`http://20.234.168.103:8080/profile/${ProfileAPI}`)
-        .then(res => {
-            console.log(res.data);
-            if (res.data["profile"]) {
-                setFullName(res.data["profile"]["FullName"]);
-                setIsLoaded(false);
-            } if (res.data["failed"]) {
-                alert ("Error: " + res.data["failed"]);
-            }
-        })
-    }
-
-    React.useEffect(() => {
-        getProfile();
-    }, []);
-
+    axios.get(`http://20.234.168.103:8080/profile/${ProfileAPI}`)
+    .then(res => {
+        console.log(res.data);
+        if (res.data["success"]) {
+            FullName = res.data["success"]["FullName"];
+            Description = res.data["success"]["Description"];
+            PhoneNb = res.data["success"]["PhoneNb"];
+            Email = res.data["success"]["Email"];
+        } if (res.data["failed"]) {
+            alert ("Error: " + res.data["failed"]);
+        }
+    })
     return (
         <View>
             <View style={styles.egg}/>
             <Text style={{alignSelf: 'center', marginTop: 40, fontSize: 35, color: 'white'}}>Profil</Text>
-            {isLoaded ? <Avatar 
+            <Avatar 
             style={{alignSelf: 'center', marginTop: 30}}
-            label=" "
+            label="EU"
             // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
             autoColor
             size={100} />
-            :
-            <Avatar 
-            style={{alignSelf: 'center', marginTop: 30}}
-            label={FullName[0]}
-            // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
-            autoColor
-            size={100} /> }
             <View
                 style={{
                     marginTop: 40,
                 }}
             >
             <Text style={styles.maintext}>
-                Username: {isLoaded ? <ActivityIndicator/> : ( <Text style={styles.valtext}>{FullName}</Text>)}
+                Username:<Text style={styles.valtext}> {FullName}</Text>
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 30, }}/>
             <Text style={styles.maintext}>
-                Email: {isLoaded ? <ActivityIndicator/> : ( <Text style={styles.valtext}> {Email}</Text>)}
+                Email:<Text style={styles.valtext}> {Email}</Text>
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 30, }}/>
             <Text style={styles.maintext}>
-                ID: {isLoaded ? <ActivityIndicator/> : ( <Text style={styles.valtext}> @{FullName}</Text>)}
+                ID:<Text style={styles.valtext}> @{FullName}</Text>
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 30, }}/>
             <Text style={styles.maintext}>
-                Phone number: {isLoaded ? <ActivityIndicator/> : ( <Text style={styles.valtext}> {PhoneNb}</Text>)}
+                Phone number:<Text style={styles.valtext}> {PhoneNb}</Text>
             </Text>
             </View>
 

@@ -17,8 +17,8 @@ const MyStack = () => {
                 headerShown: false
             }}>
                 {/* <Stack.Screen name="SplashScreen" component={SplashScreen}/> */}
-                {/* <Stack.Screen name="Login" component={Login}/> */}
-                {/* <Stack.Screen name="Register" component={Register}/> */}
+                <Stack.Screen name="Login" component={Login}/>
+                <Stack.Screen name="Register" component={Register}/>
                 <Stack.Screen name="Home" component={HomeScreen}/>
                 <Stack.Screen name="Profil" component={ProfilScreen}/>
             </Stack.Navigator>

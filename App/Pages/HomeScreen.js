@@ -1,7 +1,10 @@
 import React from "react";
 import { Button, StyleSheet, Text, View, Image } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 const HomeScreen = ({navigation}) => {
+    const route = useRoute();
+    const Profilename = route.params?.username;
     return (
         <View>
             <Image style={styles.tinyLogo} source={require('../img/logo.png')} />
@@ -11,7 +14,7 @@ const HomeScreen = ({navigation}) => {
                     />
                 <Button
                     title="Profil"
-                    onPress={() => navigation.navigate('Profil')}
+                    onPress={() => navigation.navigate('Profil', {name: Profilename})}
                     />
                 <Button
                     color={"red"}
