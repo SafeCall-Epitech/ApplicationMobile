@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Text, View, TextInput, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
+import { TextInput } from "@react-native-material/core";
 import { Button } from "@react-native-material/core";
-
+import Icon from 'react-native-vector-icons/AntDesign';
+import IconF from 'react-native-vector-icons/Feather';
+import Color from "../color";
 const Register = ({navigation}) => {
 
     const [loading, setLoading] = useState(false);
@@ -12,6 +15,7 @@ const Register = ({navigation}) => {
     const Myresponse = null;
 
     function register(UserName, Password) {
+        console.log("register");
         setLoading(true);
         axios.post('http://20.234.168.103:8080/register/' + UserName + '/' + Password)
         .then(res => {
@@ -27,12 +31,38 @@ const Register = ({navigation}) => {
 
     return (
         <View style={styles.view}>
-            <Image style={styles.bg} source={require('../img/bg.jpg')} />
-            <Image style={styles.tinyLogo} source={require('../img/logo.png')} />
-            <TextInput placeholder="Username" placeholderTextColor="black" style={styles.input} onChangeText={(UserName) => setUserName(UserName)} value={UserName}/>
-            <TextInput placeholder="Email" placeholderTextColor="black" style={styles.input} onChangeText={(Email) => setEmail(Email)} value={Email}/>
-            <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor="black" style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password}/>
-            <Button title="register" color="lightgray" style={{marginTop: 20,}} loading={loading} onPress={() => {register(UserName, Password)}}/>
+            <Image style={styles.tinyLogo} source={require('../img/SafeCallBlack.png')} />
+            <TextInput
+                variant="outlined"
+                label="Username"
+                leading={props => <Icon name="user" {...props} 
+                color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(UserName) => setUserName(UserName)} value={UserName}
+                color={Color.dark3}
+            />
+            <TextInput
+                variant="outlined"
+                label="Email"
+                leading={props => <Icon name="mail" {...props} 
+                    color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(Email) => setEmail(Email)} value={Email} 
+                color={Color.dark3}
+            />
+            <TextInput
+                variant="outlined"
+                label="Password"
+                secureTextEntry={true}
+                leading={props => <Icon name="lock" {...props} 
+                    color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password} 
+                color={Color.dark3}
+            />
+            <Button 
+            leading={props => <IconF name="send" {...props} />}
+            title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password)}}/>
             <Text style={{padding:25}}>Already have an account ?
                 <Text style={styles.logintext} onPress={() => {navigation.navigate('Login')}}> log into your account</Text>
             </Text>
@@ -42,6 +72,7 @@ const Register = ({navigation}) => {
 
 const styles = StyleSheet.create({
     view: {
+        backgroundColor: Color.light3,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -56,8 +87,11 @@ const styles = StyleSheet.create({
         left: 0,
     },
     tinyLogo: {
+        marginTop: -100,
+        marginBottom: 100,
         resizeMode: 'contain',
-        width: '100%',
+        width: '80%',
+        tintColor: Color.dark2,
     },
     input: {
         width: 250,
@@ -66,8 +100,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     logintext: {
-        color: 'blue',
-        textDecorationLine: "underline"
+        color: Color.dark2,
+        textDecorationLine: "underline",
+        fontWeight: "bold",
+        fontFamily: "sans-serif",
+        fontStyle: "italic",
     }
 })
 

@@ -1,22 +1,21 @@
 import React from "react";
-import { ActivityIndicator, Avatar } from "@react-native-material/core";
+import { ActivityIndicator, Avatar} from "@react-native-material/core";
 import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconM from 'react-native-vector-icons/MaterialIcons';
-import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
 import Color from "../color";
 
-const ProfilScreen = ({navigation}) => {
+const SearchedProfileScreen = ({navigation}) => {
     const route = useRoute();
     const ProfileAPI = route.params?.name;
     
     const [isLoaded, setIsLoaded] = React.useState(true);
-    const [FullName, setFullName] = React.useState("");
-    const [Description, setDescription] = React.useState("");
-    const [PhoneNb, setPhoneNb] = React.useState("");
-    const [Email, setEmail] = React.useState("");
+    const [FullName, setFullName] = React.useState('none');
+    const [Description, setDescription] = React.useState('none');
+    const [PhoneNb, setPhoneNb] = React.useState('none');
+    const [Email, setEmail] = React.useState('none');
     const [verified, setVerified] = React.useState(false);
     // const [ID, setID] = React.useState('none');
     // const [ProfilePic, setProfilePic] = React.useState('none');
@@ -40,16 +39,13 @@ const ProfilScreen = ({navigation}) => {
     }
 
     React.useEffect(() => {
-        console.log("Fullname: " + FullName);
+        console.log(ProfileAPI);
         getProfile();
     }, []);
 
     return (
         <View style={styles.mainpage}>
-            <View style={styles.row}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            <IconS pencil style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="pencil" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            </View>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.dark} onPress={() => navigation.navigate('Home')}/>
             <View style={styles.egg}/>
             <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Profil</Text>
             {isLoaded ? <Avatar 
@@ -108,9 +104,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,
-        zIndex: -1,
         borderBottomRightRadius: 95,
-      },
+        zIndex: -1,
+    },
     maintext: {
         marginLeft: 50,
         marginTop: 20,
@@ -127,16 +123,11 @@ const styles = StyleSheet.create({
         backgroundColor: Color.light3,
         flex: 1,
     },
-    verified: {
+        verified: {
         position: 'absolute',
         marginTop: -70,
         marginLeft: 210,
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
+    }
 })
     
-export default ProfilScreen;
+export default SearchedProfileScreen;

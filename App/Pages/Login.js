@@ -1,13 +1,16 @@
 import React, { useState } from "react";
-import { Text, View, TextInput, StyleSheet, Image } from "react-native";
+import { Text, View, StyleSheet, Image } from "react-native";
+import { TextInput } from "@react-native-material/core";
 import { Button } from "@react-native-material/core";
+import Icon from 'react-native-vector-icons/AntDesign';
+import Color from "../color";
 
 const Login = ({navigation}) => {
 
     const [loading, setLoading] = useState(false);
 
-    const [UserName, setUserName] = useState();
-    const [Password, setPassword] = useState();
+    const [UserName, setUserName] = useState("");
+    const [Password, setPassword] = useState("");
     const Myresponse = null;
 
     function getlogin(UserName, Password) {
@@ -18,7 +21,9 @@ const Login = ({navigation}) => {
             console.log(responseJson);
             setLoading(false);
             if (responseJson["success"]) {
-                navigation.navigate('Home', {username: responseJson["success"]});
+                setUserName("");
+                setPassword("");
+                navigation.navigate('Home', {name: responseJson["success"]});
             } else {
                 alert("Error: Incorrect password or username");
             }
@@ -27,11 +32,30 @@ const Login = ({navigation}) => {
 
     return (
         <View style={styles.view}>
-            <Image style={styles.bg} source={require('../img/bg.jpg')} />
-            <Image style={styles.tinyLogo} source={require('../img/logo.png')} />
-            <TextInput placeholder="Username" placeholderTextColor="black" style={styles.input} onChangeText={(UserName) => setUserName(UserName)} value={UserName}/>
-            <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor="black" style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password}/>
-            <Button title="login" color="lightgray" style={{marginTop: 20,}} loading={loading} onPress={() => {getlogin(UserName, Password)}}/>
+            <Image style={styles.tinyLogo} source={require('../img/SafeCallBlack.png')} />
+            <TextInput
+                variant="outlined"
+                label="Username"
+                leading={props => <Icon name="user" {...props} 
+                color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(UserName) => setUserName(UserName)} value={UserName}
+                color={Color.dark3}
+            />
+            <TextInput
+                variant="outlined"
+                label="Password"
+                secureTextEntry={true}
+                leading={props => <Icon name="lock" {...props} 
+                    color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password} 
+                color={Color.dark3}
+            />
+            {/* <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor="black" style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password}/> */}
+            <Button 
+            leading={props => <Icon name="login" {...props} />}
+            title="login" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {getlogin(UserName, Password)}}/>
             <Text style={{padding:25}}>No account yet ?
                 <Text style={styles.registertext} onPress={() => {navigation.navigate('Register')}}> Register you account</Text>
             </Text>
@@ -41,6 +65,7 @@ const Login = ({navigation}) => {
 
 const styles = StyleSheet.create({
     view: {
+        backgroundColor: Color.light3,
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -55,8 +80,11 @@ const styles = StyleSheet.create({
         left: 0,
     },
     tinyLogo: {
+        marginTop: -100,
+        marginBottom: 100,
         resizeMode: 'contain',
-        width: '100%',
+        width: '80%',
+        tintColor: Color.dark2,
     },
     input: {
         width: 250,
@@ -65,8 +93,9 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
     },
     registertext: {
-        color: 'blue',
+        color: Color.dark2,
         textDecorationLine: "underline",
+        fontWeight: "bold",
         fontFamily: "sans-serif",
         fontStyle: "italic",
     }

@@ -5,7 +5,6 @@ import Navigation from "./Pages/Navigation"
 
 const App = () => {
   return (
-    // <Text>cc</Text>
     <Navigation/>
     );
 };
