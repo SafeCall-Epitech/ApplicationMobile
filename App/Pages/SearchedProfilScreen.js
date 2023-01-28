@@ -45,9 +45,9 @@ const SearchedProfileScreen = ({navigation}) => {
 
     return (
         <View style={styles.mainpage}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.dark} onPress={() => navigation.navigate('Home')}/>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             <View style={styles.egg}/>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Profil</Text>
+            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Search Profil</Text>
             {isLoaded ? <Avatar 
             style={{alignSelf: 'center', marginTop: 30}}
             label=" "
@@ -84,7 +84,7 @@ const SearchedProfileScreen = ({navigation}) => {
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>
-                Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb}</Text>)}
+                Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb[0]}{PhoneNb[1]}********</Text>)}
             </Text>
             </View>
             

@@ -6,7 +6,8 @@ import Register from "./Register";
 import HomeScreen from "./HomeScreen";
 import SplashScreen from "./SplashScreen";
 import ProfilScreen from "./ProfilScreen";
-import SearchedProfileScreen from "./SearchedProfileScreen";
+import SearchedProfilScreen from "./SearchedProfilScreen";
+import ProfilModificationScreen from "./ProfilModificationScreen";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +25,8 @@ const MyStack = () => {
                 <Stack.Screen name="Register" component={Register}/>
                 <Stack.Screen name="Home" component={HomeScreen}/>
                 <Stack.Screen name="Profil" component={ProfilScreen}/>
-                <Stack.Screen name="SearchProfil" component={SearchedProfileScreen}/>
+                <Stack.Screen name="SearchProfil" component={SearchedProfilScreen}/>
+                <Stack.Screen name="ProfilModification" component={ProfilModificationScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

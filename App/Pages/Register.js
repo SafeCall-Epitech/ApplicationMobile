@@ -14,10 +14,17 @@ const Register = ({navigation}) => {
     const [Email, setEmail] = useState();
     const Myresponse = null;
 
-    function register(UserName, Password) {
+    // function setUserEmail(UserName, Email) {
+    //     console.log("setUserEmail");
+    //     axios.post('http://20.234.168.103:8080/profileEmail/' + UserName + '/' + Email)
+    //     .then(res => {
+    //         console.log(res.data);
+    //     })
+    // };
+        function register(UserName, Password, Email) {
         console.log("register");
         setLoading(true);
-        axios.post('http://20.234.168.103:8080/register/' + UserName + '/' + Password)
+        axios.post('http://20.234.168.103:8080/register/' + UserName + '/' + Password + '/' + Email)
         .then(res => {
             console.log(res.data);
             setLoading(false);
@@ -62,7 +69,7 @@ const Register = ({navigation}) => {
             />
             <Button 
             leading={props => <IconF name="send" {...props} />}
-            title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password)}}/>
+            title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password, Email)}}/>
             <Text style={{padding:25}}>Already have an account ?
                 <Text style={styles.logintext} onPress={() => {navigation.navigate('Login')}}> log into your account</Text>
             </Text>

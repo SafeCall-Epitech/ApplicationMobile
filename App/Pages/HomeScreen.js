@@ -1,9 +1,10 @@
 import React from "react";
 import { SafeAreaView, Button, StyleSheet, Text, View, Image, Pressable} from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { Avatar, Badge, IconButton, TextInput} from "@react-native-material/core";
+import { Avatar, Badge, IconButton, TextInput, Snackbar} from "@react-native-material/core";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from "../color";
+import axios from "axios";
 
 
 const HomeScreen = ({navigation}) => {
@@ -14,13 +15,26 @@ const HomeScreen = ({navigation}) => {
     if (User == "") {
         setUser(Profilename)
     }
-    
-    
     // Search User
     const [SearchUser, setSearchUser] = React.useState('');
-
-    
-
+    const [visible, setVisible] = React.useState(false);
+    const SearchProfile = async () => {
+        if  (SearchUser == "") {
+            setVisible(true)
+            setSearchUser('')
+        } else {
+        axios.get(`http://20.234.168.103:8080/profile/${SearchUser}`)
+            .then(res => {
+                if (res.data["profile"]["Email"] == "") {
+                    setVisible(true)
+                    setSearchUser('')
+                } else {
+                    setVisible(false)
+                    navigation.navigate('SearchProfil', {name: SearchUser}), setSearchUser('')
+                }
+            })
+        }
+    }
     //
 
     return (
@@ -45,9 +59,10 @@ const HomeScreen = ({navigation}) => {
             placeholder="Search"
             variant="outlined"
             color={Color.dark3}
+            // onPressIn={() => {SearchProfile()}}
             trailing={props => (
                 <IconButton icon={props => <Icon name="search" size={20} color={Color.light} />}
-                onPress={() => {navigation.navigate('SearchProfil', {name: SearchUser}), setSearchUser('')}}
+                onPress={() => {SearchProfile()}}
                 />
             )}
             style={styles.input}
@@ -56,6 +71,18 @@ const HomeScreen = ({navigation}) => {
 
             />
             {/* <TextInput placeholder="Search" placeholderTextColor="black" style={styles.input} onChangeText={(SearchUser) => setSearchUser(SearchUser)} value={SearchUser}/> */}
+        
+            { visible ?
+                
+                <Snackbar
+                    message="Can't find this user."
+                    action={<Button variant="text" title="Close" color={Color.dark2} compact onPress={() => {setVisible(false)}} />}
+                    style={{ position: "absolute", start: 16, end: 16, bottom: 16 , backgroundColor: Color.dark3}}
+                />
+                :
+                null 
+            }
+        
         </SafeAreaView>
     );
 };

@@ -12,6 +12,12 @@ const ProfilScreen = ({navigation}) => {
     const route = useRoute();
     const ProfileAPI = route.params?.name;
     
+    const [User, setUser] = React.useState("")
+    if (User == "") {
+        setUser(ProfileAPI)
+    }
+    
+    
     const [isLoaded, setIsLoaded] = React.useState(true);
     const [FullName, setFullName] = React.useState("");
     const [Description, setDescription] = React.useState("");
@@ -22,7 +28,7 @@ const ProfilScreen = ({navigation}) => {
     // const [ProfilePic, setProfilePic] = React.useState('none');
 
     const getProfile = async () => {
-        axios.get(`http://20.234.168.103:8080/profile/${ProfileAPI}`)
+        axios.get(`http://20.234.168.103:8080/profile/${User}`)
         .then(res => {
             console.log(res.data);
             if (res.data["profile"]) {
@@ -48,7 +54,7 @@ const ProfilScreen = ({navigation}) => {
         <View style={styles.mainpage}>
             <View style={styles.row}>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            <IconS pencil style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="pencil" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <IconS pencil style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="pencil" size={40} color={Color.light3} onPress={() => navigation.navigate('ProfilModification', {name: User})}/>
             </View>
             <View style={styles.egg}/>
             <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Profil</Text>
