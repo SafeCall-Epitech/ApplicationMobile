@@ -14,14 +14,43 @@ const Register = ({navigation}) => {
     const [Email, setEmail] = useState();
     const Myresponse = null;
 
-    // function setUserEmail(UserName, Email) {
-    //     console.log("setUserEmail");
-    //     axios.post('http://20.234.168.103:8080/profileEmail/' + UserName + '/' + Email)
-    //     .then(res => {
-    //         console.log(res.data);
-    //     })
-    // };
-        function register(UserName, Password, Email) {
+    const haslowercase = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[a-z]/.test(str));
+    }
+    const hasuppercase = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[A-Z]/.test(str));
+    }
+
+    const hasnumber = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[0-9]/.test(str));
+    }
+    const hasSpecial = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[!@#$%^&*(),.?":{}|<>]/.test(str));
+    }
+    const haslength = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (str.length >= 8);
+    }
+
+    function register(UserName, Password, Email) {
+        if (!haslowercase(Password) || !hasuppercase(Password) || !hasnumber(Password) || !hasSpecial(Password) || !haslength(Password)) {
+            alert("Password must contain at least 1 lowercase, 1 uppercase, 1 number, 1 special character and be at least 8 characters long");
+            return;
+        }
         console.log("register");
         setLoading(true);
         axios.post('http://20.234.168.103:8080/register/' + UserName + '/' + Password + '/' + Email)
@@ -67,6 +96,28 @@ const Register = ({navigation}) => {
                 style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password} 
                 color={Color.dark3}
             />
+            <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45}}>   
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {haslowercase(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={{marginLeft: 10}}>At least one lowercase letter</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasuppercase(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={{marginLeft: 10}}>At least one uppercase letter</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasnumber(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={{marginLeft: 10}}>At least one digit</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasSpecial(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={{marginLeft: 10}}>At least one special character : (!@#$%^&*)</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {haslength(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={{marginLeft: 10}}>At least 8 characters in total</Text>
+                </View>
+            </View>
             <Button 
             leading={props => <IconF name="send" {...props} />}
             title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password, Email)}}/>
@@ -94,8 +145,8 @@ const styles = StyleSheet.create({
         left: 0,
     },
     tinyLogo: {
-        marginTop: -100,
-        marginBottom: 100,
+        marginTop: -10,
+        // marginBottom: 50,
         resizeMode: 'contain',
         width: '80%',
         tintColor: Color.dark2,
@@ -112,7 +163,10 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontFamily: "sans-serif",
         fontStyle: "italic",
-    }
+    },
+    textverif: {
+    
+    },
 })
 
 export default Register;
