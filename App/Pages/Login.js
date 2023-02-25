@@ -45,6 +45,7 @@ const Login = ({navigation}) => {
             <TextInput
                 variant="outlined"
                 label="Password"
+                autoComplete="password"
                 secureTextEntry={true}
                 leading={props => <Icon name="lock" {...props} 
                     color={Color.dark3}
@@ -99,7 +100,6 @@ const styles = StyleSheet.create({
         fontFamily: "sans-serif",
         fontStyle: "italic",
     }
-
 })
 
 export default Login;

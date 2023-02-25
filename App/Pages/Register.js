@@ -96,7 +96,7 @@ const Register = ({navigation}) => {
                 style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password} 
                 color={Color.dark3}
             />
-            <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45}}>   
+            <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45}}>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {haslowercase(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={{marginLeft: 10}}>At least one lowercase letter</Text>

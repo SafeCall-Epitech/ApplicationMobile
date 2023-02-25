@@ -1,8 +1,10 @@
 import React from "react";
 import { SafeAreaView, Button, StyleSheet, Text, View, Image, Pressable} from "react-native";
 import { useRoute } from "@react-navigation/native";
+import { Alert } from "react-native";
 import { Avatar, Badge, IconButton, TextInput, Snackbar} from "@react-native-material/core";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import IconM from 'react-native-vector-icons/MaterialIcons';
 import Color from "../color";
 import axios from "axios";
 
@@ -10,6 +12,22 @@ import axios from "axios";
 const HomeScreen = ({navigation}) => {
     const route = useRoute();
     const Profilename = route.params?.name;
+
+    var FriendNotification = 0;
+    const hasFriendNotification = () => {
+        if (FriendNotification > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    var MessageNotification = 0;
+    const hasMessageNotification = () => {
+        if (MessageNotification > 0) {
+            return true;
+        }
+        return false;
+    }
 
     const [User, setUser] = React.useState("")
     if (User == "") {
@@ -36,6 +54,18 @@ const HomeScreen = ({navigation}) => {
         }
     }
     //
+
+    // React.useEffect(() => navigation.addListener('beforeRemove', (e) => {
+    //     e.preventDefault();
+    //     Alert.alert(
+    //         'Disconnect?',
+    //         'Are you sure you want to disconnect?',
+    //         [
+    //           { text: "Don't leave", style: 'cancel', onPress: () => {} },
+    //           { text: 'Leave', style: 'destructive', onPress: () => navigation.dispatch(e.data.action)},
+    //         ]
+    //       );
+    // }), [navigation]);
 
     return (
         <SafeAreaView style={styles.mainpage}>
@@ -68,12 +98,32 @@ const HomeScreen = ({navigation}) => {
             style={styles.input}
             onChangeText={(SearchUser) => setSearchUser(SearchUser)}
             value={SearchUser}
-
             />
-            {/* <TextInput placeholder="Search" placeholderTextColor="black" style={styles.input} onChangeText={(SearchUser) => setSearchUser(SearchUser)} value={SearchUser}/> */}
-        
+            <View style={styles.undersearchbar}>
+                <View style={styles.btnrow}>
+                    <View style={{alignItems: 'center'}}>
+                        <Icon name="user" size={50} color={Color.dark}/>
+                        {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={FriendNotification} color="red" tintColor={Color.light3}/> : null}
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Friend List</Text>
+                    </View>
+                    <View style={{alignItems: 'center'}}>
+                        <Icon name="calendar" size={50} color={Color.dark}/>
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Calendar</Text>
+                    </View>
+                </View>
+                <View style={styles.btnrow}>
+                <View style={{alignItems: 'center'}}>
+                        <IconM name="message" size={50} color={Color.dark}/>
+                        {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Message</Text>
+                    </View>
+                    {/* <View style={{alignItems: 'center'}}>
+                        <Icon name="meh-o" size={50} color={Color.dark}/>
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Coming Soon</Text>
+                    </View> */}
+                </View>
+            </View>
             { visible ?
-                
                 <Snackbar
                     message="Can't find this user."
                     action={<Button variant="text" title="Close" color={Color.dark2} compact onPress={() => {setVisible(false)}} />}
@@ -82,7 +132,6 @@ const HomeScreen = ({navigation}) => {
                 :
                 null 
             }
-        
         </SafeAreaView>
     );
 };
@@ -120,8 +169,8 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,
         borderBottomRightRadius: 95,
-      },
-        row: {
+    },
+    row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -132,7 +181,18 @@ const styles = StyleSheet.create({
         width: 300,
         height: 50,
         fontSize: 20,
-        paddingLeft: 10,
+    },
+    undersearchbar: {
+        marginTop: 50,
+        alignSelf: 'center',
+        justifyContent: 'space-around',
+        width: 300,
+        height: 300,
+    },
+    btnrow: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     },
 })
     

@@ -11,6 +11,11 @@ const SearchedProfileScreen = ({navigation}) => {
     const route = useRoute();
     const ProfileAPI = route.params?.name;
     
+    const [User, setUser] = React.useState("")
+    if (User == "") {
+        setUser(ProfileAPI)
+    }
+
     const [isLoaded, setIsLoaded] = React.useState(true);
     const [FullName, setFullName] = React.useState('none');
     const [Description, setDescription] = React.useState('none');
@@ -72,7 +77,7 @@ const SearchedProfileScreen = ({navigation}) => {
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>
-                ID: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> @{FullName}</Text>)}
+                ID: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> @{User}</Text>)}
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>

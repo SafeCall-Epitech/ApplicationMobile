@@ -44,9 +44,7 @@ const ProfilScreen = ({navigation}) => {
             }
         })
     }
-
     React.useEffect(() => {
-        console.log("Fullname: " + FullName);
         getProfile();
     }, []);
 
@@ -82,7 +80,7 @@ const ProfilScreen = ({navigation}) => {
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>
-                ID: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> @{FullName}</Text>)}
+                ID: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> @{User}</Text>)}
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>
