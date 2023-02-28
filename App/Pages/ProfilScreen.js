@@ -65,7 +65,7 @@ const ProfilScreen = ({navigation}) => {
             :
             <Avatar 
             style={{alignSelf: 'center', marginTop: 30}}
-            label={FullName[0]}
+            label={ProfileAPI[0]}
             // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
             color={Color.light}
             size={100} /> }
