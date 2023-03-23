@@ -8,6 +8,7 @@ import SplashScreen from "./SplashScreen";
 import ProfilScreen from "./ProfilScreen";
 import SearchedProfilScreen from "./SearchedProfilScreen";
 import ProfilModificationScreen from "./ProfilModificationScreen";
+import FriendList from "./FriendList";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,7 @@ const MyStack = () => {
                 <Stack.Screen name="Profil" component={ProfilScreen}/>
                 <Stack.Screen name="SearchProfil" component={SearchedProfilScreen}/>
                 <Stack.Screen name="ProfilModification" component={ProfilModificationScreen}/>
+                <Stack.Screen name="FriendList" component={FriendList}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

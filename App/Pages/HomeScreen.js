@@ -102,7 +102,7 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.undersearchbar}>
                 <View style={styles.btnrow}>
                     <View style={{alignItems: 'center'}}>
-                        <Icon name="user" size={50} color={Color.dark}/>
+                        <Icon name="user" size={50} color={Color.dark} onPress={() => navigation.navigate('FriendList', {name: User})}/>
                         {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={FriendNotification} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Friend List</Text>
                     </View>
