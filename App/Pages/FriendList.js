@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator, Avatar, Surface, } from "@react-native-material/core";
-import { StyleSheet, Text, View, ScrollView, TextInput } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TextInput, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconM from 'react-native-vector-icons/MaterialIcons';
@@ -30,9 +30,13 @@ const FriendList = ({navigation}) => {
     const getFriends = async () => {
         axios.get(`http://20.234.168.103:8080/listFriends/${UserName}`)
         .then(res => {
-            setFriendNumber(res.data["fetched"].length)
+            console.log(`http://20.234.168.103:8080/listFriends/${UserName}`)
+            console.log(res.data);
             for (var x = 0; x < res.data["fetched"].length; x++) {
                 if (res.data["fetched"][x][0] == "?") {
+                    //print pending friend
+                    console.log("pending friend")
+                    console.log(res.data["fetched"][x])
                     //remove ? from name
                     res.data["fetched"][x] = res.data["fetched"][x].substring(1)
                     setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]])
@@ -40,6 +44,7 @@ const FriendList = ({navigation}) => {
                     setasPending(true)
                 } else {
                     setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]])
+                    setFriendNumber(FriendNumber + 1)
                 }
             }
         })
@@ -47,9 +52,9 @@ const FriendList = ({navigation}) => {
     }
 
     const PendingFriendsListDisplayer = () => {
-        for (var x = 0; x < PendingFriendNumber; x++) {
+        for (var x = 0; x <= PendingFriendNumber; x++) {
             if (PendingFriendsArray[x] != undefined) {
-                PendingFriendsCards.push(<FriendCardPending AccountName={UserName} name={PendingFriendsArray[x]}/>)
+                PendingFriendsCards.push(<FriendCardPending key={x} AccountName={UserName} name={PendingFriendsArray[x]}/>)
             }
         }
         return (
@@ -61,9 +66,9 @@ const FriendList = ({navigation}) => {
 
     const FriendsListDisplayer = () => {
 
-        for (var x = 0; x < FriendNumber; x++) {
+        for (var x = 0; x <= FriendNumber; x++) {
             if (FriendsArray[x] != undefined) {
-                FriendsCards.push(<FriendCard name={FriendsArray[x]}/>)
+                FriendsCards.push(<FriendCard key={x} name={FriendsArray[x]}/>)
             }
         }
         return (
@@ -81,6 +86,7 @@ const FriendList = ({navigation}) => {
             .then(res => {
                 console.log(res.data);
                 setToAddUser('')
+                alert("Friend Added");
             }
         )
 
@@ -103,13 +109,14 @@ const FriendList = ({navigation}) => {
                 <ScrollView style={styles.scrollView}>
                     {asPending ? 
                         <View>
-                        <Text style={styles.maintext}>Pending ({PendingFriendNumber})</Text>
+                        {/* <Text style={styles.maintext}>Pending ({PendingFriendNumber})</Text> */}
                         {PendingFriendsListDisplayer()}
                         </View>
                         : 
                         null
                     }
-                    <Text style={styles.maintext}>Friends ({FriendNumber})</Text>
+                    <Text style={styles.maintext}>Friends</Text>
+                    {/* <Text style={styles.maintext}>Friends ({FriendNumber})</Text> */}
                     {FriendsListDisplayer()}
                     </ScrollView>
                     :

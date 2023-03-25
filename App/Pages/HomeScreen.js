@@ -13,13 +13,7 @@ const HomeScreen = ({navigation}) => {
     const route = useRoute();
     const Profilename = route.params?.name;
 
-    var FriendNotification = 0;
-    const hasFriendNotification = () => {
-        if (FriendNotification > 0) {
-            return true;
-        }
-        return false;
-    }
+
 
     var MessageNotification = 0;
     const hasMessageNotification = () => {
@@ -53,19 +47,50 @@ const HomeScreen = ({navigation}) => {
             })
         }
     }
-    //
+  
+    // Friend Notification
+    const [visible2, setVisible2] = React.useState(false);
+    var fnum = 0;
+    const [PendingFriendNumber, setPendingFriendNumber] = React.useState(0);
+    const getFriends = async () => {
+        axios.get(`http://20.234.168.103:8080/listFriends/${User}`)
+        .then(res => {
+            console.log(`http://20.234.168.103:8080/listFriends/${User}`)
+            console.log(res.data);
+            if (res.data["fetched"] == "") {
+                setPendingFriendNumber(0);
+                return;
+            }
+            if (res.data["fetched"][0][0] != "?") {
+                setPendingFriendNumber(0);
+            }
+            for (var x = 0; x < res.data["fetched"].length; x++) {
+                if (res.data["fetched"][x][0] != "?") {
+                    fnum--;
+                }
+                if (res.data["fetched"][x][0] == "?") {
+                    fnum++;
+                    setPendingFriendNumber(fnum);
+                    // setPendingFriendNumber(res.data["fetched"].length);
+                    console.log("MENU :" + res.data["fetched"].length);
+                }
+            }
+        })
+        setVisible2(true);
+    }
+    const hasFriendNotification = () => {
+        if (PendingFriendNumber > 0) {
+            return true;
+        }
+        return false;
+    }
 
-    // React.useEffect(() => navigation.addListener('beforeRemove', (e) => {
-    //     e.preventDefault();
-    //     Alert.alert(
-    //         'Disconnect?',
-    //         'Are you sure you want to disconnect?',
-    //         [
-    //           { text: "Don't leave", style: 'cancel', onPress: () => {} },
-    //           { text: 'Leave', style: 'destructive', onPress: () => navigation.dispatch(e.data.action)},
-    //         ]
-    //       );
-    // }), [navigation]);
+    React.useEffect(() => {
+        const focusHandler = navigation.addListener('focus', () => {
+            getFriends();
+        });
+        return focusHandler;
+    }, [navigation]);
 
     return (
         <SafeAreaView style={styles.mainpage}>
@@ -103,7 +128,7 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.btnrow}>
                     <View style={{alignItems: 'center'}}>
                         <Icon name="user" size={50} color={Color.dark} onPress={() => navigation.navigate('FriendList', {name: User})}/>
-                        {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={FriendNotification} color="red" tintColor={Color.light3}/> : null}
+                        {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={PendingFriendNumber} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Friend List</Text>
                     </View>
                     <View style={{alignItems: 'center'}}>

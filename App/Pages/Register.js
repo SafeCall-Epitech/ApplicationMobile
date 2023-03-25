@@ -99,29 +99,29 @@ const Register = ({navigation}) => {
             <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45}}>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {haslowercase(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
-                    <Text style={{marginLeft: 10}}>At least one lowercase letter</Text>
+                    <Text style={styles.regu}>At least one lowercase letter</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {hasuppercase(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
-                    <Text style={{marginLeft: 10}}>At least one uppercase letter</Text>
+                    <Text style={styles.regu}>At least one uppercase letter</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {hasnumber(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
-                    <Text style={{marginLeft: 10}}>At least one digit</Text>
+                    <Text style={styles.regu}>At least one digit</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {hasSpecial(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
-                    <Text style={{marginLeft: 10}}>At least one special character : (!@#$%^&*)</Text>
+                    <Text style={styles.regu}>At least one special character : (!@#$%^&*)</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
                     {haslength(Password) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
-                    <Text style={{marginLeft: 10}}>At least 8 characters in total</Text>
+                    <Text style={styles.regu}>At least 8 characters in total</Text>
                 </View>
             </View>
             <Button 
             leading={props => <IconF name="send" {...props} />}
             title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password, Email)}}/>
-            <Text style={{padding:25}}>Already have an account ?
+            <Text style={styles.reg}>Already have an account ?
                 <Text style={styles.logintext} onPress={() => {navigation.navigate('Login')}}> log into your account</Text>
             </Text>
         </View>
@@ -167,6 +167,14 @@ const styles = StyleSheet.create({
     textverif: {
     
     },
+    regu: {
+        marginLeft: 10,
+        color: "black",
+    },
+    reg: {
+        padding: 30,
+        color: "black",
+    }
 })
 
 export default Register;

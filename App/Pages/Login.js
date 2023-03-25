@@ -57,8 +57,8 @@ const Login = ({navigation}) => {
             <Button 
             leading={props => <Icon name="login" {...props} />}
             title="login" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {getlogin(UserName, Password)}}/>
-            <Text style={{padding:25}}>No account yet ?
-                <Text style={styles.registertext} onPress={() => {navigation.navigate('Register')}}> Register you account</Text>
+            <Text style={styles.reg}>No account yet ?
+                <Text style={styles.registertext} onPress={() => {navigation.navigate('Register')}}> Register your account</Text>
             </Text>
         </View>
     );
@@ -99,6 +99,9 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontFamily: "sans-serif",
         fontStyle: "italic",
+    },
+    reg: {
+        color: "black",
     }
 })
 
