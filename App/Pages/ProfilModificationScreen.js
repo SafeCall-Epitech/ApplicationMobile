@@ -80,7 +80,7 @@ const ProfilScreen = ({navigation}) => {
     return (
         <View style={styles.mainpage}>
             <View style={styles.row}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Profil')}/>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             </View>
             <View style={styles.egg}/>
             <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Modify Profil</Text>
@@ -170,7 +170,7 @@ const ProfilScreen = ({navigation}) => {
                 color="red"
                 tintColor="white"
                 leading={props => <IconB name="cross" {...props} />}
-                onPress={() => navigation.navigate('Profil')}
+                onPress={() => navigation.navigate('Home')}
             />
             <Button
             title="Validate"

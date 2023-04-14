@@ -7,7 +7,6 @@ import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
 import Color from "../color";
-import color from "../color";
 
 const ProfilScreen = ({navigation}) => {
     const route = useRoute();

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "./Login";
-import Register from "./Register";
+import Login from "./Login"
+import Register from "./Register.js";
 import HomeScreen from "./HomeScreen";
 import SplashScreen from "./SplashScreen";
 import ProfilScreen from "./ProfilScreen";
