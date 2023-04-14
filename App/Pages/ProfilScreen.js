@@ -1,12 +1,13 @@
 import React from "react";
 import { ActivityIndicator, Avatar } from "@react-native-material/core";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Modal, TextInput, Button, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
 import Color from "../color";
+import color from "../color";
 
 const ProfilScreen = ({navigation}) => {
     const route = useRoute();
@@ -27,6 +28,12 @@ const ProfilScreen = ({navigation}) => {
     // const [ID, setID] = React.useState('none');
     // const [ProfilePic, setProfilePic] = React.useState('none');
 
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const [oldPassword, setOldPassword] = React.useState("");
+    const [newPassword, setNewPassword] = React.useState("");
+    const [confirmNewPassword, setConfirmNewPassword] = React.useState("");
+    
+
     const getProfile = async () => {
         axios.get(`http://20.234.168.103:8080/profile/${User}`)
         .then(res => {
@@ -44,6 +51,16 @@ const ProfilScreen = ({navigation}) => {
             }
         })
     }
+
+    const changePassword = async () => {
+        if (newPassword == confirmNewPassword) {
+
+        }
+        else {
+            alert("New password and confirm new password are not the same");
+        }
+    }
+
     React.useEffect(() => {
         getProfile();
     }, []);
@@ -94,8 +111,61 @@ const ProfilScreen = ({navigation}) => {
             <Text style={styles.maintext}>
                 Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb}</Text>)}
             </Text>
-            </View>
+            </View>            
+
             
+            {/* button */}
+            <View style={styles.button}>
+                <Button
+                    title="Change password"
+                    color={Color.dark2}
+                    onPress={() => setModalVisible(true)}
+                />
+            </View>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                setModalVisible(!modalVisible);
+                }}
+            >
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Old password"
+                        placeholderTextColor={Color.dark2}
+                        onChangeText={text => setOldPassword(text)}
+                        value={oldPassword}
+                        secureTextEntry={true}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="New password"
+                        placeholderTextColor={Color.dark2}
+                        onChangeText={text => setNewPassword(text)}
+                        value={newPassword}
+                        secureTextEntry={true}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Confirm new password"
+                        placeholderTextColor={Color.dark2}
+                        onChangeText={text => setConfirmNewPassword(text)}
+                        value={confirmNewPassword}
+                        secureTextEntry={true}
+                    />
+                    <IconM.Button name="lock" backgroundColor={Color.light3} color={Color.dark2} onPress={() => changePassword()}>
+                        Change password
+                    </IconM.Button>
+                    <IconM.Button name="close" backgroundColor={Color.light3} color={Color.dark2} onPress={() => setModalVisible(!modalVisible)}>
+                        Cancel
+                    </IconM.Button>
+                    </View>
+                    </View>
+            </Modal>
 
         </View>
     );
@@ -141,6 +211,61 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    button: {
+        marginTop: 20,
+        marginLeft: 50,
+        marginRight: 50,
+        marginBottom: 20,
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: Color.light3,
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    input: {
+        height: 40,
+        margin: 12,
+        borderWidth: 1,
+        padding: 10,
+        width: 200,
+        borderColor: Color.dark2,
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center",
+    },
+    openButton: {
+        backgroundColor: "#F194FF",
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+    },
+    textStyle: {
+        color: Color.dark2,
+        fontWeight: "bold",
+        textAlign: "center"
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+    }
+            
 })
     
 export default ProfilScreen;
