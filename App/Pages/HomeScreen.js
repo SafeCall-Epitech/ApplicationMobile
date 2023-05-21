@@ -132,8 +132,8 @@ const HomeScreen = ({navigation}) => {
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Friend List</Text>
                     </View>
                     <View style={{alignItems: 'center'}}>
-                        <Icon name="calendar" size={50} color={Color.dark}/>
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Calendar</Text>
+                        <Icon name="calendar" size={50} color={Color.dark} onPress={() => navigation.navigate('Agenda', {name: User})}/>
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Agenda</Text>
                     </View>
                 </View>
                 <View style={styles.btnrow}>

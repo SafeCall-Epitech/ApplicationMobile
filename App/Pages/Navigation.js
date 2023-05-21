@@ -9,6 +9,7 @@ import ProfilScreen from "./ProfilScreen";
 import SearchedProfilScreen from "./SearchedProfilScreen";
 import ProfilModificationScreen from "./ProfilModificationScreen";
 import FriendList from "./FriendList";
+import Agenda from "./Agenda";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -29,6 +30,7 @@ const MyStack = () => {
                 <Stack.Screen name="SearchProfil" component={SearchedProfilScreen}/>
                 <Stack.Screen name="ProfilModification" component={ProfilModificationScreen}/>
                 <Stack.Screen name="FriendList" component={FriendList}/>
+                <Stack.Screen name="Agenda" component={Agenda}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
