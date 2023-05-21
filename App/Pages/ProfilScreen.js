@@ -7,6 +7,7 @@ import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
 import Color from "../color";
+import { createIconSetFromFontello } from "react-native-vector-icons";
 
 const ProfilScreen = ({navigation}) => {
     const route = useRoute();
@@ -53,7 +54,18 @@ const ProfilScreen = ({navigation}) => {
 
     const changePassword = async () => {
         if (newPassword == confirmNewPassword) {
-
+            console.log(oldPassword, newPassword, confirmNewPassword);
+            console.log(User);
+            axios.post(`http://20.234.168.103:8080/editPassword/${User}/${oldPassword}/${newPassword}`)
+            .then(res => {
+                console.log(res.data);
+                if (res.data["success"]) {
+                    alert("Password changed successfully");
+                    setModalVisible(false);
+                } else if (res.data["failed"]) {
+                    alert("Error: " + res.data["failed"]);
+                }
+            })
         }
         else {
             alert("New password and confirm new password are not the same");

@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, Avatar} from "@react-native-material/core";
+import { ActivityIndicator, Avatar, Button} from "@react-native-material/core";
 import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -92,8 +92,6 @@ const SearchedProfileScreen = ({navigation}) => {
                 Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb[0]}{PhoneNb[1]}********</Text>)}
             </Text>
             </View>
-            
-
         </View>
     );
 };
