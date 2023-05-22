@@ -122,6 +122,11 @@ const FriendList = ({navigation}) => {
                     :
                 <ActivityIndicator size="large" color={Color.dark2} />
             }
+            <View style={styles.btnrow}></View>
+            <View style={{alignItems: 'center'}}>
+                <IconF name="user" size={50} color={Color.dark} onPress={() => navigation.navigate('CallForm', {name: UserName})}/>
+                <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call form</Text>
+            </View>
         </View>
     );
 };
