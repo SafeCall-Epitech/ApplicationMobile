@@ -6,7 +6,7 @@ import { View, Text } from "react-native";
 const MessageMainPage = () => {
     return (
         <View>
-            <Text>MessageMainPage</Text>
+            <Text>MZDQZDessageMainPage</Text>
         </View>
     )
 }
