@@ -138,7 +138,7 @@ const HomeScreen = ({navigation}) => {
                 </View>
                 <View style={styles.btnrow}>
                 <View style={{alignItems: 'center'}}>
-                        <IconM name="message" size={50} color={Color.dark}/>
+                        <IconM name="message" size={50} color={Color.dark} onPress={() => navigation.navigate('MessageMainPage')}/>
                         {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Message</Text>
                     </View>
