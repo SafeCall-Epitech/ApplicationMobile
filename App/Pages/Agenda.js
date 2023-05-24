@@ -113,7 +113,10 @@ const Agenda = ({navigation}) => {
         axios.get(`http://20.234.168.103:8080/listEvent/${UserName}`)
         .then(res => {
             parsedResponse = res.data["Success "];
-            console.log(parsedResponse);
+            console.log("RESP : "+ parsedResponse);
+            if (parsedResponse == null) {
+                return;
+            }
             parsedResponse.forEach(item => {
                 const confirmed = item.Confirmed;
                 const date = item.Date;
