@@ -12,6 +12,8 @@ import FriendList from "./FriendList";
 import Agenda from "./Agenda";
 import CallForm from "./CallForm";
 import MessageMainPage from "./MessageMainPage";
+import DiscList from "./Chat_part/DiscList";
+import ChatScreen from "./Chat_part/Chat2";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +37,8 @@ const MyStack = () => {
                 <Stack.Screen name="Agenda" component={Agenda}/>
                 <Stack.Screen name="CallForm" component={CallForm}/>
                 <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
+                <Stack.Screen name="DiscList" component={DiscList}/>
+                <Stack.Screen name="Chat" component={ChatScreen}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

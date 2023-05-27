@@ -6,7 +6,7 @@ export default function Print_message(props) {
 
     useEffect(() => {
         // Scroll to the bottom on initial render and whenever new messages are added
-        scrollToBottom();
+        // scrollToBottom();
     }, [props._messageList]);
 
     const scrollToBottom = () => {
@@ -14,31 +14,34 @@ export default function Print_message(props) {
     };
 
     const usr = props._username.toLowerCase();
-
+    console.log(props._messageList)
     return (
-        <ScrollView
+        <View>
+        {/* <ScrollView
             ref={scrollViewRef}
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
             onContentSizeChange={scrollToBottom}
-        >
-            {props._messageList.map((msg, index) => (
-                <View
-                    key={index}
-                    style={
-                        usr === msg["Sender"]
-                            ? props._messageList.length === 1
-                                ? styles.singleMessageMe
-                                : styles.me
-                            : styles.other
-                    }
-                >
-                    <Text style={styles.messageText}>
+            > */}
+             {props._messageList.map((msg, index) => (
+                         <View
+                             key={index}
+                             style={
+                                     usr === msg["Sender"]
+                                         ? props._messageList.length === 1
+                                             ? styles.singleMessageMe
+                                             : styles.me
+                                         : styles.other
+                                 }
+                             >
+                                 <Text style={styles.messageText}>
+                                     cc
                         {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
                     </Text>
                 </View>
-            ))}
-        </ScrollView>
+        ))}
+        {/* </ScrollView> */}
+    </View>
     );
 }
 
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
         width: 120,
         borderRadius: 10,
         padding: 10,
-        marginLeft: 0,
+        marginLeft: 10,
         backgroundColor: 'whitesmoke',
         marginBottom: 10,
     },
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: 'lightskyblue',
         color: 'whitesmoke',
-        marginLeft: 200,
+        marginLeft: "65%",
         marginBottom: 10,
     },
     singleMessageMe: {
@@ -83,5 +86,10 @@ const styles = StyleSheet.create({
     },
     messageText: {
         // Add additional styles if necessary
+        //color black
+        color: 'black',
+    },
+    BlackText: {
+        color: 'black',
     },
 });

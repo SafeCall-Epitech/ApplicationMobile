@@ -18,9 +18,9 @@ function DiscList({ onFriendSelect }) {
             try {
                 const username = await getData("user_name");
                 const response = await axios.get('http://20.234.168.103:8080/conversations/' + username);
-                const reponset = await axios.get(`http://20.234.168.103:8080/listFriends/` + username)
+                // const reponset = await axios.get(`http://20.234.168.103:8080/listFriends/` + username)
                 setFriendList(response.data["Success "]);
-                setFlist(responset.data)
+                // setFlist(responset.data)
             } catch (error) {
                 console.log(error);
             }
@@ -54,7 +54,8 @@ function DiscList({ onFriendSelect }) {
                     style={styles.profileImage}
                 />
                 <View style={styles.friendInfo}>
-                    <Text style={styles.friendName}>{item.replace(getData("user_name"), "")}</Text>
+                    {/* Display the name of the friend */}
+                    <Text style={styles.friendName}>{item}</Text>
                 </View>
             </View>
         </TouchableOpacity>
@@ -131,6 +132,7 @@ const styles = {
     },
     friendName: {
         fontWeight: 'bold',
+        color: '#000',
         marginBottom: 4,
     },
 };

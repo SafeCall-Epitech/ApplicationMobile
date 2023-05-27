@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet} from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import axios from 'axios';
-// import Print_message from './Print_message';
-import { storeData, getData, removeData } from './store';
+import React from "react";
 
-const Stack = createStackNavigator();
+import { View, Text, StyleSheet } from "react-native";
+import { KeyboardAvoidingView } from "react-native";
+import { TextInput } from "react-native";
+import { Button } from "react-native";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import { storeData, getData, removeData } from "./store";
 
-function ChatScreen() {
+import Print_message from "./Print_message";
+
+const Chat2 = () => {
+
     const [currentMessage, setCurrentMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState('');
@@ -18,15 +23,11 @@ function ChatScreen() {
             const friend_wait = await getData('Friend');
             const user_wait = await getData('user_name');
             setUsername(user_wait);
-            console.log(username);
-            console.log(friend_wait)
             setSelectedFriend(friend_wait);
             const response = await axios.get(
                 'http://20.234.168.103:8080/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
             );
-            console.log(response.data["Success "]);
             setMessageList(response.data["Success "]);
-            console.log(messageList)
         };
 
         fetchMessages();
@@ -35,7 +36,6 @@ function ChatScreen() {
     const sendMessage = async () => {
         if (currentMessage !== '') {
             const msg = { "Sender": username.toLowerCase(), "Message": currentMessage };
-            console.log(username)
             await axios.post('http://20.234.168.103:8080/sendMessage', {
                 message: currentMessage,
                 username: username,
@@ -47,10 +47,6 @@ function ChatScreen() {
         }
     };
 
-    const test = async () => {
-        console.log("BAAACK!!")
-    };
-
     return (
         <KeyboardAvoidingView
             style={styles.container}
@@ -58,9 +54,10 @@ function ChatScreen() {
             keyboardVerticalOffset={Platform.OS === 'ios' ? 15 : 0}
         >
         <View>
-            <View style={styles.chatContainer}>
-                {/* <Print_message _messageList={messageList} _username={username} /> */}
-            </View>
+            {/* <View style={styles.chatContainer}> */}
+                <Text style={styles.blackText}>Chat with {selectedFriend}</Text>
+                <Print_message _messageList={messageList} _username={username} />
+            {/* </View> */}
             <View style={styles.inputContainer}>
                 <TextInput
                     type="text"
@@ -104,13 +101,19 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         marginRight: 10,
         paddingHorizontal: 10,
+        color: '#000',
         borderRadius: 20, // Add border radius to make it rounded
-        // text color to black
-        color: 'black',
     },
     emptySpace: {
         height: 20,
     },
+    blackText: {
+        color: '#000',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 10,
+    },
 });
 
-export default ChatScreen;
+export default Chat2;
