@@ -12,8 +12,8 @@ import FriendList from "./FriendList";
 import Agenda from "./Agenda";
 import CallForm from "./CallForm";
 import MessageMainPage from "./MessageMainPage";
-import DiscList from "./Chat_part/DiscList";
-import ChatScreen from "./Chat_part/Chat2";
+import DiscList from "./Chat_part/DiscList"
+import ChatScreen from "./Chat_part/Chat";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -22,23 +22,23 @@ const MyStack = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator
-            screenOptions={{
-                headerShown: false,
-                navigationBarHidden: true,
-            }}>
-                <Stack.Screen name="SplashScreen" component={SplashScreen}/>
-                <Stack.Screen name="Login" component={Login}/>
-                <Stack.Screen name="Register" component={Register}/>
-                <Stack.Screen name="Home" component={HomeScreen}/>
-                <Stack.Screen name="Profil" component={ProfilScreen}/>
-                <Stack.Screen name="SearchProfil" component={SearchedProfilScreen}/>
-                <Stack.Screen name="ProfilModification" component={ProfilModificationScreen}/>
-                <Stack.Screen name="FriendList" component={FriendList}/>
-                <Stack.Screen name="Agenda" component={Agenda}/>
-                <Stack.Screen name="CallForm" component={CallForm}/>
-                <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
-                <Stack.Screen name="DiscList" component={DiscList}/>
-                <Stack.Screen name="Chat" component={ChatScreen}/>
+                screenOptions={{
+                    headerShown: false,
+                    navigationBarHidden: true,
+                }}>
+                <Stack.Screen name="SplashScreen" component={SplashScreen} />
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Register" component={Register} />
+                <Stack.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name="Profil" component={ProfilScreen} />
+                <Stack.Screen name="SearchProfil" component={SearchedProfilScreen} />
+                <Stack.Screen name="ProfilModification" component={ProfilModificationScreen} />
+                <Stack.Screen name="FriendList" component={FriendList} />
+                <Stack.Screen name="Agenda" component={Agenda} />
+                <Stack.Screen name="CallForm" component={CallForm} />
+                {/* <Stack.Screen name="MessageMainPage" component={MessageMainPage} /> */}
+                <Stack.Screen name="DiscList" component={DiscList} options={{ title: 'Disc List' }} />
+                <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
             </Stack.Navigator>
         </NavigationContainer>
     );

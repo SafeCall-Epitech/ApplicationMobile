@@ -6,7 +6,7 @@ export default function Print_message(props) {
 
     useEffect(() => {
         // Scroll to the bottom on initial render and whenever new messages are added
-        // scrollToBottom();
+        scrollToBottom();
     }, [props._messageList]);
 
     const scrollToBottom = () => {
@@ -16,42 +16,37 @@ export default function Print_message(props) {
     const usr = props._username.toLowerCase();
     console.log(props._messageList)
     return (
-        <View>
-        {/* <ScrollView
-            ref={scrollViewRef}
-            style={styles.container}
-            contentContainerStyle={styles.contentContainer}
-            onContentSizeChange={scrollToBottom}
-            > */}
-             {props._messageList.map((msg, index) => (
-                         <View
-                             key={index}
-                             style={
-                                     usr === msg["Sender"]
-                                         ? props._messageList.length === 1
-                                             ? styles.singleMessageMe
-                                             : styles.me
-                                         : styles.other
-                                 }
-                             >
-                                 <Text style={styles.messageText}>
-                                     cc
-                        {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
-                    </Text>
-                </View>
-        ))}
-        {/* </ScrollView> */}
-    </View>
+        <View style={{ flex: 1 }}>
+            <ScrollView
+                ref={scrollViewRef}
+                style={styles.container}
+                contentContainerStyle={styles.contentContainer}
+                onContentSizeChange={scrollToBottom}
+            >
+                {props._messageList.map((msg, index) => (
+                    <View
+                        key={index}
+                        style={
+                            usr === msg["Sender"]
+                                ? props._messageList.length === 1
+                                    ? styles.singleMessageMe
+                                    : styles.me
+                                : styles.other
+                        }
+                    >
+                        <Text style={styles.messageText}>
+                            {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
+                        </Text>
+                    </View>
+                ))}
+            </ScrollView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    contentContainer: {
-        flexGrow: 1,
-        justifyContent: 'flex-end',
     },
     contentContainer: {
         flexGrow: 1,
@@ -89,7 +84,7 @@ const styles = StyleSheet.create({
         //color black
         color: 'black',
     },
-    BlackText: {
+    blackText: {
         color: 'black',
     },
 });
