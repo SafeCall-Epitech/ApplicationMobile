@@ -36,9 +36,12 @@ function Chat2() {
     const sendMessage = async () => {
         if (currentMessage !== '') {
             const msg = { "Sender": username.toLowerCase(), "Message": currentMessage };
+            console.log(currentMessage)
+            console.log(username)
+            console.log(selectedFriend)
             await axios.post('http://20.234.168.103:8080/sendMessage', {
                 message: currentMessage,
-                username: username,
+                username: username.toLowerCase(),
                 friendname: selectedFriend,
             });
 
