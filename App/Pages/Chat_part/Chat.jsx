@@ -1,18 +1,15 @@
 import React from "react";
-
 import { View, Text, StyleSheet } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
 import { TextInput } from "react-native";
 import { Button } from "react-native";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { storeData, getData, removeData } from "./store";
 
-
 import Print_message from "./Print_message";
-function Chat2() {
 
+function Chat2() {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState('');
@@ -24,10 +21,19 @@ function Chat2() {
             const user_wait = await getData('user_name');
             setUsername(user_wait);
             setSelectedFriend(friend_wait);
-            const response = await axios.get(
-                'http://20.234.168.103:8080/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
-            );
-            setMessageList(response.data["Success "]);
+            try {
+                const response = await axios.get(
+                    'http://20.234.168.103:8080/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
+                );
+                setMessageList(response.data["Success "]);
+            } catch (error) {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                } else {
+                    console.log(error);
+                }
+            }
         };
 
         fetchMessages();
@@ -36,9 +42,9 @@ function Chat2() {
     const sendMessage = async () => {
         if (currentMessage !== '') {
             const msg = { "Sender": username.toLowerCase(), "Message": currentMessage };
-            console.log(currentMessage)
-            console.log(username)
-            console.log(selectedFriend)
+            console.log(currentMessage);
+            console.log(username);
+            console.log(selectedFriend);
             await axios.post('http://20.234.168.103:8080/sendMessage', {
                 message: currentMessage,
                 username: username.toLowerCase(),
@@ -56,9 +62,10 @@ function Chat2() {
             behavior={'padding'}
             keyboardVerticalOffset={15}
         >
-
+            <View style={styles.header}>
+                <Text style={styles.headerTitle}>{selectedFriend}</Text>
+            </View>
             <View style={styles.chatContainer}>
-                {/* <Text style={styles.blackText}>Chat with {selectedFriend}</Text> */}
                 <Print_message _messageList={messageList} _username={username} />
             </View>
             <View style={styles.inputContainer}>
@@ -73,93 +80,28 @@ function Chat2() {
                 <Button onPress={sendMessage} title="SEND" />
             </View>
             <View style={styles.emptySpace} />
-
         </KeyboardAvoidingView>
     );
 }
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'flex-end',
-//         backgroundColor: '#fff',
-//     },
-//     chatContainer: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         backgroundColor: '#fff',
-//     },
-//     inputContainer: {
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         padding: 10,
-//         backgroundColor: '#fff',
-//     },
-//     input: {
-//         flex: 1,
-//         height: 40,
-//         borderWidth: 1,
-//         borderColor: 'gray',
-//         marginRight: 10,
-//         paddingHorizontal: 10,
-//         color: '#000',
-//         borderRadius: 20, // Add border radius to make it rounded
-//     },
-//     emptySpace: {
-//         height: 20,
-//     },
-//     blackText: {
-//         color: '#000',
-//         fontSize: 20,
-//         fontWeight: 'bold',
-//         textAlign: 'center',
-//         padding: 10,
-//     },
-// });
-
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         justifyContent: 'flex-end',
-//         backgroundColor: '#fff',
-//     },
-//     chatContainer: {
-//         flex: 1,
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         backgroundColor: '#fff',
-//     },
-//     inputContainer: {
-//         flexDirection: 'row',
-//         alignItems: 'center',
-//         justifyContent: 'center',
-//         padding: 10,
-//         backgroundColor: '#fff',
-//     },
-//     input: {
-//         flex: 1,
-//         height: 40,
-//         borderWidth: 1,
-//         borderColor: 'gray',
-//         marginRight: 10,
-//         paddingHorizontal: 10,
-//         borderRadius: 20, // Add border radius to make it rounded
-//         // text color to black
-//         color: 'black',
-//     },
-//     emptySpace: {
-//         height: 20,
-//     },
-// });
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-end',
         backgroundColor: '#fff',
+    },
+    header: {
+        height: 110,
+        backgroundColor: '#f9f9f9',
+        justifyContent: 'flex-end', // Aligner le texte en bas du header
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#ccc',
+    },
+    headerTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 10, // Ajouter une marge inférieure pour déplacer le titre vers le bas
     },
     chatContainer: {
         flex: 1,
@@ -181,10 +123,11 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         marginRight: 10,
         paddingHorizontal: 10,
-        borderRadius: 20, // Add border radius to make it rounded
+        borderRadius: 20,
     },
     emptySpace: {
         height: 20,
     },
 });
+
 export default Chat2;
