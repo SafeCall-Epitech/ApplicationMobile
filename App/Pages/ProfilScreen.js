@@ -25,8 +25,6 @@ const ProfilScreen = ({navigation}) => {
     const [PhoneNb, setPhoneNb] = React.useState("");
     const [Email, setEmail] = React.useState("");
     const [verified, setVerified] = React.useState(false);
-    // const [ID, setID] = React.useState('none');
-    // const [ProfilePic, setProfilePic] = React.useState('none');
 
     const [modalVisible, setModalVisible] = React.useState(false);
     const [oldPassword, setOldPassword] = React.useState("");
@@ -43,8 +41,6 @@ const ProfilScreen = ({navigation}) => {
                 setDescription(res.data["profile"]["Description"]);
                 setPhoneNb(res.data["profile"]["PhoneNb"]);
                 setEmail(res.data["profile"]["Email"]);
-                // setID(res.data["profile"]["ID"]);
-                // setProfilePic(res.data["profile"]["ProfilePic"]);
                 setIsLoaded(false);
             } if (res.data["failed"]) {
                 alert ("Error: " + res.data["failed"]);
@@ -54,8 +50,10 @@ const ProfilScreen = ({navigation}) => {
 
     const changePassword = async () => {
         if (newPassword == confirmNewPassword) {
-            console.log(oldPassword, newPassword, confirmNewPassword);
-            console.log(User);
+            if (oldPassword == "" || newPassword == "") {
+                alert("Old password or new password is empty");
+                return;
+            }
             axios.post(`http://20.234.168.103:8080/editPassword/${User}/${oldPassword}/${newPassword}`)
             .then(res => {
                 console.log(res.data);
@@ -256,6 +254,7 @@ const styles = StyleSheet.create({
         padding: 10,
         width: 200,
         borderColor: Color.dark2,
+        color: Color.dark3,
     },
     modalText: {
         marginBottom: 15,

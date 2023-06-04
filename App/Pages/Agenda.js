@@ -11,33 +11,11 @@ import { ActivityIndicator } from "react-native";
 
 const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
 
-    // format date to be more readable
-    var day = RDVDate.substring(0, 2);
-    var month = RDVDate.substring(3, 5);
-    // year is the last 4 characters
-    var year = RDVDate.substring(RDVDate.length - 4);
+    // split the RDVGuests string into an array
+    const RDVGuestsArray = RDVGuests.split("+");
+    // remove the UserName from the RDVGuestsArray
+    RDVGuestsArray.splice(RDVGuestsArray.indexOf(UserName), 1);
 
-    // format guests to be more readable
-    // guest 1 is everything before &
-    var RDVGuest1 = RDVGuests.substring(0, RDVGuests.indexOf('&'));
-    // guest 2 is everything after &
-    var RDVGuest2 = RDVGuests.substring(RDVGuests.indexOf('&') + 1);
-
-
-
-    //if RDVGuest 1 or 2 is the user, replace it with "You"
-    if (RDVGuest1 == UserName) {
-        RDVGuest1 = "You";
-    }
-    if (RDVGuest2 == UserName) {
-        RDVGuest2 = "You";
-    }
-    console.log("1 = " + RDVGuest1);
-    console.log("2 = " +RDVGuest2);
-    var RDVGuests = RDVGuest1 + " & " + RDVGuest2;
-
-
-    // if rdv is confirmed, display green, else display red
     if (isRDVConfirmed == "Confirmed") {
         styles2.cardHeaderText.color = "#90EE90";
     } else {
@@ -52,9 +30,19 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
                 <Text style={styles2.cardHeaderText}>{isRDVConfirmed}</Text>
             </View>
             <View style={styles2.cardBody}>
-                <Text style={styles2.cardBodyText}>Date: {day}/{month}/{year}</Text>
-                <Text style={styles2.cardBodyText}>Rendez-vous between {RDVGuests} </Text>
-                <Text style={styles2.cardBodyText}>Note: {RDVSubject}</Text>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
+                    <Text style={styles2.cardBodyTextRight}>With: {RDVGuestsArray[0]}</Text>
+                    {/* <Text style={styles2.cardBodyText}>Rendez-vous between {RDVGuests} </Text> */}
+                </View>
+                {/* separator */}
+                <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
+                {/* <Text style={styles2.cardBodyText}>Note: {RDVSubject}</Text> */}
+                {/* Write the text "Note" centered */}
+                <Text style={{color: Color.dark2, fontSize: 15, textAlign: 'center'}}>Subject</Text>
+                {/* Write the RDVSubject */}
+                <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
+
             </View>
         </View>
     )
@@ -91,6 +79,21 @@ styles2 = StyleSheet.create({
         color: Color.dark2,
         fontSize: 15,
     },
+    cardBodyTextLeft: {
+        color: Color.dark2,
+        fontSize: 15,
+        marginRight: 10,
+    },
+    cardBodyTextRight: {
+        color: Color.dark2,
+        fontSize: 15,
+        // place full left
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        textAlign: 'right',
+        marginRight: 10,
+    },
 })
 
 
@@ -113,7 +116,6 @@ const Agenda = ({navigation}) => {
         axios.get(`http://20.234.168.103:8080/listEvent/${UserName}`)
         .then(res => {
             parsedResponse = res.data["Success "];
-            console.log("RESP : "+ parsedResponse);
             if (parsedResponse == null) {
                 return;
             }
@@ -135,9 +137,7 @@ const Agenda = ({navigation}) => {
     }
 
     const AgendaDisplayer = () => {
-        console.log("AgendaDisplayer");
         for (var x = 0; x <= RDVDateArray.length; x++) {
-            console.log("x = " + x);
             if (RDVDateArray[x] != undefined) {
                 if (isRDVConfirmedArray[x] == "true") {
                     isRDVConfirmedArray[x] = "Confirmed";
