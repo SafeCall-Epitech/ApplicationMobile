@@ -135,6 +135,10 @@ const HomeScreen = ({navigation}) => {
                         <Icon name="calendar" size={50} color={Color.dark} onPress={() => navigation.navigate('Agenda', {name: User})}/>
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Agenda</Text>
                     </View>
+                    <View style={{alignItems: 'center'}}>
+                        <IconM name="add-call" size={50} color={Color.dark} onPress={() => navigation.navigate('CallForm', {name: User})}/>
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Add Event</Text>
+                    </View>
                 </View>
                 <View style={styles.btnrow}>
                 <View style={{alignItems: 'center'}}>
@@ -142,10 +146,10 @@ const HomeScreen = ({navigation}) => {
                         {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Message</Text>
                     </View>
-                    {/* <View style={{alignItems: 'center'}}>
-                        <Icon name="meh-o" size={50} color={Color.dark}/>
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Coming Soon</Text>
-                    </View> */}
+                    <View style={{alignItems: 'center'}}>
+                        <Icon name="phone" size={50} color={Color.dark}/>
+                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call</Text>
+                    </View>
                 </View>
             </View>
             { visible ?

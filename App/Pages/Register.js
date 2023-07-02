@@ -51,7 +51,6 @@ const Register = ({navigation}) => {
             alert("Password must contain at least 1 lowercase, 1 uppercase, 1 number, 1 special character and be at least 8 characters long");
             return;
         }
-        console.log("register");
         setLoading(true);
         axios.post('http://20.234.168.103:8080/register/' + UserName + '/' + Password + '/' + Email)
         .then(res => {
@@ -59,9 +58,11 @@ const Register = ({navigation}) => {
             setLoading(false);
             if (res.data["success"]) {
                 navigation.navigate('Login');
-            } if (res.data["failed"]) {
-                alert ("Error: " + res.data["failed"]);
             }
+        }).catch(err => {
+            console.log(err);
+            setLoading(false);
+            alert("Username or Email already taken");
         })
     };
 

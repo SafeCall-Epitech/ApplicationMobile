@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import Color from "../color";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { StyleSheet } from "react-native";
@@ -22,8 +22,6 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
         styles2.cardHeaderText.color = "#ffcccb";    
     }
 
-    
-
     return (
         <View style={styles2.card}>
             <View style={styles2.cardHeader}>
@@ -44,7 +42,9 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
                 <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
 
             </View>
+           
         </View>
+        
     )
 }
 
@@ -163,15 +163,14 @@ const Agenda = ({navigation}) => {
             <View style={styles.egg}></View>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Agenda</Text>
-        
+   
             {isLoaded ? 
                 <ScrollView style={styles.scrollView}>
                     {AgendaDisplayer()}
                 </ScrollView>
                     :
-                <ActivityIndicator size="large" color={Color.dark2} />
-            }
-        
+                    <ActivityIndicator size="large" color={Color.dark2} />
+                }
         </View>
     )
 }
