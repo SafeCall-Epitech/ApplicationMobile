@@ -16,6 +16,16 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
     // remove the UserName from the RDVGuestsArray
     RDVGuestsArray.splice(RDVGuestsArray.indexOf(UserName), 1);
 
+    // if rdv date is only number and 8 characters long, set it to the format "dd/mm/yyyy"
+    if (RDVDate.length == 8 && !isNaN(RDVDate)) {
+        RDVDate = RDVDate.substring(0, 2) + "/" + RDVDate.substring(2, 4) + "/" + RDVDate.substring(4, 8);
+    }
+    //if rdv date is only number and less or more than 8 characters long, set it to the format "dd/mm/yyyy"
+    else if (RDVDate.length != 8 && !isNaN(RDVDate)) {
+        RDVDate = RDVDate.substring(0, 2) + "/" + RDVDate.substring(2, 4) + "/" + RDVDate.substring(4);
+    }
+
+
     if (isRDVConfirmed == "Confirmed") {
         styles2.cardHeaderText.color = "#90EE90";
     } else {
