@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ActivityIndicator, Avatar, Surface, } from "@react-native-material/core";
 import { StyleSheet, Text, View, ScrollView, TextInput, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -6,21 +7,17 @@ import IconF from 'react-native-vector-icons/FontAwesome';
 import axios from "axios";
 import Color from "../color";
 
+import { Button } from 'react-native'
 import DatePicker from 'react-native-date-picker'
 
-const CallForm = ({navigation}) => {
+const FeedbackForm = ({navigation}) => {
 
     
     const route = useRoute();
     const UserName = route.params?.name;
-    const [ToAddUser, setToAddUser] = React.useState('');
-    const [ToAddGuest1, setDestGuest1] = React.useState('');
-    const [ToAddGuest2, setDestGuest2] = React.useState('');
-    const [ToAddObject, setObject] = React.useState('');
-    // const [ToAddDate, setDate] = React.useState('');
-
+    const [ToAddDescription, setDestDescription] = React.useState('');
     const [date, setDate] = useState(new Date())
-    const [open, setOpen] = useState(false)
+
 
     formatDate = (date) => {
         var day = date.getDate();
@@ -35,23 +32,22 @@ const CallForm = ({navigation}) => {
         return day+month+year;
     }
 
-    const SendCallForm = async () => {
+    const SendFeedback = async () => {
         const form = JSON.stringify({
-            guest1: ToAddGuest1,
-            guest2: ToAddGuest2,
-            subject: ToAddObject,
+            username: UserName,
             date: formatDate(date),
+            message: ToAddDescription,
         });
         console.log(form)
-        axios.post(`http://20.234.168.103:8080/addEvent`, form, {
+        axios.post(`http://20.234.168.103:8080/feedback`, form, {
             headers: {
             'Content-Type': 'application/json'
           }
         })
         .then(res => {
             console.log(res.data)
-            alert("Call request sent to " + ToAddGuest2 + "!")
-            navigation.navigate('FriendList', {name: UserName})
+            alert("Feedback sent to the team !")
+            navigation.navigate('Home', {name: UserName})
         })
     }
 
@@ -60,33 +56,18 @@ const CallForm = ({navigation}) => {
             <View style={styles.row}>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             </View>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Add Event</Text>
+            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Feedback</Text>
             <View style={styles.egg}/>
             <ScrollView style={styles.scrollView}>
                     <View>
-                    {<Text style={styles.maintext}>Guest1 :</Text>}
-                    <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Guest1" placeholderTextColor={Color.dark2} onChangeText={text => setDestGuest1(text)} value={ToAddGuest1}/>
-                    </View>
-                    {<Text style={styles.maintext}>Guest2 :</Text>}
-                    <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Guest2" placeholderTextColor={Color.dark2} onChangeText={text => setDestGuest2(text)} value={ToAddGuest2}/>
-                    <View>
-                    {<Text style={styles.maintext}>Object :</Text>}
-                    <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Object" placeholderTextColor={Color.dark2} onChangeText={text => setObject(text)} value={ToAddObject}/>
-                    </View>
-                    <View>
-                    {<Text style={styles.maintext}>Date of the event :</Text>}
-                    <DatePicker date={date} onDateChange={setDate} style={styles.datepicker}
-                    androidVariant= 'nativeAndroid' 
-                    textColor='black'
-                    mode='date'
-                    />
-                    {/* <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Date" placeholderTextColor={Color.dark2} onChangeText={text => setDate(text)} value={ToAddDate}/>     */}
+                    {<Text style={styles.maintext}>Description :</Text>}
+                    <TextInput multiline={true} style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 90, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2, textAlignVertical: 'top'}} placeholder="Description" placeholderTextColor={Color.dark2} onChangeText={text => setDestDescription(text)} value={ToAddDescription}/>
                     </View>
             </ScrollView>
             <View style={styles.btnrow}></View>
             <View style={{alignItems: 'center'}}>
-                <IconF name="user" size={50} color={Color.dark} onPress={() => SendCallForm()}/>
-                <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Send Call Request</Text>
+                <IconF name="user" size={50} color={Color.dark} onPress={() => SendFeedback()}/>
+                <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Send Feedback</Text>
             </View>
         </View>
     );
@@ -156,4 +137,4 @@ const styles = StyleSheet.create({
     }
 })
     
-export default CallForm;
+export default FeedbackForm;

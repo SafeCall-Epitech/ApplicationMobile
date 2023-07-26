@@ -150,6 +150,10 @@ const HomeScreen = ({navigation}) => {
                         <Icon name="phone" size={50} color={Color.dark}/>
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call</Text>
                     </View>
+                    <View style={{alignItems: 'center'}}>
+                        <IconM name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('FeedbackForm', {name: User})}/>
+                        <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'space-around'}}>Send Feedback</Text>
+                    </View>
                 </View>
             </View>
             { visible ?
