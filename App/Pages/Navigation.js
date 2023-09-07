@@ -13,6 +13,7 @@ import Agenda from "./Agenda";
 import CallForm from "./CallForm";
 import FeedbackForm from "./FeedbackForm";
 import MessageMainPage from "./MessageMainPage";
+import InCallPage from "./InCallPage";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -29,7 +30,7 @@ const MyStack = () => {
                 <Stack.Screen name="Login" component={Login}/>
                 <Stack.Screen name="Register" component={Register}/>
                 <Stack.Screen name="Home" component={HomeScreen}/>
-                <Stack.Screen name="Profil" component={ProfilScreen}/>
+                <Stack.Screen name="Profil" component={ProfilScreen}/> 
                 <Stack.Screen name="SearchProfil" component={SearchedProfilScreen}/>
                 <Stack.Screen name="ProfilModification" component={ProfilModificationScreen}/>
                 <Stack.Screen name="FriendList" component={FriendList}/>
@@ -37,6 +38,7 @@ const MyStack = () => {
                 <Stack.Screen name="CallForm" component={CallForm}/>
                 <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
                 <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
+                <Stack.Screen name="InCallPage" component={InCallPage}/>
             </Stack.Navigator>
         </NavigationContainer>
     );
