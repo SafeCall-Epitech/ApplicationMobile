@@ -14,8 +14,18 @@ const FriendCardPending = props => {
 
     const [isVisible, setIsVisible] = React.useState(true);
 
+    // fixed
     const AcceptFriend = async () => {
-        axios.post(`http://20.234.168.103:8080/replyFriend/${UserName}/${FriendName}/accept`)
+        const form = JSON.stringify({
+            UserID: UserName,
+            Friend: FriendName,
+            Action: "accept",
+        });
+        axios.post(`http://http://20.234.168.103:8080/replyFriend`, form, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data)
             setIsVisible(false)
@@ -24,11 +34,20 @@ const FriendCardPending = props => {
     }
     
     const DenyFriend = async () => {
-        axios.post(`http://20.234.168.103:8080/replyFriend/${UserName}/${FriendName}/deny`)
+        const form = JSON.stringify({
+            UserID: UserName,
+            Friend: FriendName,
+            Action: "deny",
+        });
+        axios.post(`http://http://20.234.168.103:8080/replyFriend`, form, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data)
             setIsVisible(false)
-            alert("You have denied " + FriendName + "'s friend request.")
+            alert("You are now friends with " + FriendName + "!")
         })
     }
 

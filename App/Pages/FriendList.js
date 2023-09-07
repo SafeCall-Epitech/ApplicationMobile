@@ -77,19 +77,26 @@ const FriendList = ({navigation}) => {
             </View>
         )
     }
-    
+    // fixed
     function HandleFriend(action) {
         if (ToAddUser == '') {
             return;
         }
-        axios.post(`http://20.234.168.103:8080/manageFriend/${UserName}/${ToAddUser}/${action}`)
-            .then(res => {
-                console.log(res.data);
-                setToAddUser('')
-                alert("Friend Added");
+        const form = JSON.stringify({
+            UserID: UserName,
+            Friend: ToAddUser,
+            Action: action,
+        });
+        axios.post(`http://20.234.168.103:8080/manageFriend`, form, {
+            headers: {
+            'Content-Type': 'application/json'
             }
-        )
-
+        })
+        .then(res => {
+            console.log(res.data);
+            setToAddUser('')
+            alert("Friend Added");
+        })
     }
 
     React.useEffect(() => {

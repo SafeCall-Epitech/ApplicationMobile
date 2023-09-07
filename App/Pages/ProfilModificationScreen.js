@@ -33,23 +33,60 @@ const ProfilScreen = ({navigation}) => {
         console.log("PhoneNb: " + PhoneNb);
         console.log("Email: " + Email);
     
+
+        //fixed
+
+
         //Name
-        axios.post('http://20.234.168.103:8080/profileFullName/' + ProfileAPI + '/' + FullName)
+        const formname = JSON.stringify({
+            UserID: ProfileAPI,
+            data: FullName,
+        });
+
+        axios.post('http://20.234.168.103:8080/profileFullName', formname, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data);
         })
         //Description
-        axios.post('http://20.234.168.103:8080/profileDescription/' + ProfileAPI + '/' + Description)
+        const formdesc = JSON.stringify({
+            UserID: ProfileAPI,
+            data: Description,
+        });
+        axios.post('http://20.234.168.103:8080/profileDescription', formdesc, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data);
         })
         //PhoneNb
-        axios.post('http://20.234.168.103:8080/profilePhoneNB/' + ProfileAPI + '/' + PhoneNb)
+        const formphone = JSON.stringify({
+            UserID: ProfileAPI,
+            data: PhoneNb,
+        });
+        axios.post('http://20.234.168.103:8080/profilePhoneNB', formphone, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data);
         })
         //Email
-        axios.post('http://20.234.168.103:8080/profileEmail/' + ProfileAPI + '/' + Email)
+        const formemail = JSON.stringify({
+            UserID: ProfileAPI,
+            data: Email,
+        });
+        axios.post('http://20.234.168.103:8080/profileEmail', formemail, {
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        })
         .then(res => {
             console.log(res.data);
         })

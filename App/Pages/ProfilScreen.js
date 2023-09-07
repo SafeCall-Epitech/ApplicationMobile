@@ -48,13 +48,24 @@ const ProfilScreen = ({navigation}) => {
         })
     }
 
+    //fixed
     const changePassword = async () => {
         if (newPassword == confirmNewPassword) {
             if (oldPassword == "" || newPassword == "") {
                 alert("Old password or new password is empty");
                 return;
             }
-            axios.post(`http://20.234.168.103:8080/editPassword/${User}/${oldPassword}/${newPassword}`)
+
+            const form = JSON.stringify({
+                UserID: User,
+                PasswordOld: oldPassword,
+                PasswordNew: newPassword,
+            });
+            axios.post(`http://20.234.168.103:8080/editPassword`, form, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             .then(res => {
                 console.log(res.data);
                 if (res.data["success"]) {
