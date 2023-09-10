@@ -12,6 +12,7 @@ import FriendList from "./FriendList";
 import Agenda from "./Agenda";
 import CallForm from "./CallForm";
 import FeedbackForm from "./FeedbackForm";
+import ReportForm from "./ReportForm";
 import MessageMainPage from "./MessageMainPage";
 import InCallPage from "./InCallPage";
 import "../color"
@@ -37,6 +38,7 @@ const MyStack = () => {
                 <Stack.Screen name="Agenda" component={Agenda}/>
                 <Stack.Screen name="CallForm" component={CallForm}/>
                 <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
+                <Stack.Screen name="ReportForm" component={ReportForm}/>
                 <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
                 <Stack.Screen name="InCallPage" component={InCallPage}/>
             </Stack.Navigator>
