@@ -9,12 +9,19 @@ import { ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
 
 
-const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
+const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
 
     // split the RDVGuests string into an array
     const RDVGuestsArray = RDVGuests.split("+");
     // remove the UserName from the RDVGuestsArray
     RDVGuestsArray.splice(RDVGuestsArray.indexOf(UserName), 1);
+    //the guest is the person who is not the user
+    if (RDVGuestsArray[0] == UserName) {
+        var guest = RDVGuestsArray[1];
+    } else {
+        var guest = RDVGuestsArray[0];
+    }
+
 
     // if rdv date is only number and 8 characters long, set it to the format "dd/mm/yyyy"
     if (RDVDate.length == 8 && !isNaN(RDVDate)) {
@@ -24,6 +31,25 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
     else if (RDVDate.length != 8 && !isNaN(RDVDate)) {
         RDVDate = RDVDate.substring(0, 2) + "/" + RDVDate.substring(2, 4) + "/" + RDVDate.substring(4);
     }
+
+    var isrdvsoon = false;
+    //get the current date
+    var today = new Date();
+    //get the rdv date
+    var rdvdate = new Date(RDVDate);
+    //get today's date in the format "dd/mm/yyyy"
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, "0");
+    var yyyy = today.getFullYear();
+    today = dd + "/" + mm + "/" + yyyy;
+
+    //if the difference is less than 0, the rdv is in the past
+    if (today == RDVDate) {
+        isrdvsoon = true;
+    }
+
+
+    console.log(guest);
 
 
     if (isRDVConfirmed == "Confirmed") {
@@ -51,6 +77,7 @@ const AgendaCard = ({isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) 
                 {/* Write the RDVSubject */}
                 <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
 
+                {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
             </View>
            
         </View>
@@ -154,7 +181,7 @@ const Agenda = ({navigation}) => {
                 } else {
                     isRDVConfirmedArray[x] = "Not Confirmed";
                 }
-                AgendaCards.push(<AgendaCard key={x} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
             }
         }
         return (
