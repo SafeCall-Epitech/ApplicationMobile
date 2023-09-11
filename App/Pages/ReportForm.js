@@ -29,9 +29,8 @@ const ReportForm = ({navigation}) => {
 
     const SendReport = async () => {
         const form = JSON.stringify({
-            username: UserName,
+            username: ToAddUser,
             date: formatDate(date),
-            reported: ToAddUser,
             message: ToAddDescription,
         });
         console.log(form)
