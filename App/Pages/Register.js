@@ -53,6 +53,18 @@ const Register = ({navigation}) => {
             alert("Password must contain at least 1 lowercase, 1 uppercase, 1 number, 1 special character and be at least 8 characters long");
             return;
         }
+        if (!UserName || !Password || !Email) {
+            alert("Please fill all the fields");
+            return;
+        }
+        if (!Email.includes("@")) {
+            alert("Please enter a valid email address");
+            return;
+        }
+        if (UserName.length < 5) {
+            alert("Username must be at least 5 characters long");
+            return;
+        }
         setLoading(true);
         const form = JSON.stringify({
             Login: UserName,

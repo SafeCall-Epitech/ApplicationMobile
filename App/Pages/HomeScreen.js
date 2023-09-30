@@ -107,6 +107,8 @@ const HomeScreen = ({navigation}) => {
             /></Pressable>
 
             </View>
+
+            
                 <Image style={styles.tinyLogo} source={require('../img/SafeCallBlack.png')} />
             <View style={styles.egg}/>
             <TextInput
@@ -146,10 +148,10 @@ const HomeScreen = ({navigation}) => {
                         {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Message</Text>
                     </View>
-                    <View style={{alignItems: 'center'}}>
+                    {/* <View style={{alignItems: 'center'}}>
                         <Icon name="phone" size={50} color={Color.dark}/>
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call</Text>
-                    </View>
+                    </View> */}
                     <View style={{alignItems: 'center'}}>
                         <IconM name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('FeedbackForm', {name: User})}/>
                         <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'space-around'}}>Send Feedback</Text>

@@ -3,6 +3,7 @@ import { ActivityIndicator, Avatar } from "@react-native-material/core";
 import { StyleSheet, Text, View, Modal, TextInput, Button, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/Ionicons';
+import IconA from 'react-native-vector-icons/AntDesign';
 import IconM from 'react-native-vector-icons/MaterialIcons';
 import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
@@ -31,6 +32,39 @@ const ProfilScreen = ({navigation}) => {
     const [newPassword, setNewPassword] = React.useState("");
     const [confirmNewPassword, setConfirmNewPassword] = React.useState("");
     
+
+    const haslowercase = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[a-z]/.test(str));
+    }
+    const hasuppercase = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[A-Z]/.test(str));
+    }
+
+    const hasnumber = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[0-9]/.test(str));
+    }
+    const hasSpecial = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (/[!@#$%^&*(),.?":{}|<>]/.test(str));
+    }
+    const haslength = (str) => {
+        if (!str) {
+            return false;
+        }
+        return (str.length >= 8);
+    }
+
 
     const getProfile = async () => {
         axios.get(`http://20.234.168.103:8080/profile/${User}`)
@@ -177,6 +211,30 @@ const ProfilScreen = ({navigation}) => {
                         value={confirmNewPassword}
                         secureTextEntry={true}
                     />
+                    {/*  */}
+                    <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45, marginBottom: 30}}>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {haslowercase(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={styles.regu}>At least one lowercase letter</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasuppercase(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={styles.regu}>At least one uppercase letter</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasnumber(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={styles.regu}>At least one digit</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {hasSpecial(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={styles.regu}>At least one special character : (!@#$%^&*)</Text>
+                </View>
+                <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
+                    {haslength(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    <Text style={styles.regu}>At least 8 characters in total</Text>
+                </View>
+            </View>
+            {/*  */}
                     <IconM.Button name="lock" backgroundColor={Color.light3} color={Color.dark2} onPress={() => changePassword()}>
                         Change password
                     </IconM.Button>
@@ -285,7 +343,12 @@ const styles = StyleSheet.create({
     modalText: {
         marginBottom: 15,
         textAlign: "center"
-    }
+    },
+    regu: {
+        marginLeft: 10,
+        color: "black",
+        marginBottom: 5,
+    },
             
 })
     
