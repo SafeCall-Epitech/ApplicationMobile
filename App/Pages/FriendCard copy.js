@@ -9,11 +9,15 @@ import IconS from 'react-native-vector-icons/EvilIcons';
 import axios from "axios";
 import Color from "../color";
 
+
 const DeleteFriend = async (userName, friendName) => {
+    if (friendName == null) {
+        setVisible(false);
+    }
     try {
       const form = JSON.stringify({
-        UserID: userName,
-        Friend: friendName,
+        UserID: user,
+        Friend: Name,
         Action: "rm",
       });
       await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:8080/manageFriend`, form, {
@@ -25,16 +29,14 @@ const DeleteFriend = async (userName, friendName) => {
     } catch (err) {
       console.error(err);
     }
-    console.log(friendName);
+    console.log(Name);
+    setVisible(false);
 };
 
-const FriendCard = props => {
-    const route = useRoute();
-    const UserName = route.params?.name;
+const FriendCard = ({props}) => {
     const [visible, setVisible] = useState(false);
 
     const showMenu = () => setVisible(true);
-    const hideMenu = () => setVisible(false);
 
     return (
         <Surface
@@ -50,15 +52,15 @@ const FriendCard = props => {
                     color={Color.light3}
                 />
                 <Text style={styles.maintext}>{props.name}</Text>
-            </View>
-            <Menu
+                <Menu
                     visible={visible}
                     anchor={<Text onPress={showMenu}>Show menu</Text>}
                     onRequestClose={hideMenu}
                 >
                     {/* <MenuItem onPress={navigation.navigate('ReportForm', {name: props.name})}>Menu item 1</MenuItem> */}
-                    <MenuItem onPress={() => DeleteFriend(UserName, props.name)}>Delete friend</MenuItem>
+                    <MenuItem onPress={() => DeleteFriend(UserName, "")}>Report</MenuItem>
                 </Menu>
+            </View>
         </Surface>
     );
 };

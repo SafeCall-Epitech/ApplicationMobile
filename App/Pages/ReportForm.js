@@ -10,6 +10,7 @@ const ReportForm = ({navigation}) => {
 
     const route = useRoute();
     const UserName = route.params?.name;
+    const friendName = route.params?.friendname;
     const [ToAddDescription, setDestDescription] = React.useState('');
     const [ToAddUser, setToAddUser] = React.useState('');
     const [date, setDate] = useState(new Date())
@@ -29,7 +30,7 @@ const ReportForm = ({navigation}) => {
 
     const SendReport = async () => {
         const form = JSON.stringify({
-            username: ToAddUser,
+            username: friendName,
             date: formatDate(date),
             message: ToAddDescription,
         });
@@ -55,8 +56,7 @@ const ReportForm = ({navigation}) => {
             <View style={styles.egg}/>
             <ScrollView style={styles.scrollView}>
                     <View>
-                    {<Text style={styles.maintext}>User to report :</Text>}
-                    <TextInput multiline={true} style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 90, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2, textAlignVertical: 'top'}} placeholder="Write the name of the user you wish to report" placeholderTextColor={Color.dark2} onChangeText={text => setToAddUser(text)} value={ToAddUser}/>
+                    {<Text style={styles.maintext}>User to report : {friendName}</Text>}
                     </View>
                     <View>
                     {<Text style={styles.maintext}>Description :</Text>}
