@@ -2,10 +2,7 @@ import React from "react";
 import { ActivityIndicator, Avatar, Surface, } from "@react-native-material/core";
 import { StyleSheet, Text, View, ScrollView, TextInput, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconM from 'react-native-vector-icons/MaterialIcons';
-import IconS from 'react-native-vector-icons/EvilIcons';
-import IconF from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 import Color from "../color";
 
@@ -26,25 +23,26 @@ const FriendList = ({navigation}) => {
     const [FriendsArray, setFriendsArray] = React.useState([]);
     const [PendingFriendNumber, setPendingFriendNumber] = React.useState(0);
     const [PendingFriendsArray, setPendingFriendsArray] = React.useState([]);
+    const [Fsubject, setFsubject] = React.useState("Demande d'ami");
 
     const getFriends = async () => {
         axios.get(`http://20.234.168.103:8080/listFriends/${UserName}`)
         .then(res => {
-            console.log(`http://20.234.168.103:8080/listFriends/${UserName}`)
-            console.log(res.data);
+            if (res.data["fetched"] == null) {
+                return;
+            } else if (res.data["fetched"].length == 0) {
+                return;
+            }
+
             for (var x = 0; x < res.data["fetched"].length; x++) {
-                if (res.data["fetched"][x][0] == "?") {
-                    //print pending friend
-                    console.log("pending friend")
-                    console.log(res.data["fetched"][x])
-                    //remove ? from name
-                    res.data["fetched"][x] = res.data["fetched"][x].substring(1)
-                    setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]])
+                // console.log(res.data["fetched"][x])
+                if (res.data["fetched"][x]["Active"] == true) {
+                    setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]["Id"]])
+                }
+                if (res.data["fetched"][x]["Active"] == false) {
+                    setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]["Id"]])
                     setPendingFriendNumber(PendingFriendNumber + 1)
                     setasPending(true)
-                } else {
-                    setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]])
-                    setFriendNumber(FriendNumber + 1)
                 }
             }
         })
@@ -65,7 +63,6 @@ const FriendList = ({navigation}) => {
     }
 
     const FriendsListDisplayer = () => {
-
         for (var x = 0; x <= FriendNumber; x++) {
             if (FriendsArray[x] != undefined) {
                 FriendsCards.push(<FriendCard key={x} name={FriendsArray[x]}/>)
@@ -77,27 +74,28 @@ const FriendList = ({navigation}) => {
             </View>
         )
     }
-    // fixed
-    function HandleFriend(action) {
-        if (ToAddUser == '') {
-            return;
-        }
-        const form = JSON.stringify({
-            UserID: UserName,
-            Friend: ToAddUser,
-            Action: action,
-        });
-        axios.post(`http://20.234.168.103:8080/manageFriend`, form, {
-            headers: {
-            'Content-Type': 'application/json'
-            }
-        })
-        .then(res => {
-            console.log(res.data);
-            setToAddUser('')
-            alert("Friend Added");
-        })
-    }
+    // // fixed
+    // function HandleFriend(action) {
+    //     if (ToAddUser == '') {
+    //         return;
+    //     }
+    //     const form = JSON.stringify({
+    //         UserID: UserName,
+    //         Friend: ToAddUser,
+    //         Subject: Fsubject,
+    //         Action: action,
+    //     });
+    //     axios.post(`http://20.234.168.103:8080/manageFriend`, form, {
+    //         headers: {
+    //         'Content-Type': 'application/json'
+    //         }
+    //     })
+    //     .then(res => {
+    //         console.log(res.data);
+    //         setToAddUser('')
+    //         alert("Friend Added");
+    //     })
+    // }
 
     React.useEffect(() => {
         getFriends();
@@ -107,10 +105,11 @@ const FriendList = ({navigation}) => {
     return (
         <View style={styles.mainpage}>
             <View style={styles.row}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light3, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Search" placeholderTextColor={Color.dark2} onChangeText={text => setToAddUser(text)} value={ToAddUser}/>
-            <IconF friendadd style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="user-plus" size={40} color={Color.light3} onPress={() => HandleFriend("add")}/>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            {/* <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light3, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Search" placeholderTextColor={Color.dark2} onChangeText={text => setToAddUser(text)} value={ToAddUser}/> */}
+            {/* <Icon friendadd style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="user-plus" size={40} color={Color.light3} onPress={() => HandleFriend("add")}/> */}
             </View>
+            <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Contact</Text>
             <View style={styles.egg}/>
             {isLoaded ? 
                 <ScrollView style={styles.scrollView}>
@@ -122,20 +121,19 @@ const FriendList = ({navigation}) => {
                         : 
                         null
                     }
-                    <Text style={styles.maintext}>Friends</Text>
-                    {/* <Text style={styles.maintext}>Friends ({FriendNumber})</Text> */}
+                    {/* <Text style={styles.maintext}>Friends</Text> */}
                     {FriendsListDisplayer()}
                     </ScrollView>
                     :
                 <ActivityIndicator size="large" color={Color.dark2} />
             }
 
-            <View style={styles.btnrow}>
+            {/* <View style={styles.btnrow}>
                     <View style={{alignItems: 'center'}}>
                         <IconM name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('ReportForm', {name: UserName})}/>
                         <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'auto'}}>Send Report</Text>
                     </View>
-                </View>
+                </View> */}
         </View>
     );
 };
@@ -146,8 +144,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,

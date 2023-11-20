@@ -3,10 +3,10 @@ import { SafeAreaView, Button, StyleSheet, Text, View, Image, Pressable} from "r
 import { useRoute } from "@react-navigation/native";
 import { Alert } from "react-native";
 import { Avatar, Badge, IconButton, TextInput, Snackbar} from "@react-native-material/core";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import IconM from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import Color from "../color";
 import axios from "axios";
+import AnimatedText from "./AnimatedText";
 
 
 const HomeScreen = ({navigation}) => {
@@ -42,52 +42,52 @@ const HomeScreen = ({navigation}) => {
                     setSearchUser('')
                 } else {
                     setVisible(false)
-                    navigation.navigate('SearchProfil', {name: SearchUser}), setSearchUser('')
+                    navigation.navigate('SearchProfil', {name: SearchUser, ProfileUser: User}), setSearchUser('')
                 }
             })
         }
     }
-  
+
     // Friend Notification
-    const [visible2, setVisible2] = React.useState(false);
-    var fnum = 0;
-    const [PendingFriendNumber, setPendingFriendNumber] = React.useState(0);
-    const getFriends = async () => {
-        axios.get(`http://20.234.168.103:8080/listFriends/${User}`)
-        .then(res => {
-            console.log(`http://20.234.168.103:8080/listFriends/${User}`)
-            console.log(res.data);
-            if (res.data["fetched"] == "") {
-                setPendingFriendNumber(0);
-                return;
-            }
-            if (res.data["fetched"][0][0] != "?") {
-                setPendingFriendNumber(0);
-            }
-            for (var x = 0; x < res.data["fetched"].length; x++) {
-                if (res.data["fetched"][x][0] != "?") {
-                    fnum--;
-                }
-                if (res.data["fetched"][x][0] == "?") {
-                    fnum++;
-                    setPendingFriendNumber(fnum);
-                    // setPendingFriendNumber(res.data["fetched"].length);
-                    console.log("MENU :" + res.data["fetched"].length);
-                }
-            }
-        })
-        setVisible2(true);
-    }
-    const hasFriendNotification = () => {
-        if (PendingFriendNumber > 0) {
-            return true;
-        }
-        return false;
-    }
+    // const [visible2, setVisible2] = React.useState(false);
+    // var fnum = 0;
+    // const [PendingFriendNumber, setPendingFriendNumber] = React.useState(0);
+    // const getFriends = async () => {
+    //     axios.get(`http://20.234.168.103:8080/listFriends/${User}`)
+    //     .then(res => {
+    //         console.log(`http://20.234.168.103:8080/listFriends/${User}`)
+    //         console.log(res.data);
+    //         if (res.data["fetched"] == "") {
+    //             setPendingFriendNumber(0);
+    //             return;
+    //         }
+    //         if (res.data["fetched"][0][0] != "?") {
+    //             setPendingFriendNumber(0);
+    //         }
+    //         for (var x = 0; x < res.data["fetched"].length; x++) {
+    //             if (res.data["fetched"][x][0] != "?") {
+    //                 fnum--;
+    //             }
+    //             if (res.data["fetched"][x][0] == "?") {
+    //                 fnum++;
+    //                 setPendingFriendNumber(fnum);
+    //                 // setPendingFriendNumber(res.data["fetched"].length);
+    //                 console.log("MENU :" + res.data["fetched"].length);
+    //             }
+    //         }
+    //     })
+    //     setVisible2(true);
+    // }
+    // const hasFriendNotification = () => {
+    //     if (PendingFriendNumber > 0) {
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     React.useEffect(() => {
         const focusHandler = navigation.addListener('focus', () => {
-            getFriends();
+            // getFriends();
         });
         return focusHandler;
     }, [navigation]);
@@ -96,22 +96,13 @@ const HomeScreen = ({navigation}) => {
         <SafeAreaView style={styles.mainpage}>
 
             <View style={styles.row}>
-            <Icon logout style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="sign-out" size={40} color={Color.light3} onPress={() => navigation.navigate('Login')}/>
-            <Pressable style={{alignSelf: 'flex-end'}} onPress={() => navigation.navigate('Profil', {name: User})}>
-            <Avatar
-            style={{alignSelf: 'flex-end', marginTop: 5, marginRight: 5}}
-            label={User[0]}
-            // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
-            color={Color.light}
-            size={50} 
-            /></Pressable>
+            <Icon logout style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="arrowleft" size={40} color={Color.light3} onPress={() => navigation.navigate('Login')}/>
+            <Icon logout style={{alignSelf: 'flex-start', marginTop: 15, marginRight: 15}} name="user" size={40} color={Color.light3}  onPress={() => navigation.navigate('Profil', {name: User})}/>
 
             </View>
-
-            
-                <Image style={styles.tinyLogo} source={require('../img/SafeCallBlack.png')} />
+                <Image style={styles.tinyLogoPicto} source={require('../img/SafeCallBlackPicto.png')} />
             <View style={styles.egg}/>
-            <TextInput
+            {/* <TextInput
             backgroundColor="transparent"
             placeholder="Search"
             variant="outlined"
@@ -125,37 +116,59 @@ const HomeScreen = ({navigation}) => {
             style={styles.input}
             onChangeText={(SearchUser) => setSearchUser(SearchUser)}
             value={SearchUser}
-            />
+            /> */}
+
+            <AnimatedText userName={User}/>
+
+            <View style={styles.sidebyside}>
+                <TextInput
+                    variant="outlined"
+                    label="Add contact"
+                    leading={props => <Icon name="adduser" {...props}
+                        color={Color.dark3}
+                    />}
+                    style={styles.input}
+                    onChangeText={(SearchUser) => setSearchUser(SearchUser)}
+                    value={SearchUser}
+                    color={Color.dark3}
+                />
+                <Pressable style={styles.button}
+                    onPress={() => {SearchProfile()}}
+                >
+                    <Text style={styles.text}> <Icon name="search1" size={25}/> </Text>
+                </Pressable>
+            </View>
+
             <View style={styles.undersearchbar}>
                 <View style={styles.btnrow}>
                     <View style={{alignItems: 'center'}}>
-                        <Icon name="user" size={50} color={Color.dark} onPress={() => navigation.navigate('FriendList', {name: User})}/>
-                        {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={PendingFriendNumber} color="red" tintColor={Color.light3}/> : null}
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Friend List</Text>
+                        <Icon name="contacts" size={50} color={Color.dark3} onPress={() => navigation.navigate('FriendList', {name: User})}/>
+                        {/* {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={PendingFriendNumber} color="red" tintColor={Color.light3}/> : null} */}
+                        <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Contact</Text>
                     </View>
                     <View style={{alignItems: 'center'}}>
-                        <Icon name="calendar" size={50} color={Color.dark} onPress={() => navigation.navigate('Agenda', {name: User})}/>
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Agenda</Text>
+                        <Icon name="calendar" size={50} color={Color.dark3} onPress={() => navigation.navigate('Agenda', {name: User})}/>
+                        <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Agenda</Text>
                     </View>
-                    <View style={{alignItems: 'center'}}>
-                        <IconM name="add-call" size={50} color={Color.dark} onPress={() => navigation.navigate('CallForm', {name: User})}/>
+                    {/* <View style={{alignItems: 'center'}}>
+                        <Icon name="add-call" size={50} color={Color.dark} onPress={() => navigation.navigate('CallForm', {name: User})}/>
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Add Event</Text>
-                    </View>
-                </View>
-                <View style={styles.btnrow}>
+                    </View> */}
+                {/* </View> */}
+                {/* <View style={styles.btnrow}> */}
                 <View style={{alignItems: 'center'}}>
-                        <IconM name="message" size={50} color={Color.dark} onPress={() => navigation.navigate('MessageMainPage')}/>
+                        <Icon name="message1" size={50} color={Color.dark3} onPress={() => navigation.navigate('MessageMainPage')}/>
                         {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Message</Text>
+                        <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Message</Text>
                     </View>
                     {/* <View style={{alignItems: 'center'}}>
                         <Icon name="phone" size={50} color={Color.dark}/>
                         <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call</Text>
                     </View> */}
-                    <View style={{alignItems: 'center'}}>
-                        <IconM name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('FeedbackForm', {name: User})}/>
+                    {/* <View style={{alignItems: 'center'}}>
+                        <Icon name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('FeedbackForm', {name: User})}/>
                         <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'space-around'}}>Send Feedback</Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
             { visible ?
@@ -165,7 +178,7 @@ const HomeScreen = ({navigation}) => {
                     style={{ position: "absolute", start: 16, end: 16, bottom: 16 , backgroundColor: Color.dark3}}
                 />
                 :
-                null 
+                null
             }
         </SafeAreaView>
     );
@@ -178,6 +191,14 @@ const styles = StyleSheet.create({
         width: '75%',
         position: 'absolute',
         top: -25,
+        tintColor: Color.light3,
+    },
+    tinyLogoPicto: {
+        alignSelf: 'center',
+        resizeMode: 'contain',
+        width: '11%',
+        position: 'absolute',
+        top: -90,
         tintColor: Color.light3,
     },
     pageposition: {
@@ -197,9 +218,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
+        height: 130,
         zIndex: -1,
-        backgroundColor: Color.dark2,   
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,
@@ -212,7 +233,6 @@ const styles = StyleSheet.create({
     },
     input: {
         alignSelf: 'center',
-        marginTop: 300,
         width: 300,
         height: 50,
         fontSize: 20,
@@ -229,6 +249,30 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
+    sidebyside: {
+        marginTop: 350,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 10,
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        borderRadius: 4,
+        elevation: 3,
+        top: 2,
+        backgroundColor: Color.dark3,
+    },
+    text: {
+        fontSize: 16,
+        lineHeight: 35,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
+    },
 })
-    
+
 export default HomeScreen;

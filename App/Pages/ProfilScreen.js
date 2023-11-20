@@ -2,13 +2,9 @@ import React from "react";
 import { ActivityIndicator, Avatar } from "@react-native-material/core";
 import { StyleSheet, Text, View, Modal, TextInput, Button, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconA from 'react-native-vector-icons/AntDesign';
-import IconM from 'react-native-vector-icons/MaterialIcons';
-import IconS from 'react-native-vector-icons/EvilIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 import Color from "../color";
-import { createIconSetFromFontello } from "react-native-vector-icons";
 
 const ProfilScreen = ({navigation}) => {
     const route = useRoute();
@@ -26,6 +22,7 @@ const ProfilScreen = ({navigation}) => {
     const [PhoneNb, setPhoneNb] = React.useState("");
     const [Email, setEmail] = React.useState("");
     const [verified, setVerified] = React.useState(false);
+    const [ProfilePic, setProfilePic] = React.useState('https://www.flaticon.com/free-icon/blank-avatar_18601');
 
     const [modalVisible, setModalVisible] = React.useState(false);
     const [oldPassword, setOldPassword] = React.useState("");
@@ -75,6 +72,7 @@ const ProfilScreen = ({navigation}) => {
                 setDescription(res.data["profile"]["Description"]);
                 setPhoneNb(res.data["profile"]["PhoneNb"]);
                 setEmail(res.data["profile"]["Email"]);
+                setProfilePic(res.data["profile"]["ProfilePic"]);
                 setIsLoaded(false);
             } if (res.data["failed"]) {
                 alert ("Error: " + res.data["failed"]);
@@ -122,46 +120,46 @@ const ProfilScreen = ({navigation}) => {
     return (
         <View style={styles.mainpage}>
             <View style={styles.row}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            <IconS pencil style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="pencil" size={40} color={Color.light3} onPress={() => navigation.navigate('ProfilModification', {name: User})}/>
+            <Icon style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <Icon pencil style={{alignSelf: 'flex-start', marginTop: 15, marginRight: 15}} name="edit" size={40} color={Color.light3} onPress={() => navigation.navigate('ProfilModification', {name: User})}/>
             </View>
             <View style={styles.egg}/>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Profil</Text>
+            <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Profil</Text>
             {isLoaded ? <Avatar 
-            style={{alignSelf: 'center', marginTop: 30}}
-            label=" "
-            // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
-            color={Color.light}
-            size={100} />
+            style={{alignSelf: 'center', marginTop: 10}}
+            // label=" "
+            image={{ uri: "https://www.flaticon.com/free-icon/blank-avatar_18601" }}
+            color={Color.light2}
+            size={120} />
             :
             <Avatar 
-            style={{alignSelf: 'center', marginTop: 30}}
-            label={ProfileAPI[0]}
-            // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
+            style={{alignSelf: 'center', marginTop: 10}}
+            // label={ProfileAPI[0]}
+            image={{ uri: ProfilePic }}
             color={Color.light}
-            size={100} /> }
+            size={120} /> }
             <View
                 style={{
                     marginTop: 40,
                 }}
             >
-            {verified ? <IconM name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
+            {verified ? <Icon name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
             <Text style={styles.maintext}>
                 Username: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}>{FullName}</Text>)} {/*<IconM name="verified-user" size={20} color="green"/>*/}
             </Text>
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
+            <View style={{ borderBottomColor: 'black', margin: 20, }}/>
             <Text style={styles.maintext}>
                 ID: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> @{User}</Text>)}
             </Text>
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
+            <View style={{ borderBottomColor: 'black', margin: 20, }}/>
             <Text style={styles.maintext}>
                 Description: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {Description}</Text>)}
             </Text>
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
+            <View style={{ borderBottomColor: 'black', margin: 20, }}/>
             <Text style={styles.maintext}>
                 Email: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {Email}</Text>)}
             </Text>
-            <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
+            <View style={{ borderBottomColor: 'black', margin: 20, }}/>
             <Text style={styles.maintext}>
                 Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb}</Text>)}
             </Text>
@@ -214,33 +212,33 @@ const ProfilScreen = ({navigation}) => {
                     {/*  */}
                     <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45, marginBottom: 30}}>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    {haslowercase(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    {haslowercase(newPassword) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={styles.regu}>At least one lowercase letter</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    {hasuppercase(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    {hasuppercase(newPassword) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={styles.regu}>At least one uppercase letter</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    {hasnumber(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    {hasnumber(newPassword) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={styles.regu}>At least one digit</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    {hasSpecial(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    {hasSpecial(newPassword) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={styles.regu}>At least one special character : (!@#$%^&*)</Text>
                 </View>
                 <View style={{flexDirection: "row", alignItems: "center", justifyContent: "center"}}>
-                    {haslength(newPassword) ? <IconA name="checkcircle" size={15} color="green" style={{}}/> : <IconA name="closecircle" size={15} color="red" style={{}}/>}
+                    {haslength(newPassword) ? <Icon name="checkcircle" size={15} color="green" style={{}}/> : <Icon name="closecircle" size={15} color="red" style={{}}/>}
                     <Text style={styles.regu}>At least 8 characters in total</Text>
                 </View>
             </View>
             {/*  */}
-                    <IconM.Button name="lock" backgroundColor={Color.light3} color={Color.dark2} onPress={() => changePassword()}>
+                    <Icon.Button name="lock" backgroundColor={Color.light3} color={Color.dark2} onPress={() => changePassword()}>
                         Change password
-                    </IconM.Button>
-                    <IconM.Button name="close" backgroundColor={Color.light3} color={Color.dark2} onPress={() => setModalVisible(!modalVisible)}>
+                    </Icon.Button>
+                    <Icon.Button name="close" backgroundColor={Color.light3} color={Color.dark2} onPress={() => setModalVisible(!modalVisible)}>
                         Cancel
-                    </IconM.Button>
+                    </Icon.Button>
                     </View>
                     </View>
             </Modal>
@@ -255,8 +253,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,

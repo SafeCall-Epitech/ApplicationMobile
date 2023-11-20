@@ -16,12 +16,17 @@ const FriendCardPending = props => {
 
     // fixed
     const AcceptFriend = async () => {
+        if (FriendName[0] == "?") {
+            FriendName = FriendName.substring(1)
+        }
         const form = JSON.stringify({
             UserID: UserName,
             Friend: FriendName,
+            Subject: "Demande d'ami",
             Action: "accept",
         });
-        axios.post(`http://http://20.234.168.103:8080/replyFriend`, form, {
+        console.log("http://20.234.168.103:8080/replyFriend" + form)
+        axios.post(`http://20.234.168.103:8080/replyFriend`, form, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -29,17 +34,22 @@ const FriendCardPending = props => {
         .then(res => {
             console.log(res.data)
             setIsVisible(false)
-            alert("You are now friends with " + FriendName + "!")
+            alert("You have accepted the request for " + FriendName + "!")
         })
     }
     
     const DenyFriend = async () => {
+        if (FriendName[0] == "?") {
+            FriendName = FriendName.substring(1)
+        }
         const form = JSON.stringify({
             UserID: UserName,
             Friend: FriendName,
+            Subject: "Demande d'ami",
             Action: "deny",
         });
-        axios.post(`http://http://20.234.168.103:8080/replyFriend`, form, {
+        console.log("http://20.234.168.103:8080/replyFriend" + form)
+        axios.post(`http://20.234.168.103:8080/replyFriend`, form, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -47,7 +57,7 @@ const FriendCardPending = props => {
         .then(res => {
             console.log(res.data)
             setIsVisible(false)
-            alert("You are now friends with " + FriendName + "!")
+            alert("You refused the request to " + FriendName + "!")
         })
     }
 

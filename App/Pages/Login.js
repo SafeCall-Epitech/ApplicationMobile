@@ -4,6 +4,7 @@ import { TextInput } from "@react-native-material/core";
 import { Button } from "@react-native-material/core";
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from "../color";
+import axios from "axios";
 
 const Login = ({navigation}) => {
 
@@ -11,22 +12,27 @@ const Login = ({navigation}) => {
 
     const [UserName, setUserName] = useState("");
     const [Password, setPassword] = useState("");
-    const Myresponse = null;
 
     function getlogin(UserName, Password) {
         setLoading(true);
-        const Myresponse = fetch('http://20.234.168.103:8080/login/' + UserName + '/' + Password)
-        .then((response)=>response.json())
-        .then((responseJson) => {
-            console.log(responseJson);
-            setLoading(false);
-            if (responseJson["success"]) {
-                setUserName("");
-                setPassword("");
-                navigation.navigate('Home', {name: responseJson["success"]});
-            } else {
-                alert("Error: Incorrect password or username");
+        const form = JSON.stringify({
+            Login: UserName,
+            Password: Password,
+        });
+        axios.post('https://20.234.168.103:8080/login', form, {
+            headers: {
+                'Content-Type': 'application/json'
             }
+        })
+        .then(res => {
+            console.log(res.data);
+            setLoading(false);
+            if (res.data["success"]) {
+                navigation.navigate('Home', {name: res.data["success"]});
+            }
+        }).catch(err => {
+            console.log(err);
+            setLoading(false);
         })
     };
 
@@ -56,10 +62,13 @@ const Login = ({navigation}) => {
             {/* <TextInput secureTextEntry={true} placeholder="Password" placeholderTextColor="black" style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password}/> */}
             <Button 
             leading={props => <Icon name="login" {...props} />}
-            title="login" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {getlogin(UserName, Password)}}/>
+            title="login" color={Color.dark2} style={{marginTop: 20, width: 250,}} loading={loading} onPress={() => {getlogin(UserName, Password)}}/>
             <Text style={styles.reg}>No account yet ?
-                <Text style={styles.registertext} onPress={() => {navigation.navigate('Register')}}> Register your account</Text>
+                {/* <Text style={styles.registertext} onPress={() => {navigation.navigate('Register')}}> Register your account</Text> */}
             </Text>
+            <Button 
+            leading={props => <Icon name="key" {...props} />}
+            title="Register" color={Color.dark2} style={{marginTop: 20, width: 250,}} onPress={() => {navigation.navigate('Register')}}/>
         </View>
     );
 };
@@ -81,14 +90,14 @@ const styles = StyleSheet.create({
         left: 0,
     },
     tinyLogo: {
-        marginTop: -100,
+        marginTop: -1,
         marginBottom: 100,
         resizeMode: 'contain',
         width: '80%',
         tintColor: Color.dark2,
     },
     input: {
-        width: 250,
+        width: 300,
         height: 50,
         margin: 20,
         borderBottomWidth: 1,
@@ -101,6 +110,7 @@ const styles = StyleSheet.create({
         fontStyle: "italic",
     },
     reg: {
+        marginTop: 50,
         color: "black",
     }
 })

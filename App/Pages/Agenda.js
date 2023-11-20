@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
 import Color from "../color";
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { StyleSheet } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import axios from "axios";
@@ -61,34 +61,36 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     return (
         <View style={styles2.card}>
             <View style={styles2.cardHeader}>
+                <Text style={styles2.cardHeaderText}>{RDVSubject}</Text>
+            </View>
+            <View style={styles2.cardBody}>
+            </View>
+        </View>
+        /* <View style={styles2.card}>
+            <View style={styles2.cardHeader}>
                 <Text style={styles2.cardHeaderText}>{isRDVConfirmed}</Text>
             </View>
             <View style={styles2.cardBody}>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
                     <Text style={styles2.cardBodyTextRight}>With: {RDVGuestsArray[0]}</Text>
-                    {/* <Text style={styles2.cardBodyText}>Rendez-vous between {RDVGuests} </Text> */}
                 </View>
-                {/* separator */}
                 <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
-                {/* <Text style={styles2.cardBodyText}>Note: {RDVSubject}</Text> */}
-                {/* Write the text "Note" centered */}
                 <Text style={{color: Color.dark2, fontSize: 15, textAlign: 'center'}}>Subject</Text>
-                {/* Write the RDVSubject */}
                 <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
 
                 {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
             </View>
-           
-        </View>
+        </View> */
         
     )
 }
 
 styles2 = StyleSheet.create({
     card: {
-        backgroundColor: Color.light2,
+        backgroundColor: Color.dark3,
         margin: 10,
+        marginLeft: 40,
         borderRadius: 10,
         padding: 10,
         shadowColor: Color.dark1,
@@ -198,16 +200,17 @@ const Agenda = ({navigation}) => {
     return (
         <View>
             <View style={styles.egg}></View>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Agenda</Text>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Agenda</Text>
    
             {isLoaded ? 
                 <ScrollView style={styles.scrollView}>
                     {AgendaDisplayer()}
                 </ScrollView>
                     :
-                    <ActivityIndicator size="large" color={Color.dark2} />
-                }
+                <ActivityIndicator size="large" color={Color.dark2} />
+            }
+            <Icon style={{alignSelf: 'flex-end', marginRight: 15, marginTop: -30}} name="pluscircleo" size={40} color={Color.dark3} onPress={() => navigation.navigate('CallForm', {UserName: UserName})}/>
         </View>
     )
 }
@@ -218,8 +221,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,
@@ -246,9 +249,9 @@ const styles = StyleSheet.create({
     scrollView: {
         // backgroundColor: 'pink',
         marginHorizontal: 0,
-        marginTop: 100,
+        marginTop: -30,
         marginBottom: 110,
-        // zIndex: -5,
+        zIndex: -5,
       },
 })
 

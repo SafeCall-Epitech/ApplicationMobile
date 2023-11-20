@@ -2,14 +2,15 @@ import React from "react";
 import { ActivityIndicator, Avatar, Button} from "@react-native-material/core";
 import { StyleSheet, Text, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconM from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/AntDesign';
 import axios from "axios";
 import Color from "../color";
+import ProfileCard from "./profilecard";
 
 const SearchedProfileScreen = ({navigation}) => {
     const route = useRoute();
     const ProfileAPI = route.params?.name;
+    const ProfileUser = route.params?.ProfileUser;
     
     const [User, setUser] = React.useState("")
     if (User == "") {
@@ -22,8 +23,8 @@ const SearchedProfileScreen = ({navigation}) => {
     const [PhoneNb, setPhoneNb] = React.useState('none');
     const [Email, setEmail] = React.useState('none');
     const [verified, setVerified] = React.useState(false);
-    // const [ID, setID] = React.useState('none');
-    // const [ProfilePic, setProfilePic] = React.useState('none');
+    const [ID, setID] = React.useState('none');
+    const [ProfilePic, setProfilePic] = React.useState('https://www.flaticon.com/free-icon/blank-avatar_18601');
 
     const getProfile = async () => {
         axios.get(`http://20.234.168.103:8080/profile/${ProfileAPI}`)
@@ -34,6 +35,9 @@ const SearchedProfileScreen = ({navigation}) => {
                 setDescription(res.data["profile"]["Description"]);
                 setPhoneNb(res.data["profile"]["PhoneNb"]);
                 setEmail(res.data["profile"]["Email"]);
+                setProfilePic(res.data["profile"]["ProfilePic"]);
+                setID("coucou")
+                // setID(res.data["profile"]["Id"]);
                 // setID(res.data["profile"]["ID"]);
                 // setProfilePic(res.data["profile"]["ProfilePic"]);
                 setIsLoaded(false);
@@ -45,15 +49,28 @@ const SearchedProfileScreen = ({navigation}) => {
 
     React.useEffect(() => {
         console.log(ProfileAPI);
+        console.log(ProfileUser);
         getProfile();
     }, []);
 
     return (
         <View style={styles.mainpage}>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             <View style={styles.egg}/>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Search Profil</Text>
-            {isLoaded ? <Avatar 
+            <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Search profil</Text>
+            {/* <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Search Profil</Text> */}
+
+            <ProfileCard
+                ProfileUser={ProfileUser}
+                name={FullName}
+                occupation={Description}
+                profileImage={ProfilePic}
+                id={User}
+            />
+
+
+
+            {/* {isLoaded ? <Avatar 
             style={{alignSelf: 'center', marginTop: 30}}
             label=" "
             // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
@@ -71,9 +88,9 @@ const SearchedProfileScreen = ({navigation}) => {
                     marginTop: 40,
                 }}
             >
-            {verified ? <IconM name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
+            {verified ? <Icon name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
             <Text style={styles.maintext}>
-                Username: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}>{FullName}</Text>)} {/*<IconM name="verified-user" size={20} color="green"/>*/}
+                Username: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}>{FullName}</Text>)}
             </Text>
             <View style={{ borderBottomColor: 'black', borderBottomWidth: StyleSheet.hairlineWidth, margin: 20, }}/>
             <Text style={styles.maintext}>
@@ -91,7 +108,7 @@ const SearchedProfileScreen = ({navigation}) => {
             <Text style={styles.maintext}>
                 Phone number: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}> {PhoneNb[0]}{PhoneNb[1]}********</Text>)}
             </Text>
-            </View>
+            </View> */}
         </View>
     );
 };
@@ -102,8 +119,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,

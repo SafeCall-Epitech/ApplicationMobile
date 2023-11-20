@@ -4,7 +4,6 @@ import { Text, View, StyleSheet, Image } from "react-native";
 import { TextInput } from "@react-native-material/core";
 import { Button } from "@react-native-material/core";
 import Icon from 'react-native-vector-icons/AntDesign';
-import IconF from 'react-native-vector-icons/Feather';
 import Color from "../color";
 const Register = ({navigation}) => {
 
@@ -143,7 +142,7 @@ const Register = ({navigation}) => {
                 </View>
             </View>
             <Button 
-            leading={props => <IconF name="send" {...props} />}
+            leading={props => <Icon name="key" {...props} />}
             title="register" color={Color.dark2} style={{marginTop: 20, width: 130,}} loading={loading} onPress={() => {register(UserName, Password, Email)}}/>
             <Text style={styles.reg}>Already have an account ?
                 <Text style={styles.logintext} onPress={() => {navigation.navigate('Login')}}> log into your account</Text>
@@ -176,7 +175,7 @@ const styles = StyleSheet.create({
         tintColor: Color.dark2,
     },
     input: {
-        width: 250,
+        width: 300,
         height: 50,
         margin: 20,
         borderBottomWidth: 1,
