@@ -3,9 +3,6 @@ import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 export default function Print_message(props) {
     const scrollViewRef = useRef(null);
-    const d = new Date();
-    let hour = d.getHours();
-    let min = d.getMinutes();
 
     useEffect(() => {
         // Scroll to the bottom on initial render and whenever new messages are added
@@ -40,7 +37,6 @@ export default function Print_message(props) {
                         <Text style={styles.messageText}>
                             {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
                         </Text>
-                        {msg["Heure"] ? msg["Heure"] : hour + ":" + min}
                     </View>
                 ))}
             </ScrollView>
