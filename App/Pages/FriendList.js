@@ -26,7 +26,7 @@ const FriendList = ({navigation}) => {
     const [Fsubject, setFsubject] = React.useState("Demande d'ami");
 
     const getFriends = async () => {
-        axios.get(`http://20.234.168.103:8080/listFriends/${UserName}`)
+        axios.get(`http://20.234.168.103:7070/listFriends/${UserName}`)
         .then(res => {
             if (res.data["fetched"] == null) {
                 return;

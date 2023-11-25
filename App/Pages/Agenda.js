@@ -152,7 +152,7 @@ const Agenda = ({navigation}) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
 
     const getAgenda = async () => {
-        axios.get(`http://20.234.168.103:8080/listEvent/${UserName}`)
+        axios.get(`http://20.234.168.103:7070/listEvent/${UserName}`)
         .then(res => {
             parsedResponse = res.data["Success "];
             if (parsedResponse == null) {

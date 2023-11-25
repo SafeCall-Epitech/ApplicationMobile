@@ -43,7 +43,7 @@ const CallForm = ({navigation}) => {
             date: formatDate(date),
         });
         console.log(form)
-        axios.post(`http://20.234.168.103:8080/addEvent`, form, {
+        axios.post(`http://20.234.168.103:7070/addEvent`, form, {
             headers: {
             'Content-Type': 'application/json'
           }

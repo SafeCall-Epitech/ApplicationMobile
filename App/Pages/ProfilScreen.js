@@ -64,7 +64,7 @@ const ProfilScreen = ({navigation}) => {
 
 
     const getProfile = async () => {
-        axios.get(`http://20.234.168.103:8080/profile/${User}`)
+        axios.get(`http://20.234.168.103:7070/profile/${User}`)
         .then(res => {
             console.log(res.data);
             if (res.data["profile"]) {
@@ -93,7 +93,7 @@ const ProfilScreen = ({navigation}) => {
                 PasswordOld: oldPassword,
                 PasswordNew: newPassword,
             });
-            axios.post(`http://20.234.168.103:8080/editPassword`, form, {
+            axios.post(`http://20.234.168.103:7070/editPassword`, form, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

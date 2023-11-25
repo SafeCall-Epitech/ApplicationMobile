@@ -9,7 +9,6 @@ import axios from "axios";
 const Login = ({navigation}) => {
 
     const [loading, setLoading] = useState(false);
-
     const [UserName, setUserName] = useState("");
     const [Password, setPassword] = useState("");
 
@@ -19,7 +18,7 @@ const Login = ({navigation}) => {
             Login: UserName,
             Password: Password,
         });
-        axios.post('https://20.234.168.103:8080/login', form, {
+        axios.post('http://20.234.168.103:7070/login', form, {
             headers: {
                 'Content-Type': 'application/json'
             }

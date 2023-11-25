@@ -16,7 +16,7 @@ function HandleFriend(UserName, ToAddUser, Fsubject, action) {
       Subject: Fsubject,
       Action: action,
   });
-  axios.post(`http://20.234.168.103:8080/manageFriend`, form, {
+  axios.post(`http://20.234.168.103:7070/manageFriend`, form, {
       headers: {
       'Content-Type': 'application/json'
       }
@@ -51,7 +51,7 @@ const ProfileCard = ({ ProfileUser, name, occupation, profileImage, id }) => {
       id = id.slice(0, -1);
     }
 
-    axios.get(`http://20.234.168.103:8080/listFriends/${ProfileUser}`)
+    axios.get(`http://20.234.168.103:7070/listFriends/${ProfileUser}`)
     .then(res => {
         if (res.data["fetched"] == null) {
             return;

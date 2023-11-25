@@ -25,8 +25,8 @@ const FriendCardPending = props => {
             Subject: "Demande d'ami",
             Action: "accept",
         });
-        console.log("http://20.234.168.103:8080/replyFriend" + form)
-        axios.post(`http://20.234.168.103:8080/replyFriend`, form, {
+        console.log("http://20.234.168.103:7070/replyFriend" + form)
+        axios.post(`http://20.234.168.103:7070/replyFriend`, form, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -48,8 +48,8 @@ const FriendCardPending = props => {
             Subject: "Demande d'ami",
             Action: "deny",
         });
-        console.log("http://20.234.168.103:8080/replyFriend" + form)
-        axios.post(`http://20.234.168.103:8080/replyFriend`, form, {
+        console.log("http://20.234.168.103:7070/replyFriend" + form)
+        axios.post(`http://20.234.168.103:7070/replyFriend`, form, {
             headers: {
             'Content-Type': 'application/json'
             }

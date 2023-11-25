@@ -39,7 +39,7 @@ const FeedbackForm = ({navigation}) => {
             message: ToAddDescription,
         });
         console.log(form)
-        axios.post(`http://20.234.168.103:8080/feedback`, form, {
+        axios.post(`http://20.234.168.103:7070/feedback`, form, {
             headers: {
             'Content-Type': 'application/json'
           }

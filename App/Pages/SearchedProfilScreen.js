@@ -27,7 +27,7 @@ const SearchedProfileScreen = ({navigation}) => {
     const [ProfilePic, setProfilePic] = React.useState('https://www.flaticon.com/free-icon/blank-avatar_18601');
 
     const getProfile = async () => {
-        axios.get(`http://20.234.168.103:8080/profile/${ProfileAPI}`)
+        axios.get(`http://20.234.168.103:7070/profile/${ProfileAPI}`)
         .then(res => {
             console.log(res.data);
             if (res.data["profile"]) {

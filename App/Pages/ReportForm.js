@@ -34,7 +34,7 @@ const ReportForm = ({navigation}) => {
             message: ToAddDescription,
         });
         console.log(form)
-        axios.post(`http://20.234.168.103:8080/report`, form, {
+        axios.post(`http://20.234.168.103:7070/report`, form, {
             headers: {
             'Content-Type': 'application/json'
           }
