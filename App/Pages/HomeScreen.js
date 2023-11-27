@@ -35,7 +35,7 @@ const HomeScreen = ({navigation}) => {
             setVisible(true)
             setSearchUser('')
         } else {
-        axios.get(`http://20.234.168.103:7070/profile/${SearchUser}`)
+        axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profile/${SearchUser}`)
             .then(res => {
                 if (res.data["profile"]["Email"] == "") {
                     setVisible(true)

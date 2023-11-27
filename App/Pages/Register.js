@@ -70,7 +70,7 @@ const Register = ({navigation}) => {
             Password: Password,
             Email: Email,
         });
-        axios.post('http://20.234.168.103:7070/register', form, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/register', form, {
             headers: {
                 'Content-Type': 'application/json'
             }

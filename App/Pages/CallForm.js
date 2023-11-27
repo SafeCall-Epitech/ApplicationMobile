@@ -12,7 +12,7 @@ const CallForm = ({navigation}) => {
 
     
     const route = useRoute();
-    const UserName = route.params?.name;
+    const UserName = route.params?.UserName;
     const [ToAddUser, setToAddUser] = React.useState('');
     const [ToAddGuest1, setDestGuest1] = React.useState('');
     const [ToAddGuest2, setDestGuest2] = React.useState('');
@@ -26,24 +26,39 @@ const CallForm = ({navigation}) => {
         var day = date.getDate();
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
+
         if (day < 10) {
             day = '0' + day;
         }
         if (month < 10){
             month = '0' + month;
         }
-        return day+month+year;
+        return day + '/' + month + '/' + year;
     }
 
     const SendCallForm = async () => {
+        if (ToAddGuest2 == '') {
+            Alert.alert('Error', 'Please enter a contact')
+            return;
+        }
+        if (ToAddObject == '') {
+            Alert.alert('Error', 'Please enter an object')
+            return;
+        }
+        if (date == '') {
+            Alert.alert('Error', 'Please enter a date')
+            return;
+        }
+
         const form = JSON.stringify({
-            guest1: ToAddGuest1,
-            guest2: ToAddGuest2,
-            subject: ToAddObject,
-            date: formatDate(date),
+            Guest1: UserName,
+            Guest2: ToAddGuest2,
+            Subject: ToAddObject,
+            Date: formatDate(date),
         });
-        console.log(form)
-        axios.post(`http://20.234.168.103:7070/addEvent`, form, {
+        console.log(UserName)
+        console.log('FORM = ' + form)
+        axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/addEvent`, form, {
             headers: {
             'Content-Type': 'application/json'
           }
@@ -51,7 +66,7 @@ const CallForm = ({navigation}) => {
         .then(res => {
             console.log(res.data)
             alert("Call request sent to " + ToAddGuest2 + "!")
-            navigation.navigate('FriendList', {name: UserName})
+            navigation.navigate('Home', {name: UserName})
         })
     }
 
@@ -74,13 +89,13 @@ const CallForm = ({navigation}) => {
                     <View style={styles.center}>
                         <TextInput
                             variant="outlined"
-                            label="Object"
-                            leading={props => <Icon name="tagso" {...props} 
+                            label="Contact"
+                            leading={props => <Icon name="adduser" {...props} 
                             color={Color.dark3}
                             />}
                             style={styles.input}
                             color={Color.dark3}
-                            onChangeText={text => setObject(text)} value={ToAddObject}
+                            onChangeText={text => setDestGuest2(text)} value={ToAddGuest2}
                             />
                             <TextInput
                             variant="outlined"

@@ -43,7 +43,7 @@ const ProfilScreen = ({navigation}) => {
             data: FullName,
         });
 
-        axios.post('http://20.234.168.103:7070/profileFullName', formname, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profileFullName', formname, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -56,7 +56,7 @@ const ProfilScreen = ({navigation}) => {
             UserID: ProfileAPI,
             data: Description,
         });
-        axios.post('http://20.234.168.103:7070/profileDescription', formdesc, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profileDescription', formdesc, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -69,7 +69,7 @@ const ProfilScreen = ({navigation}) => {
             UserID: ProfileAPI,
             data: PhoneNb,
         });
-        axios.post('http://20.234.168.103:7070/profilePhoneNB', formphone, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profilePhoneNB', formphone, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -82,7 +82,7 @@ const ProfilScreen = ({navigation}) => {
             UserID: ProfileAPI,
             data: Email,
         });
-        axios.post('http://20.234.168.103:7070/profileEmail', formemail, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profileEmail', formemail, {
             headers: {
             'Content-Type': 'application/json'
             }
@@ -94,7 +94,7 @@ const ProfilScreen = ({navigation}) => {
 
 
     const getProfile = async () => {
-        axios.get(`http://20.234.168.103:7070/profile/${ProfileAPI}`)
+        axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profile/${ProfileAPI}`)
         .then(res => {
             console.log(res.data);
             if (res.data["profile"]) {

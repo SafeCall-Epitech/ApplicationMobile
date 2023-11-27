@@ -52,11 +52,11 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     console.log(guest);
 
 
-    if (isRDVConfirmed == "Confirmed") {
-        styles2.cardHeaderText.color = "#90EE90";
-    } else {
-        styles2.cardHeaderText.color = "#ffcccb";    
-    }
+    // if (isRDVConfirmed == "Confirmed") {
+    //     styles2.cardHeaderText.color = "#90EE90";
+    // } else {
+    //     styles2.cardHeaderText.color = "#ffcccb";    
+    // }
 
     return (
         <View style={styles2.card}>
@@ -64,24 +64,29 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
                 <Text style={styles2.cardHeaderText}>{RDVSubject}</Text>
             </View>
             <View style={styles2.cardBody}>
-            </View>
-        </View>
-        /* <View style={styles2.card}>
-            <View style={styles2.cardHeader}>
-                <Text style={styles2.cardHeaderText}>{isRDVConfirmed}</Text>
-            </View>
-            <View style={styles2.cardBody}>
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', marginBottom: 10}}>
                     <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
-                    <Text style={styles2.cardBodyTextRight}>With: {RDVGuestsArray[0]}</Text>
+                    <Text style={styles2.cardBodyTextRight}>With: {guest}</Text>
                 </View>
-                <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
-                <Text style={{color: Color.dark2, fontSize: 15, textAlign: 'center'}}>Subject</Text>
-                <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
-
                 {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
             </View>
-        </View> */
+        </View>
+        // <View style={styles2.card}>
+        //     <View style={styles2.cardHeader}>
+        //         <Text style={styles2.cardHeaderText}>{isRDVConfirmed}</Text>
+        //     </View>
+        //     <View style={styles2.cardBody}>
+        //         <View style={{flexDirection: 'row'}}>
+        //             <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
+        //             <Text style={styles2.cardBodyTextRight}>With: {RDVGuestsArray[0]}</Text>
+        //         </View>
+        //         <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
+        //         <Text style={{color: Color.dark2, fontSize: 15, textAlign: 'center'}}>Subject</Text>
+        //         <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
+
+        //         {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
+        //     </View>
+        // </View>
         
     )
 }
@@ -119,12 +124,12 @@ styles2 = StyleSheet.create({
         fontSize: 15,
     },
     cardBodyTextLeft: {
-        color: Color.dark2,
+        color: Color.light2,
         fontSize: 15,
         marginRight: 10,
     },
     cardBodyTextRight: {
-        color: Color.dark2,
+        color: Color.light2,
         fontSize: 15,
         // place full left
         position: 'absolute',
@@ -152,8 +157,10 @@ const Agenda = ({navigation}) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
 
     const getAgenda = async () => {
-        axios.get(`http://20.234.168.103:7070/listEvent/${UserName}`)
+        console.log("getAgenda");
+        axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/listEvent/${UserName}`)
         .then(res => {
+            console.log(res.data);
             parsedResponse = res.data["Success "];
             if (parsedResponse == null) {
                 return;
@@ -187,7 +194,7 @@ const Agenda = ({navigation}) => {
             }
         }
         return (
-            <View>
+            <View style={{marginTop: 10}}>
                 {AgendaCards}
             </View>
         )
@@ -200,7 +207,10 @@ const Agenda = ({navigation}) => {
     return (
         <View>
             <View style={styles.egg}></View>
-            <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <View style={styles.row}>
+                <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+                <Icon add-event style={{alignSelf: 'flex-end', marginTop: 15, marginRight: 15}} name="pluscircleo" size={40} color={Color.light3} onPress={() => navigation.navigate('CallForm', { UserName: UserName })} />
+            </View>
             <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Agenda</Text>
    
             {isLoaded ? 
@@ -210,7 +220,6 @@ const Agenda = ({navigation}) => {
                     :
                 <ActivityIndicator size="large" color={Color.dark2} />
             }
-            <Icon style={{alignSelf: 'flex-end', marginRight: 15, marginTop: -30}} name="pluscircleo" size={40} color={Color.dark3} onPress={() => navigation.navigate('CallForm', {UserName: UserName})}/>
         </View>
     )
 }
@@ -253,6 +262,11 @@ const styles = StyleSheet.create({
         marginBottom: 110,
         zIndex: -5,
       },
+      row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
 })
 
 export default Agenda;

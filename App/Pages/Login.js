@@ -18,7 +18,7 @@ const Login = ({navigation}) => {
             Login: UserName,
             Password: Password,
         });
-        axios.post('http://20.234.168.103:7070/login', form, {
+        axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/login', form, {
             headers: {
                 'Content-Type': 'application/json'
             }

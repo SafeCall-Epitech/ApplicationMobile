@@ -18,8 +18,8 @@ const DeleteFriend = async (userName, friendName) => {
       Subject: "Demande d'ami",
       Action: "delete",
     });
-    console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:7070/manageFriend" + form)
-    await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:7070/manageFriend`, form, {
+    console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
+    await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend`, form, {
       headers: {
         'Content-Type': 'application/json',
       }
