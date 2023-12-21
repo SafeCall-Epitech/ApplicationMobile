@@ -13,9 +13,10 @@ import Agenda from "./Agenda";
 import CallForm from "./CallForm";
 import FeedbackForm from "./FeedbackForm";
 import ReportForm from "./ReportForm";
-import MessageMainPage from "./MessageMainPage";
 import InCallPage from "./InCallPage";
 import RNCallLogic from "./RNCallLogic";
+import DiscList from "./Chat_part/DiscList";
+import ChatScreen from "./Chat_part/Chat";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -40,7 +41,8 @@ const MyStack = () => {
                 <Stack.Screen name="CallForm" component={CallForm}/>
                 <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
                 <Stack.Screen name="ReportForm" component={ReportForm}/>
-                <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
+                <Stack.Screen name="DiscList" component={DiscList} options={{ title: 'Disc List' }}/>
+                <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
                 {/* <Stack.Screen name="InCallPage" component={InCallPage}/> */}
                 {/* <Stack.Screen name="RNCallLogic" component={RNCallLogic}/> */}
             </Stack.Navigator>

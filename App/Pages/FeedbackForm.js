@@ -37,7 +37,7 @@ const FeedbackForm = ({navigation}) => {
         const form = JSON.stringify({
             username: UserName,
             date: formatDate(date),
-            message: ToAddDescription,
+            message: ToAddTitle + ' ' + ToAddDescription,
         });
         console.log(form)
         axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/feedback`, form, {

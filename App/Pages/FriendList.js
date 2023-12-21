@@ -76,28 +76,6 @@ const FriendList = ({navigation}) => {
             </View>
         )
     }
-    // // fixed
-    // function HandleFriend(action) {
-    //     if (ToAddUser == '') {
-    //         return;
-    //     }
-    //     const form = JSON.stringify({
-    //         UserID: UserName,
-    //         Friend: ToAddUser,
-    //         Subject: Fsubject,
-    //         Action: action,
-    //     });
-    //     axios.post(`http://20.234.168.103:8080/manageFriend`, form, {
-    //         headers: {
-    //         'Content-Type': 'application/json'
-    //         }
-    //     })
-    //     .then(res => {
-    //         console.log(res.data);
-    //         setToAddUser('')
-    //         alert("Friend Added");
-    //     })
-    // }
 
     React.useEffect(() => {
         getFriends();
@@ -126,13 +104,6 @@ const FriendList = ({navigation}) => {
                     :
                 <ActivityIndicator size="large" color={Color.dark2} />
             }
-
-            {/* <View style={styles.btnrow}>
-                    <View style={{alignItems: 'center'}}>
-                        <IconM name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('ReportForm', {name: UserName})}/>
-                        <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'auto'}}>Send Report</Text>
-                    </View>
-                </View> */}
         </View>
     );
 };

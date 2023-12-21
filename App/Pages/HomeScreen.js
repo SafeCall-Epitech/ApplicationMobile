@@ -7,12 +7,13 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import Color from "../color";
 import axios from "axios";
 import AnimatedText from "./AnimatedText";
-
+import { storeData, getData, removeData } from "./Chat_part/store";
 
 const HomeScreen = ({navigation}) => {
     const route = useRoute();
     const Profilename = route.params?.name;
 
+    storeData("user_name", Profilename);
 
 
     var MessageNotification = 0;
@@ -145,32 +146,17 @@ const HomeScreen = ({navigation}) => {
                 <View style={styles.btnrow}>
                     <View style={{alignItems: 'center'}}>
                         <Icon name="contacts" size={50} color={Color.dark3} onPress={() => navigation.navigate('FriendList', {name: User})}/>
-                        {/* {hasFriendNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={PendingFriendNumber} color="red" tintColor={Color.light3}/> : null} */}
                         <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Contact</Text>
                     </View>
                     <View style={{alignItems: 'center'}}>
                         <Icon name="calendar" size={50} color={Color.dark3} onPress={() => navigation.navigate('Agenda', {name: User})}/>
                         <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Agenda</Text>
                     </View>
-                    {/* <View style={{alignItems: 'center'}}>
-                        <Icon name="add-call" size={50} color={Color.dark} onPress={() => navigation.navigate('CallForm', {name: User})}/>
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Add Event</Text>
-                    </View> */}
-                {/* </View> */}
-                {/* <View style={styles.btnrow}> */}
                 <View style={{alignItems: 'center'}}>
-                        <Icon name="message1" size={50} color={Color.dark3} onPress={() => navigation.navigate('MessageMainPage')}/>
+                        <Icon name="message1" size={50} color={Color.dark3} onPress={() => navigation.navigate('DiscList', {name: User})}/>
                         {hasMessageNotification ? <Badge style={{position: 'absolute', left: 50, top: -5}} label={MessageNotification} color="red" tintColor={Color.light3}/> : null}
                         <Text style={{fontSize: 20, color: Color.dark3, alignSelf: 'center'}}>Message</Text>
                     </View>
-                    {/* <View style={{alignItems: 'center'}}>
-                        <Icon name="phone" size={50} color={Color.dark}/>
-                        <Text style={{fontSize: 20, color: Color.dark, alignSelf: 'center'}}>Call</Text>
-                    </View> */}
-                    {/* <View style={{alignItems: 'center'}}>
-                        <Icon name="report" size={50} color={Color.dark} onPress={() => navigation.navigate('FeedbackForm', {name: User})}/>
-                        <Text style={{fontSize: 15, color: Color.dark, alignSelf: 'space-around'}}>Send Feedback</Text>
-                    </View> */}
                 </View>
             </View>
             { visible ?
