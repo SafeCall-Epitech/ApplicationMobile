@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView, Button, StyleSheet, Text, View, Image, Pressable} from "react-native";
+import { SafeAreaView, Button, StyleSheet, Text, View, Image, Pressable, TouchableHighlight} from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { Alert } from "react-native";
 import { Avatar, Badge, IconButton, TextInput, Snackbar} from "@react-native-material/core";
@@ -99,8 +99,10 @@ const HomeScreen = ({navigation}) => {
             <Icon logout style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="arrowleft" size={40} color={Color.light3} onPress={() => navigation.navigate('Login')}/>
             <Icon logout style={{alignSelf: 'flex-start', marginTop: 15, marginRight: 15}} name="user" size={40} color={Color.light3}  onPress={() => navigation.navigate('Profil', {name: User})}/>
 
-            </View>
-                <Image style={styles.tinyLogoPicto} source={require('../img/SafeCallBlackPicto.png')} />
+            </View >
+                <TouchableHighlight onPress={() => navigation.navigate('FeedbackForm')}>
+                <Image  style={styles.tinyLogoPicto} source={require('../img/SafeCallBlackPicto.png')} />
+                </TouchableHighlight>
             <View style={styles.egg}/>
             {/* <TextInput
             backgroundColor="transparent"
@@ -198,7 +200,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         width: '11%',
         position: 'absolute',
-        top: -90,
+        top: -145,
         tintColor: Color.light3,
     },
     pageposition: {

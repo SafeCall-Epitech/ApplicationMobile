@@ -33,15 +33,16 @@ const FriendList = ({navigation}) => {
             } else if (res.data["fetched"].length == 0) {
                 return;
             }
-
+            console.log(res.data["fetched"]);
             for (var x = 0; x < res.data["fetched"].length; x++) {
                 // console.log(res.data["fetched"][x])
                 if (res.data["fetched"][x]["Active"] == true) {
                     setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]["Id"]])
                 }
-                if (res.data["fetched"][x]["Active"] == false) {
+                if (res.data["fetched"][x]["Active"] == false && res.data["fetched"][x]["Id"][0] == "?") {
                     setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]["Id"]])
                     setPendingFriendNumber(PendingFriendNumber + 1)
+                    setFsubject(res.data["fetched"][x]["Subject"])
                     setasPending(true)
                 }
             }
@@ -52,7 +53,7 @@ const FriendList = ({navigation}) => {
     const PendingFriendsListDisplayer = () => {
         for (var x = 0; x <= PendingFriendNumber; x++) {
             if (PendingFriendsArray[x] != undefined) {
-                PendingFriendsCards.push(<FriendCardPending key={x} AccountName={UserName} name={PendingFriendsArray[x]}/>)
+                PendingFriendsCards.push(<FriendCardPending key={x} AccountName={UserName} name={PendingFriendsArray[x]} Reason={Fsubject}/>)
             }
         }
         return (
@@ -70,6 +71,7 @@ const FriendList = ({navigation}) => {
         }
         return (
             <View>
+                <Text style={styles.maintext}>Contact</Text>
                 {FriendsCards}
             </View>
         )
@@ -101,27 +103,24 @@ const FriendList = ({navigation}) => {
         getFriends();
     }, []);
 
-    
+
     return (
         <View style={styles.mainpage}>
             <View style={styles.row}>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 15, marginLeft: 15}} name="home" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
-            {/* <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light3, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Search" placeholderTextColor={Color.dark2} onChangeText={text => setToAddUser(text)} value={ToAddUser}/> */}
-            {/* <Icon friendadd style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="user-plus" size={40} color={Color.light3} onPress={() => HandleFriend("add")}/> */}
             </View>
             <Text style={{alignSelf: 'center', marginTop: 5, top: -40,fontSize: 25, color: Color.light3}}>Contact</Text>
             <View style={styles.egg}/>
-            {isLoaded ? 
+            {isLoaded ?
                 <ScrollView style={styles.scrollView}>
-                    {asPending ? 
+                    {asPending ?
                         <View>
-                        {/* <Text style={styles.maintext}>Pending ({PendingFriendNumber})</Text> */}
+                            <Text style={styles.maintext}>Pending</Text>
                         {PendingFriendsListDisplayer()}
                         </View>
-                        : 
+                        :
                         null
                     }
-                    {/* <Text style={styles.maintext}>Friends</Text> */}
                     {FriendsListDisplayer()}
                     </ScrollView>
                     :
@@ -181,8 +180,7 @@ const styles = StyleSheet.create({
     scrollView: {
         // backgroundColor: 'pink',
         marginHorizontal: 0,
-        marginTop: 135,
       },
 })
-    
+
 export default FriendList;

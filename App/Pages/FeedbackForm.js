@@ -15,6 +15,7 @@ const FeedbackForm = ({navigation}) => {
     
     const route = useRoute();
     const UserName = route.params?.name;
+    const [ToAddTitle, setDestTitle] = React.useState('');
     const [ToAddDescription, setDestDescription] = React.useState('');
     const [date, setDate] = useState(new Date())
 
@@ -56,12 +57,14 @@ const FeedbackForm = ({navigation}) => {
             <View style={styles.row}>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             </View>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Feedback</Text>
+            <Text style={{alignSelf: 'center', marginTop: 5, top:-35, fontSize: 25, color: Color.light3}}>Feedback</Text>
             <View style={styles.egg}/>
             <ScrollView style={styles.scrollView}>
                     <View>
+                    {<Text style={styles.maintext}>Subject :</Text>}
+                    <TextInput multiline={true} style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 35, backgroundColor: Color.dark2, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.light3, textAlignVertical: 'top'}} placeholder="Subject" placeholderTextColor={Color.light3} onChangeText={text => setDestTitle(text)} value={ToAddTitle}/>
                     {<Text style={styles.maintext}>Description :</Text>}
-                    <TextInput multiline={true} style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 90, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2, textAlignVertical: 'top'}} placeholder="Description" placeholderTextColor={Color.dark2} onChangeText={text => setDestDescription(text)} value={ToAddDescription}/>
+                    <TextInput multiline={true} style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 90, backgroundColor: Color.dark2, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.light3, textAlignVertical: 'top'}} placeholder="Description" placeholderTextColor={Color.light3} onChangeText={text => setDestDescription(text)} value={ToAddDescription}/>
                     </View>
             </ScrollView>
             <View style={styles.btnrow}></View>
@@ -79,12 +82,12 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        zIndex: -1,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,
-        zIndex: -1,
         borderBottomRightRadius: 95,
       },
     maintext: {

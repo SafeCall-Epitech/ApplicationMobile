@@ -23,8 +23,7 @@ const ProfilScreen = ({navigation}) => {
     const [PhoneNb, setPhoneNb] = React.useState("");
     const [Email, setEmail] = React.useState("");
     const [verified, setVerified] = React.useState(false);
-    // const [ID, setID] = React.useState('none');
-    // const [ProfilePic, setProfilePic] = React.useState('none');
+    const [ProfilePic, setProfilePic] = React.useState('none');
 
     const updateProfile = async () => {
         console.log("updateProfile");
@@ -102,6 +101,7 @@ const ProfilScreen = ({navigation}) => {
                 setDescription(res.data["profile"]["Description"]);
                 setPhoneNb(res.data["profile"]["PhoneNb"]);
                 setEmail(res.data["profile"]["Email"]);
+                setProfilePic(res.data["profile"]["ProfilePic"]);
                 setIsLoaded(false);
             } if (res.data["failed"]) {
                 alert ("Error: " + res.data["failed"]);
@@ -120,7 +120,7 @@ const ProfilScreen = ({navigation}) => {
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
             </View>
             <View style={styles.egg}/>
-            <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, color: Color.light3}}>Modify Profil</Text>
+            <Text style={{alignSelf: 'center', marginTop: 5, top: -40, fontSize: 25, color: Color.light3}}>Modify Profil</Text>
             {isLoaded ? <Avatar
             style={{alignSelf: 'center', marginTop: 30}}
             label=" "
@@ -130,8 +130,8 @@ const ProfilScreen = ({navigation}) => {
             :
             <Avatar
             style={{alignSelf: 'center', marginTop: 30}}
-            label={ProfileAPI[0]}
-            // image={{ uri: "https://mui.com/static/images/avatar/1.jpg" }}
+            // label={ProfileAPI[0]}
+            image={{ uri: ProfilePic }}
             color={Color.light}
             size={100} /> }
             <View
@@ -227,8 +227,8 @@ const styles = StyleSheet.create({
         position: 'absolute',
         marginTop: -50,
         width: 450,
-        height: 230,
-        backgroundColor: Color.dark2,
+        height: 130,
+        backgroundColor: Color.dark3,
         borderTopLeftRadius: 108,
         borderTopRightRadius: 108,
         borderBottomLeftRadius: 95,

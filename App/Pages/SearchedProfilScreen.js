@@ -36,10 +36,7 @@ const SearchedProfileScreen = ({navigation}) => {
                 setPhoneNb(res.data["profile"]["PhoneNb"]);
                 setEmail(res.data["profile"]["Email"]);
                 setProfilePic(res.data["profile"]["ProfilePic"]);
-                setID("coucou")
-                // setID(res.data["profile"]["Id"]);
-                // setID(res.data["profile"]["ID"]);
-                // setProfilePic(res.data["profile"]["ProfilePic"]);
+                setID("Error");
                 setIsLoaded(false);
             } if (res.data["failed"]) {
                 alert ("Error: " + res.data["failed"]);
@@ -66,6 +63,7 @@ const SearchedProfileScreen = ({navigation}) => {
                 occupation={Description}
                 profileImage={ProfilePic}
                 id={User}
+                PhoneNb={PhoneNb}
             />
 
 

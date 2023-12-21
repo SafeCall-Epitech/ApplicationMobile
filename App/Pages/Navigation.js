@@ -15,6 +15,7 @@ import FeedbackForm from "./FeedbackForm";
 import ReportForm from "./ReportForm";
 import MessageMainPage from "./MessageMainPage";
 import InCallPage from "./InCallPage";
+import RNCallLogic from "./RNCallLogic";
 import "../color"
 
 const Stack = createNativeStackNavigator();
@@ -40,7 +41,8 @@ const MyStack = () => {
                 <Stack.Screen name="FeedbackForm" component={FeedbackForm}/>
                 <Stack.Screen name="ReportForm" component={ReportForm}/>
                 <Stack.Screen name="MessageMainPage" component={MessageMainPage}/>
-                <Stack.Screen name="InCallPage" component={InCallPage}/>
+                {/* <Stack.Screen name="InCallPage" component={InCallPage}/> */}
+                {/* <Stack.Screen name="RNCallLogic" component={RNCallLogic}/> */}
             </Stack.Navigator>
         </NavigationContainer>
     );

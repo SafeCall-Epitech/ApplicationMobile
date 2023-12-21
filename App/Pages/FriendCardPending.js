@@ -11,6 +11,9 @@ const FriendCardPending = props => {
 
     let UserName = props.AccountName;
     let FriendName = props.name;
+    let Reason = props.Reason;
+
+    console.log("FriendCardPending: " + UserName + " " + FriendName + " " + Reason)
 
     const [isVisible, setIsVisible] = React.useState(true);
 
@@ -22,7 +25,7 @@ const FriendCardPending = props => {
         const form = JSON.stringify({
             UserID: UserName,
             Friend: FriendName,
-            Subject: "Demande d'ami",
+            Subject: Reason,
             Action: "accept",
         });
         console.log("http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/replyFriend" + form)
@@ -45,7 +48,7 @@ const FriendCardPending = props => {
         const form = JSON.stringify({
             UserID: UserName,
             Friend: FriendName,
-            Subject: "Demande d'ami",
+            Subject: Reason,
             Action: "deny",
         });
         console.log("http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/replyFriend" + form)
@@ -74,10 +77,13 @@ const FriendCardPending = props => {
                 <Avatar
                     size={60}
                     style={{ marginLeft: 10, marginTop: 10, marginBottom: 10}}
-                    label={props.name[0]}
+                    label={FriendName.substring(1)}
                     color={Color.light3}
                     />
-                <Text style={styles.maintext}>{props.name}</Text>
+                <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end'}}>
+                    <Text style={styles.maintext}>{FriendName.substring(1)}</Text>
+                    <Text style={[styles.valtext, {marginLeft:10}]}>{Reason}</Text>
+                </View>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
                     <IconM style={{marginTop: 5, marginLeft: 5, marginRight: 15}} name="check" size={30} color="green" onPress={AcceptFriend}/>
                     <IconM style={{ marginTop: 5, marginLeft: 5, marginRight: 15}} name="close" size={30} color="red" onPress={DenyFriend}/>

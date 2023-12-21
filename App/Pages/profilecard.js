@@ -27,7 +27,7 @@ function HandleFriend(UserName, ToAddUser, Fsubject, action) {
   })
 }
 
-const ProfileCard = ({ ProfileUser, name, occupation, profileImage, id }) => {
+const ProfileCard = ({ ProfileUser, name, occupation, profileImage, id, PhoneNb }) => {
 
   const [isReasonVisible, setIsReasonVisible] = React.useState(false);
   const [Fsubject, setFsubject] = React.useState('');
@@ -127,6 +127,7 @@ const ProfileCard = ({ ProfileUser, name, occupation, profileImage, id }) => {
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.occupation}>@{id}</Text>
         <Text style={styles.occupation}>{occupation}</Text>
+        <Text style={styles.occupation}>Phone Number: 06{PhoneNb.substring(2)}</Text>
         { IsAlreadyFriend ?
         <Button style={{marginTop: 10}} color={Color.dark2}
         leading={props => <Icon name="user" {...props} />}

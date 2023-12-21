@@ -10,26 +10,37 @@ import Color from "../color";
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import { useState } from "react";
 
-const DeleteFriend = async (userName, friendName) => {
-  try {
-    const form = JSON.stringify({
-      UserID: userName,
-      Friend: friendName,
-      Subject: "Demande d'ami",
-      Action: "delete",
-    });
-    console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
-    await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend`, form, {
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    });
-
-  } catch (err) {
-    console.error(err);
-  }
-  console.log("Delete : " + friendName);
-};
+const DelFriend = async (userName, friendName) => {
+    axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/listFriends/${userName}`)
+    .then(async res => {
+        if (res.data["fetched"] == null) {
+            return;
+        } else if (res.data["fetched"].length == 0) {
+            return;
+        }
+        for (var x = 0; x < res.data["fetched"].length; x++) {
+            console.log(res.data["fetched"][x])
+            if (res.data["fetched"][x]["Id"] == friendName ) {
+              try {
+                const form = JSON.stringify({
+                  UserID: userName,
+                  Friend: friendName,
+                  Subject: res.data["fetched"][x]["Subject"],
+                  Action: "delete",
+                });
+                // console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
+                await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend`, form, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                      }
+                    });
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }
+          }
+    })
+}
   
 
 const FriendCard = props => {
@@ -55,8 +66,7 @@ const showDeleteOrReportConfirmation = (friendName) => {
           text: 'Delete',
           onPress: () => {
             // Call the DeleteFriend function
-            DeleteFriend(UserName, friendName);
-            console.log(`Deleting friend: ${friendName}`);
+            DelFriend(UserName, friendName);
           },
         },
         {

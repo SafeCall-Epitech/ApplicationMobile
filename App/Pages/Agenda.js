@@ -7,6 +7,9 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
+// import Peer from "simple-peer"
+import RNSimplePeer from "react-native-simple-peer";
+import io from "socket.io-client"
 
 
 const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
@@ -47,17 +50,12 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     if (today == RDVDate) {
         isrdvsoon = true;
     }
-
-
-    console.log(guest);
-
-
-    // if (isRDVConfirmed == "Confirmed") {
-    //     styles2.cardHeaderText.color = "#90EE90";
-    // } else {
-    //     styles2.cardHeaderText.color = "#ffcccb";    
-    // }
-
+const DEBG = () => {
+    console.log("DEBG");
+    navigation.navigate('RNCallLogic', {guest: guest});
+    
+    
+}
     return (
         <View style={styles2.card}>
             <View style={styles2.cardHeader}>
@@ -68,7 +66,8 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
                     <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
                     <Text style={styles2.cardBodyTextRight}>With: {guest}</Text>
                 </View>
-                {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
+                {/* {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null} */}
+                {isrdvsoon ? <Button title="Call" color="green" onPress={() => DEBG()}/> : null}
             </View>
         </View>
         // <View style={styles2.card}>
@@ -157,10 +156,10 @@ const Agenda = ({navigation}) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
 
     const getAgenda = async () => {
-        console.log("getAgenda");
+        // console.log("getAgenda");
         axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/listEvent/${UserName}`)
         .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             parsedResponse = res.data["Success "];
             if (parsedResponse == null) {
                 return;
