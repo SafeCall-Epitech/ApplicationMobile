@@ -5,7 +5,7 @@ import { TextInput } from "react-native";
 import { Button } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { storeData, getData, removeData } from "./store";
+import { storeData, getData, removeData } from './store';
 
 import Print_message from "./Print_message";
 
@@ -15,6 +15,7 @@ function Chat2() {
     const [selectedFriend, setSelectedFriend] = useState('');
     const [username, setUsername] = useState('');
 
+
     useEffect(() => {
         const fetchMessages = async () => {
             const friend_wait = await getData('Friend');
@@ -23,7 +24,7 @@ function Chat2() {
             setSelectedFriend(friend_wait);
             try {
                 const response = await axios.get(
-                    'http://20.234.168.103:8080/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
+                    'http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
                 );
                 setMessageList(response.data["Success "]);
             } catch (error) {
@@ -45,7 +46,7 @@ function Chat2() {
             console.log(currentMessage);
             console.log(username);
             console.log(selectedFriend);
-            await axios.post('http://20.234.168.103:8080/sendMessage', {
+            await axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/sendMessage', {
                 message: currentMessage,
                 username: username.toLowerCase(),
                 friendname: selectedFriend,

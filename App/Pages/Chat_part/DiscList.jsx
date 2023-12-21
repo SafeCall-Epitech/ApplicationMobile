@@ -17,11 +17,18 @@ function DiscList({ onFriendSelect }) {
     const navigation = useNavigation();
 
     useEffect(() => {
+        const date = new Date();
+
+        const currentOffsetMinutes = date.getTimezoneOffset();
+
+        const currentDifferenceHours = currentOffsetMinutes / 60;
+        console.log("crrehcfbe" + currentDifferenceHours)
+        storeData("UTC", currentDifferenceHours);
         const fetchFriendList = async () => {
             try {
                 const username = await getData("user_name");
                 setuser(username.toLowerCase())
-                const response = await axios.get('http://20.234.168.103:8080/conversations/' + username);
+                const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/conversations/' + username);
                 // const reponset = await axios.get(`http://20.234.168.103:8080/listFriends/` + username)
                 if (response.data["Success "] === null) {
                     setFriendList([])
@@ -86,7 +93,7 @@ function DiscList({ onFriendSelect }) {
     };
 
     const handleSubmit = async () => {
-        const response = await axios.get('http://20.234.168.103:8080/messages/' + user + "/" + textInputValue);
+        const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + user + "/" + textInputValue);
         window.location.reload();
         setIsDialogVisible(false); // Fermez la popup après la soumission
     };

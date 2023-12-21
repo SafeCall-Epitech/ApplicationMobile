@@ -1,14 +1,23 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { storeData, getData, removeData } from './store';
 
-export default function Print_message(props) {
+const PrintMessage = (props) => {
     const scrollViewRef = useRef(null);
-    const d = new Date();
-    let hour = d.getHours();
-    let min = d.getMinutes();
+    const [utc, setUtc] = useState(null);
 
     useEffect(() => {
-        // Scroll to the bottom on initial render and whenever new messages are added
+        const getUtc = async () => {
+            const utcStr = await getData("UTC");
+            const utcValue = parseFloat(utcStr);
+            console.log("vcurhecb" + utcStr)
+            setUtc(utcValue);
+        };
+
+        getUtc();
+    }, []);
+
+    useEffect(() => {
         scrollToBottom();
     }, [props._messageList]);
 
@@ -17,7 +26,11 @@ export default function Print_message(props) {
     };
 
     const usr = props._username.toLowerCase();
-    console.log(props._messageList)
+
+    const d = new Date();
+    let hour = d.getHours();
+    let min = d.getMinutes();
+
     return (
         <View style={{ flex: 1 }}>
             <ScrollView
@@ -40,24 +53,26 @@ export default function Print_message(props) {
                         <Text style={styles.messageText}>
                             {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
                         </Text>
-                        {msg["Heure"] ? msg["Heure"] : hour + ":" + min}
+                        {msg["Heure"] ? (parseFloat(msg["Heure"].split(":")[0]) + -utc) + ":" + msg["Heure"].split(":")[1] + " 30/11" : hour + ":" + min + " 30/11"}
                     </View>
                 ))}
             </ScrollView>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
     contentContainer: {
+        paddingHorizontal: 400,
+        paddingVertical: 16,
         flexGrow: 1,
         justifyContent: 'flex-end', // Align the messages to the top/left
         paddingLeft: 0, // Add some padding at the bottom
     },
-    me: {
+    other: {
         width: 120,
         borderRadius: 10,
         padding: 10,
@@ -65,15 +80,21 @@ const styles = StyleSheet.create({
         backgroundColor: 'whitesmoke',
         marginBottom: 10,
     },
-    other: {
+    messageTime: {
+        fontSize: 12,
+        color: 'gray',
+    },
+    me: {
         width: 120,
         borderRadius: 10,
         padding: 10,
+        marginLeft: 280,
         backgroundColor: 'lightskyblue',
         color: 'whitesmoke',
-        marginLeft: "65%",
+        alignSelf: 'flex-start', // Aligner à droite du conteneur
         marginBottom: 10,
     },
+
     singleMessageMe: {
         width: 120,
         borderRadius: 10,
@@ -92,3 +113,5 @@ const styles = StyleSheet.create({
         color: 'black',
     },
 });
+
+export default PrintMessage;
