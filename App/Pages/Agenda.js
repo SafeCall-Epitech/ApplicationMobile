@@ -40,6 +40,7 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     var today = new Date();
     //get the rdv date
     var rdvdate = new Date(RDVDate);
+    console.log(RDVDate);
     //get today's date in the format "dd/mm/yyyy"
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -52,7 +53,7 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     }
 const DEBG = () => {
     console.log("DEBG");
-    navigation.navigate('RNCallLogic', {guest: guest});
+    // navigation.navigate('RNCallLogic', {guest: guest});
     
     
 }
@@ -70,23 +71,6 @@ const DEBG = () => {
                 {isrdvsoon ? <Button title="Call" color="green" onPress={() => DEBG()}/> : null}
             </View>
         </View>
-        // <View style={styles2.card}>
-        //     <View style={styles2.cardHeader}>
-        //         <Text style={styles2.cardHeaderText}>{isRDVConfirmed}</Text>
-        //     </View>
-        //     <View style={styles2.cardBody}>
-        //         <View style={{flexDirection: 'row'}}>
-        //             <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
-        //             <Text style={styles2.cardBodyTextRight}>With: {RDVGuestsArray[0]}</Text>
-        //         </View>
-        //         <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
-        //         <Text style={{color: Color.dark2, fontSize: 15, textAlign: 'center'}}>Subject</Text>
-        //         <Text style={styles2.cardBodyText}>{RDVSubject}</Text>
-
-        //         {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null}
-        //     </View>
-        // </View>
-        
     )
 }
 
@@ -94,7 +78,7 @@ styles2 = StyleSheet.create({
     card: {
         backgroundColor: Color.dark3,
         margin: 10,
-        marginLeft: 40,
+        marginLeft: 10,
         borderRadius: 10,
         padding: 10,
         shadowColor: Color.dark1,
@@ -109,6 +93,7 @@ styles2 = StyleSheet.create({
         backgroundColor: Color.dark2,
         borderRadius: 10,
         padding: 10,
+        alignItems: 'center',
     },
     cardHeaderText: {
         color: Color.light3,
@@ -146,6 +131,7 @@ const Agenda = ({navigation}) => {
     const UserName = route.params?.name;
 
     let AgendaCards = [];
+    let PastAgendaCards = [];
 
 
     const [isRDVConfirmedArray, setisRDVConfirmedArray] = React.useState([]);
@@ -154,6 +140,8 @@ const Agenda = ({navigation}) => {
     const [RDVSubjectArray, setRDVSubjectArray] = React.useState([]);
 
     const [isLoaded, setIsLoaded] = React.useState(false);
+
+    const [isPastEventVisible, setIsPastEventVisible] = React.useState(false);
 
     const getAgenda = async () => {
         // console.log("getAgenda");
@@ -189,12 +177,41 @@ const Agenda = ({navigation}) => {
                 } else {
                     isRDVConfirmedArray[x] = "Not Confirmed";
                 }
-                AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+
+                //if date is in the past, add it to the past agenda cards
+                //splice the date to get the format "yyyy/mm/dd" and then compare it to today's date
+                let yyyy = new Date().toISOString().slice(0, 4);
+                let mm = new Date().toISOString().slice(5, 7);
+                let dd = new Date().toISOString().slice(8, 10);
+
+                if (RDVDateArray[x].substring(6, 10) < yyyy) {
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) < mm) {
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) == mm && RDVDateArray[x].substring(0, 2) < dd) {
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                } else {
+                    AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                }
             }
         }
         return (
-            <View style={{marginTop: 10}}>
-                {AgendaCards}
+            <View style={{marginTop: 20}}>
+                <Text style={{color: Color.dark3, fontSize: 20, textAlign: 'center'}}>Upcoming Events</Text>
+                <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
+                { AgendaCards.length > 0 ?
+                AgendaCards
+                :
+                <Text style={{color: Color.dark3, fontSize: 20, textAlign: 'center', fontWeight: 'bold', marginBottom : 40, marginTop : 40,}}>No Upcoming Events</Text>
+                }
+
+                <Text style={{color: Color.dark3, fontSize: 20, textAlign: 'center'}}>Past Events  <Icon name="downcircleo" size={20} color={Color.dark3} style={{alignSelf: 'center'}} onPress={() => setIsPastEventVisible(!isPastEventVisible)}/> </Text>
+                <View style={{borderBottomColor: Color.dark2, borderBottomWidth: 1, marginTop: 5, marginBottom: 5}}></View>
+                {isPastEventVisible ? 
+                PastAgendaCards
+                : null}
+                {/* Separator for past event */}
+
             </View>
         )
     }

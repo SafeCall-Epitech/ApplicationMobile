@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRoute } from "@react-navigation/native";
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { Card, Appbar, Menu, Divider, Provider, Dialog, Portal, Button, TextInput } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { storeData, getData, removeData } from './store';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-function DiscList({ onFriendSelect, navigation }) {
-
-    const route = useRoute();
-    const MyUser = route.params?.name;
-
+function DiscList({ onFriendSelect }) {
     const [friendList, setFriendList] = useState([]);
     const [user, setuser] = useState("")
     const [flist, setFlist] = useState([])
@@ -19,7 +15,7 @@ function DiscList({ onFriendSelect, navigation }) {
     const [menuVisible, setMenuVisible] = useState(false);
     const [isDialogVisible, setIsDialogVisible] = useState(false); // Nouvel état pour la visibilité de la popup
     const [textInputValue, setTextInputValue] = useState(''); // Nouvel état pour la valeur du champ de texte
-    // const navigation = useNavigation();
+    const navigation = useNavigation();
 
     useEffect(() => {
         const date = new Date();
@@ -28,8 +24,7 @@ function DiscList({ onFriendSelect, navigation }) {
 
         const currentDifferenceHours = currentOffsetMinutes / 60;
         console.log("crrehcfbe" + currentDifferenceHours)
-        // console.log(currentDifferenceHours)
-        storeData("UTC", currentDifferenceHours);
+        // storeData("UTC", currentDifferenceHours);
         const fetchFriendList = async () => {
             try {
                 const username = await getData("user_name");
@@ -38,7 +33,6 @@ function DiscList({ onFriendSelect, navigation }) {
                 // const reponset = await axios.get(`http://20.234.168.103:8080/listFriends/` + username)
                 if (response.data["Success "] === null) {
                     setFriendList([])
-                    console.log("ICI")
                 } else {
                     setFriendList(response.data["Success "]);
                 }
@@ -52,12 +46,13 @@ function DiscList({ onFriendSelect, navigation }) {
     }, []);
 
     useEffect(() => {
-        console.log("FRIENDLIST" + friendList)
+        console.log("okokokokok")
+        console.log(friendList);
     }, [friendList]);
 
-    // useEffect(() => {
-    //     console.log(flist);
-    // }, [flist]);
+    useEffect(() => {
+        console.log(flist);
+    }, [flist]);
 
     const handleFriendClick = async (friendName) => {
         const friend_wait = await getData("user_name");
@@ -65,6 +60,15 @@ function DiscList({ onFriendSelect, navigation }) {
         storeData("Friend", friend.toLowerCase());
         console.log("cmoi" + friend)
         navigation.navigate('Chat');
+    };
+
+    const handleRightButtonPress = async (item) => {
+        const fr = item.split(":");
+        console.log("CALL : " + 'http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
+        const resp = axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
+        // console.log(resp);
+        // console.log(`Bouton à droite cliqué pour ${item}`);
+        navigation.navigate('Home');
     };
 
     const renderFriendItem = ({ item }) => (
@@ -79,6 +83,7 @@ function DiscList({ onFriendSelect, navigation }) {
                     <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[0]}</Text>
                     <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[1]}{":"}{item.toString().replace(user, "").split(":")[2]}{":"}{item.toString().replace(user, "").split(":")[3]}</Text>
                 </View>
+                <Icon name="delete" size={30} color="black" onPress={() => handleRightButtonPress(item)} style={styles.icon} />
             </View>
         </TouchableOpacity>
     );
@@ -88,7 +93,6 @@ function DiscList({ onFriendSelect, navigation }) {
     );
 
     const handleGoBack = () => {
-        // Add logic to go back
         navigation.navigate('Home');
     };
 
@@ -100,8 +104,8 @@ function DiscList({ onFriendSelect, navigation }) {
     };
 
     const handleSubmit = async () => {
-        const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + MyUser + "/" + textInputValue);
-        console.log(response);
+        console.log("PRINT1");
+        const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + user + "/" + textInputValue);
         // window.location.reload();
         setIsDialogVisible(false); // Fermez la popup après la soumission
     };
@@ -116,7 +120,7 @@ function DiscList({ onFriendSelect, navigation }) {
                         <Menu
                             visible={menuVisible}
                             onDismiss={closeMenu}
-                            anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}
+                            // anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}
                         >
                             {flist.map((item, index) => (
                                 <React.Fragment key={index}>
@@ -133,7 +137,7 @@ function DiscList({ onFriendSelect, navigation }) {
                             return index.toString().replace(user, "").split(":")[0];
                         }}
                     />
-                    <Button mode="contained" onPress={openDialog}>Ouvrir la popup</Button>
+                    {/* <Button mode="contained" onPress={openDialog}>Ouvrir la popup</Button> */}
                     <Portal>
                         <Dialog visible={isDialogVisible} onDismiss={() => setIsDialogVisible(false)}>
                             <Dialog.Title>Titre de la popup</Dialog.Title>
@@ -181,6 +185,18 @@ const styles = {
         fontWeight: 'bold',
         color: '#000',
         marginBottom: 4,
+    },
+    rightButton: {
+        backgroundColor: '#ccc',
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderRadius: 4,
+    },
+    blacktext: {
+        color: '#000',
+    },
+    icon: {
+        marginRight: 20,
     },
 };
 

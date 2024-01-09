@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // Stocker une valeur
 export const storeData = async (key, value) => {
     try {
-        console.log("STORE" + value)
+        console.log(value)
         await AsyncStorage.setItem(key, value);
     } catch (error) {
         console.log(error);
@@ -14,7 +14,6 @@ export const storeData = async (key, value) => {
 export const getData = async (key) => {
     try {
         const value = await AsyncStorage.getItem(key);
-        console.log("GET" + value)
         if (value !== null) {
             return value;
         }

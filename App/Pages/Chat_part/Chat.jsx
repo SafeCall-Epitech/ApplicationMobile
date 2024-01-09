@@ -6,9 +6,12 @@ import { Button } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { storeData, getData, removeData } from './store';
+import io from 'socket.io-client';
 
 import Print_message from "./Print_message";
 
+const socket = io('http://facteur:3000');
+// const socket = io('http://localhost:3000');
 function Chat2() {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
@@ -17,6 +20,7 @@ function Chat2() {
 
 
     useEffect(() => {
+
         const fetchMessages = async () => {
             const friend_wait = await getData('Friend');
             const user_wait = await getData('user_name');
@@ -26,7 +30,12 @@ function Chat2() {
                 const response = await axios.get(
                     'http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase()
                 );
-                setMessageList(response.data["Success "]);
+                if (response.data["Success "] == null) {
+                    setMessageList([]);
+                } else {
+                    setMessageList(response.data["Success "]);
+                }
+
             } catch (error) {
                 if (error.response) {
                     console.log(error.response.data);
@@ -36,9 +45,20 @@ function Chat2() {
                 }
             }
         };
-
+        socket.emit('join room', [username.toLowerCase(), selectedFriend.toLowerCase()]);
         fetchMessages();
+
+
     }, [selectedFriend]);
+
+    useEffect(() => {
+        socket.on('chat message', (msg) => {
+            const Msg = { "Sender": msg.sender, "Message": msg.message };
+
+            setMessageList([...messageList, Msg]);
+        });
+
+    },);
 
     const sendMessage = async () => {
         if (currentMessage !== '') {
@@ -52,6 +72,14 @@ function Chat2() {
                 friendname: selectedFriend,
             });
 
+            // await axios.post('http://localhost:3000/send_message', {
+            //     message: currentMessage,
+            //     username: username.toLowerCase(),
+            //     friendname: selectedFriend
+            // });
+            socket.emit('chat message', { "Sender": username.toLowerCase(), "Message": currentMessage });
+
+            console.log(messageList)
             setMessageList([...messageList, msg]);
             setCurrentMessage('');
         }

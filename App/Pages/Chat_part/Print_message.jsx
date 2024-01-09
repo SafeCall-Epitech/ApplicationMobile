@@ -13,6 +13,7 @@ const PrintMessage = (props) => {
             console.log("vcurhecb" + utcStr)
             setUtc(utcValue);
         };
+
         getUtc();
     }, []);
 
@@ -53,7 +54,7 @@ const PrintMessage = (props) => {
                             {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
                         </Text>
                         <Text style={styles.messageTime}>
-                        {msg["Heure"] ? (parseFloat(msg["Heure"].split(":")[0]) + -utc) + ":" + msg["Heure"].split(":")[1] + " 30/11" : hour + ":" + min + " 30/11"}
+                        {msg["Heure"] ? (parseFloat(msg["Heure"].split(":")[0]) + -utc) + ":" + msg["Heure"].split(":")[1] : hour + ":" + min}
                         </Text>
                     </View>
                 ))}

@@ -43,8 +43,8 @@ const MyStack = () => {
                 <Stack.Screen name="ReportForm" component={ReportForm}/>
                 <Stack.Screen name="DiscList" component={DiscList} options={{ title: 'Disc List' }}/>
                 <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
-                {/* <Stack.Screen name="InCallPage" component={InCallPage}/> */}
-                {/* <Stack.Screen name="RNCallLogic" component={RNCallLogic}/> */}
+                <Stack.Screen name="InCallPage" component={InCallPage}/>
+                <Stack.Screen name="RNCallLogic" component={RNCallLogic}/>
             </Stack.Navigator>
         </NavigationContainer>
     );

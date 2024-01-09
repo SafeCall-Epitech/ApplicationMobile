@@ -41,6 +41,8 @@ const DelFriend = async (userName, friendName) => {
           }
     })
 }
+
+
   
 
 const FriendCard = props => {
@@ -50,6 +52,12 @@ const FriendCard = props => {
 
   const showMenu = () => setVisible(true);
   const hideMenu = () => setVisible(false);
+
+  const SendMessage = async (friendName) => {
+    const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + UserName.toLowerCase() + "/" + friendName.toLowerCase());
+    console.log(`Button clicked for ${props.name}`);
+    alert(`Create discussion with ${props.name}`);
+  }
 
   
 const showDeleteOrReportConfirmation = (friendName) => {
@@ -95,6 +103,7 @@ const showDeleteOrReportConfirmation = (friendName) => {
           color={Color.light3}
         />
         <Text style={styles.maintext}>{props.name}</Text>
+        <Icon style={styles.alignrightbefore} name="message1" size={30} color="black" onPress={() => SendMessage(props.name)} />
         <Icon2 style={styles.alignright} name="dots-three-vertical" size={20} color="black" onPress={() => showDeleteOrReportConfirmation(props.name)} />
       </View>
     </Surface>
@@ -125,6 +134,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 0,
     marginRight: 20,
+  },
+  alignrightbefore: {
+    position: 'absolute',
+    right: 0,
+    marginRight: 50,
   },
 })
 
