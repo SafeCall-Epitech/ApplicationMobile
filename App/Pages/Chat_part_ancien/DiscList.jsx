@@ -61,13 +61,6 @@ function DiscList({ onFriendSelect }) {
         navigation.navigate('Chat');
     };
 
-    const handleRightButtonPress = (item) => {
-        const fr = item.split(":");
-        axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
-        window.location.reload();
-        console.log(`Bouton à droite cliqué pour ${item}`);
-    };
-
     const renderFriendItem = ({ item }) => (
         <TouchableOpacity onPress={() => handleFriendClick(item.toString().replace(user, "").split(":")[0])}>
             <View style={styles.friend}>
@@ -80,11 +73,6 @@ function DiscList({ onFriendSelect }) {
                     <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[0]}</Text>
                     <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[1]}{":"}{item.toString().replace(user, "").split(":")[2]}{":"}{item.toString().replace(user, "").split(":")[3]}</Text>
                 </View>
-                <Button onPress={() => handleRightButtonPress(item)}>
-                    <View style={styles.rightButton}>
-                        Erase
-                    </View>
-                </Button>
             </View>
         </TouchableOpacity>
     );

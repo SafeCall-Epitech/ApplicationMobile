@@ -53,7 +53,7 @@ const PrintMessage = (props) => {
                         <Text style={styles.messageText}>
                             {usr === msg["Sender"] ? 'me' : msg["Sender"]} : {msg["Message"]}
                         </Text>
-                        {msg["Heure"] ? (parseFloat(msg["Heure"].split(":")[0]) + -utc) + ":" + msg["Heure"].split(":")[1] : hour + ":" + min}
+                        {msg["Heure"] ? (parseFloat(msg["Heure"].split(":")[0]) + -utc) + ":" + msg["Heure"].split(":")[1] + " 30/11" : hour + ":" + min + " 30/11"}
                     </View>
                 ))}
             </ScrollView>
