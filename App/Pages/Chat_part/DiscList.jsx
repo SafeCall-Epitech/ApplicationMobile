@@ -23,8 +23,9 @@ function DiscList({ onFriendSelect }) {
         const currentOffsetMinutes = date.getTimezoneOffset();
 
         const currentDifferenceHours = currentOffsetMinutes / 60;
-        console.log("crrehcfbe" + currentDifferenceHours)
-        // storeData("UTC", currentDifferenceHours);
+        console.log("currentOffsetMinutes = " + currentOffsetMinutes)
+        console.log("DEFINNING HOUR = " + currentDifferenceHours)
+        storeData("UTC", currentDifferenceHours.toString());
         const fetchFriendList = async () => {
             try {
                 const username = await getData("user_name");
@@ -54,6 +55,19 @@ function DiscList({ onFriendSelect }) {
         console.log(flist);
     }, [flist]);
 
+    const [utc, setUtc] = useState(null);
+
+    useEffect(() => {
+        const getUtc = async () => {
+            const utcStr = await getData("UTC");
+            const utcValue = parseFloat(utcStr);
+            console.log("vcurhecb" + utcStr)
+            setUtc(utcValue);
+        };
+
+        getUtc();
+    }, []);
+
     const handleFriendClick = async (friendName) => {
         const friend_wait = await getData("user_name");
         const friend = friendName.replace(friend_wait.toLocaleLowerCase(), "");
@@ -65,7 +79,7 @@ function DiscList({ onFriendSelect }) {
     const handleRightButtonPress = async (item) => {
         const fr = item.split(":");
         console.log("CALL : " + 'http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
-        const resp = axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
+        // const resp = axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delRoom/' + fr[0]);
         // console.log(resp);
         // console.log(`Bouton à droite cliqué pour ${item}`);
         navigation.navigate('Home');
@@ -81,7 +95,16 @@ function DiscList({ onFriendSelect }) {
                 <View style={styles.friendInfo}>
                     {console.log(user)}
                     <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[0]}</Text>
-                    <Text style={styles.friendName}>{item.toString().replace(user, "").split(":")[1]}{":"}{item.toString().replace(user, "").split(":")[2]}{":"}{item.toString().replace(user, "").split(":")[3]}</Text>
+                    <Text style={styles.friendName}>
+                        {item.toString().replace(user, "").split(":")[1] !== "" && (
+                            <>
+                                {item.toString().replace(user, "").split(":")[1]} :{" "}
+                                {item.toString().replace(user, "").split(":")[2].split(" ")[1]} |{" "}
+                                {parseInt(item.toString().replace(user, "").split(":")[2].split(" ")[2]) +
+                                    -utc} : {item.toString().replace(user, "").split(":")[3]}
+                            </>
+                        )}
+                    </Text>
                 </View>
                 <Icon name="delete" size={30} color="black" onPress={() => handleRightButtonPress(item)} style={styles.icon} />
             </View>

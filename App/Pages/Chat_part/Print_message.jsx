@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { storeData, getData, removeData } from './store';
+import Color from '../../color'
 
 const PrintMessage = (props) => {
     const scrollViewRef = useRef(null);
@@ -75,11 +76,11 @@ const styles = StyleSheet.create({
         paddingLeft: 0, // Add some padding at the bottom
     },
     other: {
-        width: 120,
+        width: 200,
         borderRadius: 10,
         padding: 10,
         marginLeft: 10,
-        backgroundColor: 'whitesmoke',
+        backgroundColor: Color.light3,
         marginBottom: 10,
     },
     messageTime: {
@@ -87,22 +88,23 @@ const styles = StyleSheet.create({
         color: 'gray',
     },
     me: {
-        width: 120,
+        width: 200,
         borderRadius: 10,
         padding: 10,
-        marginLeft: 280,
-        backgroundColor: 'lightskyblue',
-        color: 'whitesmoke',
+        marginLeft: 185,
+        // marginLeft: 280,
+        backgroundColor: Color.light,
+        // color: 'whitesmoke',
         alignSelf: 'flex-start', // Aligner à droite du conteneur
         marginBottom: 10,
     },
 
     singleMessageMe: {
-        width: 120,
+        width: 200,
         borderRadius: 10,
         padding: 10,
         marginLeft: 0,
-        backgroundColor: 'whitesmoke',
+        backgroundColor: Color.light,
         marginBottom: 10,
         alignSelf: 'flex-start', // Align to the left
     },

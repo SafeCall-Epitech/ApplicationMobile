@@ -7,20 +7,19 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { storeData, getData, removeData } from './store';
 import io from 'socket.io-client';
-
+import Icon from 'react-native-vector-icons/AntDesign';
+import Color from "../../color";
 import Print_message from "./Print_message";
 
-const socket = io('http://facteur:3000');
-// const socket = io('http://localhost:3000');
 function Chat2() {
     const [currentMessage, setCurrentMessage] = useState('');
     const [messageList, setMessageList] = useState([]);
     const [selectedFriend, setSelectedFriend] = useState('');
     const [username, setUsername] = useState('');
+    const [numberMessage, setNumberMessage] = useState('');
 
 
     useEffect(() => {
-
         const fetchMessages = async () => {
             const friend_wait = await getData('Friend');
             const user_wait = await getData('user_name');
@@ -32,8 +31,10 @@ function Chat2() {
                 );
                 if (response.data["Success "] == null) {
                     setMessageList([]);
+                    setNumberMessage(0)
                 } else {
                     setMessageList(response.data["Success "]);
+                    setNumberMessage(response.data["Success "].length)
                 }
 
             } catch (error) {
@@ -45,19 +46,35 @@ function Chat2() {
                 }
             }
         };
-        socket.emit('join room', [username.toLowerCase(), selectedFriend.toLowerCase()]);
         fetchMessages();
-
-
     }, [selectedFriend]);
 
+
     useEffect(() => {
-        socket.on('chat message', (msg) => {
-            const Msg = { "Sender": msg.sender, "Message": msg.message };
-
-            setMessageList([...messageList, Msg]);
-        });
-
+        const fetchMessages = async () => {
+            const friend_wait = await getData('Friend');
+            const user_wait = await getData('user_name');
+            setUsername(user_wait);
+            setSelectedFriend(friend_wait);
+            try {
+                const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + username.toLowerCase() + '/' + selectedFriend.toLowerCase());
+                if (response.data["Success "] == null) {
+                        setMessageList([]);
+                        setNumberMessage(0)
+                } else {
+                    if (response.data["Success "].length > numberMessage) {
+                        setMessageList(response.data["Success "]);
+                        setNumberMessage(response.data["Success "].length)
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching messages:", error);
+            }
+        };
+        const intervalId = setInterval(() => {
+            fetchMessages();
+        }, 1000);
+        return () => clearInterval(intervalId);
     },);
 
     const sendMessage = async () => {
@@ -71,13 +88,6 @@ function Chat2() {
                 username: username.toLowerCase(),
                 friendname: selectedFriend,
             });
-
-            // await axios.post('http://localhost:3000/send_message', {
-            //     message: currentMessage,
-            //     username: username.toLowerCase(),
-            //     friendname: selectedFriend
-            // });
-            socket.emit('chat message', { "Sender": username.toLowerCase(), "Message": currentMessage });
 
             console.log(messageList)
             setMessageList([...messageList, msg]);
@@ -106,7 +116,7 @@ function Chat2() {
                     onChangeText={(text) => setCurrentMessage(text)}
                     onSubmitEditing={sendMessage}
                 />
-                <Button onPress={sendMessage} title="SEND" />
+                <Icon name="rocket1" size={40} color={Color.dark3} onPress={() => sendMessage()}/>
             </View>
             <View style={styles.emptySpace} />
         </KeyboardAvoidingView>
@@ -121,14 +131,14 @@ const styles = StyleSheet.create({
     },
     header: {
         height: 110,
-        backgroundColor: '#f9f9f9',
-        justifyContent: 'flex-end', // Aligner le texte en bas du header
+        backgroundColor: Color.dark3,
+        justifyContent: 'center', // Aligner le texte en bas du header
         alignItems: 'center',
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        borderBottomColor: 'black',
     },
     headerTitle: {
-        fontSize: 18,
+        fontSize: 30,
         fontWeight: 'bold',
         marginBottom: 10, // Ajouter une marge inférieure pour déplacer le titre vers le bas
     },
@@ -153,6 +163,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
         paddingHorizontal: 10,
         borderRadius: 20,
+        color: 'black',
     },
     emptySpace: {
         height: 20,

@@ -59,7 +59,25 @@ const FriendCard = props => {
     alert(`Create discussion with ${props.name}`);
   }
 
-  
+  const reportcall = async (friendName) => {
+    const form = JSON.stringify({
+      username: UserName,
+      date: new Date(),
+      reported: friendName,
+      message: "default report",
+    });
+    const response = await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/report`, form, {
+      headers: {
+        'Content-Type': 'application/json'
+        }
+    })
+    .then(res => {
+      console.log(res.data);
+      alert("Report send");
+  })
+    console.log(`Button clicked for ${friendName}`);
+  }
+
 const showDeleteOrReportConfirmation = (friendName) => {
     Alert.alert(
       'Options',
@@ -81,7 +99,8 @@ const showDeleteOrReportConfirmation = (friendName) => {
           text: 'Report',
           onPress: () => {
             // Add code to report the card here
-            // console.log(`Reporting friend: ${friendName}`);
+            console.log(`Reporting friend: ${friendName}`);
+            reportcall()
           },
         },
       ],

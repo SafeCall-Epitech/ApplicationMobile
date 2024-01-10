@@ -19,6 +19,7 @@ const FriendCardPending = props => {
 
     // fixed
     const AcceptFriend = async () => {
+        console.log("ACCEPTEUUUUU")
         if (FriendName[0] == "?") {
             FriendName = FriendName.substring(1)
         }
@@ -40,6 +41,7 @@ const FriendCardPending = props => {
             alert("You have accepted the request for " + FriendName + "!")
         })
     }
+
     
     const DenyFriend = async () => {
         if (FriendName[0] == "?") {

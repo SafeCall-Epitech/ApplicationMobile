@@ -7,9 +7,6 @@ import { useRoute } from "@react-navigation/native";
 import axios from "axios";
 import { ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
-// import Peer from "simple-peer"
-import RNSimplePeer from "react-native-simple-peer";
-import io from "socket.io-client"
 
 
 const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
@@ -53,7 +50,7 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     }
 const DEBG = () => {
     console.log("DEBG");
-    // navigation.navigate('RNCallLogic', {guest: guest});
+    navigation.navigate('RNCallLogic', {guest: guest});
     
     
 }

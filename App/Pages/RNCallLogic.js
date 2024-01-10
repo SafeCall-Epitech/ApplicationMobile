@@ -1,8 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {View, Text, TextInput} from 'react-native';
-import { Button } from 'react-native-paper';
-
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import { ActivityIndicator } from "@react-native-material/core";
+import Icon from 'react-native-vector-icons/AntDesign';
+import IconF from 'react-native-vector-icons/Feather';
 import RNSimplePeer from "react-native-simple-peer";
+import { useRoute } from "@react-navigation/native";
+
 import {
 	RTCPeerConnection,
 	RTCIceCandidate,
@@ -11,11 +14,19 @@ import {
 	mediaDevices,
 } from 'react-native-webrtc';
 import io from 'socket.io-client';
+import Color from '../color'
 
 
 const socket = io.connect('http://192.168.1.28:5000');
 
-const App = () => {
+const InCallPage = ({navigation}) => {
+
+  const route = useRoute();
+  const CallWith = route.params?.guest;
+
+  console.log(CallWith)
+
+
     const [me, setMe] = useState('');
     const [stream, setStream] = useState();
     const [receivingCall, setReceivingCall] = useState(false);
@@ -34,8 +45,14 @@ const App = () => {
     const connectionRef = useRef();
 
     useEffect(() => {
+      
+      
+      setIdToCall("Perpignan");
+
+
         mediaDevices.getUserMedia({video: true, audio: true}).then((stream) => {
           setStream(stream);
+          console.log(stream);
           }).catch((err) => {
             console.log(err);
         });
@@ -124,19 +141,24 @@ const App = () => {
     const leaveCall = () => {
         setCallEnded(true);
         socket.disconnect();
-    //    connectionRef.current.destroy();
+        navigation.navigate("Home")
+      //  connectionRef.current.destroy();
     };
 
     const muteMicro = () => {
         if (!sound) {
-            muteSound();
+          console.log("UNMUTE")
+            // muteSound(); TO FIX
             stream.getAudioTracks()[0].enabled = true;
             setMicro(true);
         } else {
+          console.log("MUTE")
             stream.getAudioTracks()[0].enabled = !micro;
             setMicro(!micro);
         }
     };
+    
+    //TOFIX
 
     // const muteSound = () => {
     //     if (!sound && wasMicroEnabled) {
@@ -161,32 +183,94 @@ const App = () => {
     };
 
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <TextInput style={{color: 'black',  borderColor: 'black'}} onChangeText={(id) => setIdToCall(id)} />
-        <Text style={{color: 'black'}}> coucou</Text>
-        <Button style={{color: 'black', backgroundColor: 'red',}} title="Call" onPress={() => callUser(idToCall)} />
-        <Button style={{color: 'black', backgroundColor: 'green',}} title="Call" onPress={() => muteMicro()} />
-        
-        <View style={{ flexDirection: 'row' }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'  }}>
+
+    {/* Cameras */}
+      <View style={{ flexDirection: 'row'}}>
           <View style={{ marginRight: 10 }}>
-            {stream && (
+            {stream && !callAccepted ?
               <RTCView
-                style={{ width: 100, height: 50 }}
+                style={{ width: 762 , height: 762 }}
                 streamURL={stream.toURL()}
               />
-            )}
+          : 
+          <ActivityIndicator color="#25101c"/> }
           </View>
           <View>
-            {callAccepted && !callEnded && userStream && (
-              <RTCView style={{ width: 100, height: 50 }} streamURL={userStream.toURL()} />
-            )}
+            {callAccepted && !callEnded && userStream ? 
+              <RTCView style={{ width: 762, height: 762 }} streamURL={userStream.toURL()} />
+              : <ActivityIndicator color="#25101c"/> }
           </View>
         </View>
-        <Text>{ me }</Text>
 
+
+        {/* <Button style={{backgroundColor: 'red',}} title="Call" onPress={() => callUser(idToCall)} /> */}
+
+
+        <Text style={styles.callwithtext}>{idToCall}</Text>
+
+    { sound ? 
+        <TouchableOpacity style={styles.buttongreen} onPress={() => muteMicro()}>
+          <IconF style={{alignSelf: 'center'}} name="mic-off" size={40} color={Color.light3} />
+          <Text style={(styles.buttonText, {alignSelf: 'center'})}>mute</Text>
+        </TouchableOpacity>
+        : <TouchableOpacity style={styles.buttonred} onPress={() => muteMicro()}>
+        <IconF style={{alignSelf: 'center'}} name="mic" size={40} color={Color.light3} />
+        <Text style={(styles.buttonText, {alignSelf: 'center'})}>unmute</Text>
+      </TouchableOpacity>}
+      <TouchableOpacity style={styles.buttonhang} onPress={() => leaveCall()}>
+          <IconF style={{alignSelf: 'center'}} name="phone-off" size={40} color={Color.light3} />
+          <Text style={(styles.buttonText, {alignSelf: 'center'})}>leave</Text>
+        </TouchableOpacity>
+        
       </View>
     );
 };
 
-export default App;
+const styles = StyleSheet.create({
+  callwithtext: {
+    position: 'absolute',
+    fontSize: 30,
+    top: 0,
+    // padding: 10,
+    borderRadius: 5,
+    fontWeight: 'bold',
+  },
+  buttongreen: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    width: 75,
+    height: 75,
+    backgroundColor: 'green',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonred: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    width: 75,
+    height: 75,
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonhang: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    width: 75,
+    height: 75,
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+  },
+});
+
+export default InCallPage;
 

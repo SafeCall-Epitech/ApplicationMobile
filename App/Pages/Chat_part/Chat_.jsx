@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, KeyboardAvoidingView } from 'react-native';
-c
 import axios from 'axios';
 import Print_message from './Print_message';
 import { storeData, getData, removeData } from './store';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 const Stack = createStackNavigator();
 
@@ -69,7 +69,7 @@ function ChatScreen() {
                     onChangeText={(text) => setCurrentMessage(text)}
                     onSubmitEditing={sendMessage}
                 />
-                <Button onPress={sendMessage} title="SEND" />
+                <Button onPress={sendMessage} title="Send" />
             </View>
             <View style={styles.emptySpace} />
         </KeyboardAvoidingView>
