@@ -49,8 +49,7 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
         isrdvsoon = true;
     }
 const DEBG = () => {
-    console.log("DEBG");
-    navigation.navigate('RNCallLogic', {guest: guest});
+    navigation.navigate('RNCallLogic', {guest: guest, UserName: UserName});
     
     
 }
@@ -173,6 +172,15 @@ const Agenda = ({navigation}) => {
                     isRDVConfirmedArray[x] = "Confirmed";
                 } else {
                     isRDVConfirmedArray[x] = "Not Confirmed";
+                }
+
+                //of date contain a T
+
+                if (RDVDateArray[x].includes("T")) {
+                    //split the date to get the format "yyyy/mm/dd"
+                    RDVDateArray[x] = RDVDateArray[x].split("T")[0];
+                    //split the date to get the format "yyyy/mm/dd"
+                    RDVDateArray[x] = RDVDateArray[x].split("-")[2] + "/" + RDVDateArray[x].split("-")[1] + "/" + RDVDateArray[x].split("-")[0];
                 }
 
                 //if date is in the past, add it to the past agenda cards

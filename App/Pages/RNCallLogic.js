@@ -17,15 +17,14 @@ import io from 'socket.io-client';
 import Color from '../color'
 
 
-const socket = io.connect('http://192.168.1.28:5000');
+// const socket = io.connect('http://192.168.1.28:5000');
+const socket = io.connect('https://x2024safecall3173801594000.westeurope.cloudapp.azure.com:5000/');
 
 const InCallPage = ({navigation}) => {
 
   const route = useRoute();
   const CallWith = route.params?.guest;
-
-  console.log(CallWith)
-
+  const Caller = route.params?.UserName;
 
     const [me, setMe] = useState('');
     const [stream, setStream] = useState();
@@ -46,10 +45,6 @@ const InCallPage = ({navigation}) => {
 
     useEffect(() => {
       
-      
-      setIdToCall("Perpignan");
-
-
         mediaDevices.getUserMedia({video: true, audio: true}).then((stream) => {
           setStream(stream);
           console.log(stream);
@@ -57,20 +52,26 @@ const InCallPage = ({navigation}) => {
             console.log(err);
         });
 
+        socket.emit("pseudo", {pseudo: Caller});
+        setIdToCall(CallWith);
+        console.log("DZOQJHDPOIQZHDPZQCALL = " + CallWith);
+
         socket.on("me", (id) => {
-          console.log(id);
-            setMe(id);
+          setMe(id);
         });
 
-        socket.on("callUser", (data) => {
+        socket.on("callReceived", (data) => {
             setReceivingCall(true);
             setCaller(data.from);
             setCallerSignal(data.signal);
+            answerCall();
+            console.log("CALL RECEIVED OUZJDBHUYOQDVOUQd");
         });
+        callUser(CallWith);
     }, []);
 
     const callUser = (id) => {
-        console.log("CALL");
+        console.log("CALL = " + id);
         const peer = new RNSimplePeer({
             initiator: true,
             webRTC: {
@@ -97,7 +98,7 @@ const InCallPage = ({navigation}) => {
         });
 
         socket.on("callEnded", () => {
-            leaveCall();
+            endCall();
         });
 
         socket.on("callAccepted", (signal) => {
@@ -131,18 +132,29 @@ const InCallPage = ({navigation}) => {
           });
 
         socket.on("callEnded", () => {
-            leaveCall();
+            endCall();
         });
 
         peer.signal(callerSignal);
         connectionRef.current = peer;
     };
 
+    const endCall = () => {
+      console.log("endCall function")
+      setCallEnded(true);
+      setReceivingCall(false);
+      setCallAccepted(false);
+      if (connectionRef.current && connectionRef.current.srcObject) {
+        connectionRef.current.destroy();
+      }
+    }
+  
     const leaveCall = () => {
-        setCallEnded(true);
-        socket.disconnect();
-        navigation.navigate("Home")
-      //  connectionRef.current.destroy();
+      console.log("leaveCall function")
+      socket.emit("endCall")
+      endCall();
+      // setCallEnded(true);
+      navigation.navigate("Home")
     };
 
     const muteMicro = () => {
