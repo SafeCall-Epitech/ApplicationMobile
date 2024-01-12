@@ -38,6 +38,7 @@ const FriendList = ({navigation}) => {
                 // console.log(res.data["fetched"][x])
                 if (res.data["fetched"][x]["Active"] == true) {
                     setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]["Id"]])
+                    setFriendNumber(FriendNumber + 1)
                 }
                 if (res.data["fetched"][x]["Active"] == false && res.data["fetched"][x]["Id"][0] == "?") {
                     setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]["Id"]])

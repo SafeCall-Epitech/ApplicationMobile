@@ -25,10 +25,10 @@ const DelFriend = async (userName, friendName) => {
                 const form = JSON.stringify({
                   UserID: userName,
                   Friend: friendName,
-                  Subject: res.data["fetched"][x]["Subject"],
+                  Subject: res.data[" "][x]["Subject"],
                   Action: "delete",
                 });
-                // console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
+                console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
                 await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend`, form, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -98,7 +98,6 @@ const showDeleteOrReportConfirmation = (friendName) => {
         {
           text: 'Report',
           onPress: () => {
-            // Add code to report the card here
             console.log(`Reporting friend: ${friendName}`);
             reportcall()
           },

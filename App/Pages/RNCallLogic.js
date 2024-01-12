@@ -17,8 +17,8 @@ import io from 'socket.io-client';
 import Color from '../color'
 
 
-// const socket = io.connect('http://192.168.1.28:5000');
-const socket = io.connect('https://x2024safecall3173801594000.westeurope.cloudapp.azure.com:5000/');
+const socket = io.connect('http://10.68.245.175:5000');
+// const socket = io.connect('https://x2024safecall3173801594000.westeurope.cloudapp.azure.com:5000/');
 
 const InCallPage = ({navigation}) => {
 
@@ -54,24 +54,23 @@ const InCallPage = ({navigation}) => {
 
         socket.emit("pseudo", {pseudo: Caller});
         setIdToCall(CallWith);
-        console.log("DZOQJHDPOIQZHDPZQCALL = " + CallWith);
 
         socket.on("me", (id) => {
           setMe(id);
         });
 
         socket.on("callReceived", (data) => {
-            setReceivingCall(true);
-            setCaller(data.from);
-            setCallerSignal(data.signal);
-            answerCall();
-            console.log("CALL RECEIVED OUZJDBHUYOQDVOUQd");
+          console.log("callReceivedèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèè")
+          setReceivingCall(true);
+          setCaller(data.from);
+          setCallerSignal(data.signal);
+          answerCall();
         });
-        callUser(CallWith);
+        // callUser(CallWith);
     }, []);
 
     const callUser = (id) => {
-        console.log("CALL = " + id);
+      console.log("CALL = " + id);
         const peer = new RNSimplePeer({
             initiator: true,
             webRTC: {
@@ -111,7 +110,7 @@ const InCallPage = ({navigation}) => {
 
     const answerCall = () => {
         setCallAccepted(true);
-        const peer = new Peer({
+        const peer = new RNSimplePeer({
             initiator: false,
             webRTC: {
                 RTCPeerConnection,
@@ -121,8 +120,10 @@ const InCallPage = ({navigation}) => {
             trickle: false,
             stream: stream
         });
+        
 
         peer.on("signal", (data) => {
+          console.log("DATA : " + data);
             socket.emit("answerCall", {signal: data, to: caller});
         });
 
@@ -135,7 +136,11 @@ const InCallPage = ({navigation}) => {
             endCall();
         });
 
+
+        console.log("CIJAUZGYDAZG8DO0AZGD0 : 1" + callerSignal);
         peer.signal(callerSignal);
+        console.log("CIJAUZGYDAZG8DO0AZGD0 : 2" + callerSignal);
+
         connectionRef.current = peer;
     };
 
@@ -197,8 +202,14 @@ const InCallPage = ({navigation}) => {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'  }}>
 
+
+      <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold', position: 'absolute', top: 0, padding: 10, borderRadius: 5,}}>Calling {idToCall}</Text>
+      <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold', position: 'absolute', top: 40, padding: 10, borderRadius: 5,}}>You are {Caller}</Text>
+
+
+
     {/* Cameras */}
-      <View style={{ flexDirection: 'row'}}>
+      {/* <View style={{ flexDirection: 'row'}}>
           <View style={{ marginRight: 10 }}>
             {stream && !callAccepted ?
               <RTCView
@@ -213,13 +224,13 @@ const InCallPage = ({navigation}) => {
               <RTCView style={{ width: 762, height: 762 }} streamURL={userStream.toURL()} />
               : <ActivityIndicator color="#25101c"/> }
           </View>
-        </View>
+        </View> */}
 
 
         {/* <Button style={{backgroundColor: 'red',}} title="Call" onPress={() => callUser(idToCall)} /> */}
 
 
-        <Text style={styles.callwithtext}>{idToCall}</Text>
+        {/* <Text style={styles.callwithtext}>{idToCall}</Text>
 
     { sound ? 
         <TouchableOpacity style={styles.buttongreen} onPress={() => muteMicro()}>
@@ -233,7 +244,7 @@ const InCallPage = ({navigation}) => {
       <TouchableOpacity style={styles.buttonhang} onPress={() => leaveCall()}>
           <IconF style={{alignSelf: 'center'}} name="phone-off" size={40} color={Color.light3} />
           <Text style={(styles.buttonText, {alignSelf: 'center'})}>leave</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
       </View>
     );
