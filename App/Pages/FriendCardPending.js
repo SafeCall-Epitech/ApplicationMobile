@@ -39,6 +39,7 @@ const FriendCardPending = props => {
             console.log(res.data)
             setIsVisible(false)
             alert("You have accepted the request for " + FriendName + "!")
+            // navigation.navigate('Home', {name: UserName})
         })
     }
 
@@ -63,6 +64,7 @@ const FriendCardPending = props => {
             console.log(res.data)
             setIsVisible(false)
             alert("You refused the request to " + FriendName + "!")
+            // navigation.navigate('Home', {name: UserName})
         })
     }
 

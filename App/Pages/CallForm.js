@@ -22,20 +22,6 @@ const CallForm = ({navigation}) => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
 
-    formatDate = (date) => {
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-
-        if (day < 10) {
-            day = '0' + day;
-        }
-        if (month < 10){
-            month = '0' + month;
-        }
-        return day + '/' + month + '/' + year;
-    }
-
     const SendCallForm = async () => {
         if (ToAddGuest2 == '') {
             Alert.alert('Error', 'Please enter a contact')
@@ -54,10 +40,8 @@ const CallForm = ({navigation}) => {
             Guest1: UserName,
             Guest2: ToAddGuest2,
             Subject: ToAddObject,
-            Date: formatDate(date),
+            Date: date,
         });
-        console.log(UserName)
-        console.log('FORM = ' + form)
         axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/addEvent`, form, {
             headers: {
             'Content-Type': 'application/json'
@@ -78,14 +62,6 @@ const CallForm = ({navigation}) => {
             <Text style={{alignSelf: 'center', marginTop: 5, fontSize: 35, top: -40, color: Color.light3}}>Add Event</Text>
             <View style={styles.egg}/>
             <ScrollView style={styles.scrollView}>
-                    {/* <View>
-                    {<Text style={styles.maintext}>Object :</Text>}
-                    <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Object" placeholderTextColor={Color.dark2} onChangeText={text => setObject(text)} value={ToAddObject}/>
-                    </View>
-                    <View>
-                    {<Text style={styles.maintext}>Contact :</Text>}
-                    <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Contact" placeholderTextColor={Color.dark2} onChangeText={text => setDestGuest1(text)} value={ToAddGuest1}/>
-                    </View> */}
                     <View style={styles.center}>
                         <TextInput
                             variant="outlined"
@@ -110,11 +86,7 @@ const CallForm = ({navigation}) => {
                         </View>
                     <View>
                     {<Text style={styles.maintext}>Date of the event :</Text>}
-                    {/* <DatePicker date={date} onDateChange={setDate} style={styles.datepicker}
-                    androidVariant= 'nativeAndroid' 
-                    textColor='black'
-                    mode='date'
-                    /> */}
+
                     <DatePicker
                         style={styles.datepicker}
                         date={date}
@@ -136,11 +108,34 @@ const CallForm = ({navigation}) => {
                           dateInput: {
                             marginLeft: 36
                           }
-                          // ... You can check the source to find the other keys.
                         }}
                         onDateChange={setDate}
                     />
-                    {/* <TextInput style={{alignSelf: 'center', marginTop: 5, marginLeft: 5, marginRight: 5, width: '65%', height: 40, backgroundColor: Color.light, borderRadius: 10, paddingLeft: 10, paddingRight: 10, color: Color.dark2}} placeholder="Date" placeholderTextColor={Color.dark2} onChangeText={text => setDate(text)} value={ToAddDate}/>     */}
+                    <DatePicker
+                        style={styles.datepicker}
+                        date={date}
+                        mode="datetime"
+                        placeholder="select date"
+                        format="YYYY-MM-DD HH:mm"
+                        minDate="2016-05-01"
+                        maxDate="2016-06-01"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        androidVariant='nativeAndroid'
+                        timeZoneOffsetInMinutes={0}
+                        customStyles={{
+                          dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0,
+                          },
+                          dateInput: {
+                            marginLeft: 36
+                          }
+                        }}
+                        onDateChange={setDate}
+                    />
                     </View>
             </ScrollView>
             <View style={styles.btnrow}></View>

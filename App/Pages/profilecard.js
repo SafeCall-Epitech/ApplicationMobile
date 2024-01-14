@@ -4,6 +4,7 @@ import { ActivityIndicator, Avatar, Button, TextInput } from '@react-native-mate
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../color';
 import axios from 'axios';
+import { useRoute } from '@react-navigation/native';
 
 function HandleFriend(UserName, ToAddUser, Fsubject, action) {
   console.log(UserName, ToAddUser, Fsubject, action)

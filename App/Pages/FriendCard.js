@@ -28,7 +28,6 @@ const DelFriend = async (userName, friendName) => {
                   Subject: res.data["fetched"][x]["Subject"],
                   Action: "delete",
                 });
-                // console.log( "DeleteFriend: " + "http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend" + form)
                 await axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/manageFriend`, form, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -45,10 +44,12 @@ const DelFriend = async (userName, friendName) => {
 
   
 
-const FriendCard = props => {
+const FriendCard = (props) => {
   const route = useRoute();
   const UserName = route.params?.name;
   const [visible, setVisible] = useState(false);
+  const [alertWithInput, setAlertWithInput] = useState(false);
+  const [textInputValue, setTextInputValue] = useState('');
 
   const showMenu = () => setVisible(true);
   const hideMenu = () => setVisible(false);
@@ -85,20 +86,17 @@ const showDeleteOrReportConfirmation = (friendName) => {
       [
         {
           text: 'Cancel',
-          // onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
         {
           text: 'Delete',
           onPress: () => {
-            // Call the DeleteFriend function
             DelFriend(UserName, friendName);
           },
         },
         {
           text: 'Report',
           onPress: () => {
-            // Add code to report the card here
             console.log(`Reporting friend: ${friendName}`);
             reportcall()
           },

@@ -19,9 +19,7 @@ const FriendList = ({navigation}) => {
     const [isLoaded, setIsLoaded] = React.useState(false);
     const [asPending, setasPending] = React.useState(false);
 
-    const [FriendNumber, setFriendNumber] = React.useState(0);
     const [FriendsArray, setFriendsArray] = React.useState([]);
-    const [PendingFriendNumber, setPendingFriendNumber] = React.useState(0);
     const [PendingFriendsArray, setPendingFriendsArray] = React.useState([]);
     const [Fsubject, setFsubject] = React.useState("Demande d'ami");
 
@@ -33,15 +31,15 @@ const FriendList = ({navigation}) => {
             } else if (res.data["fetched"].length == 0) {
                 return;
             }
-            console.log(res.data["fetched"]);
+            console.log(res.data["fetched"])
             for (var x = 0; x < res.data["fetched"].length; x++) {
-                // console.log(res.data["fetched"][x])
                 if (res.data["fetched"][x]["Active"] == true) {
                     setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]["Id"]])
+                    // setFriendNumber(FriendsArray.length + 1)
                 }
                 if (res.data["fetched"][x]["Active"] == false && res.data["fetched"][x]["Id"][0] == "?") {
                     setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]["Id"]])
-                    setPendingFriendNumber(PendingFriendNumber + 1)
+                    // setPendingFriendNumber(PendingFriendNumber + 1)
                     setFsubject(res.data["fetched"][x]["Subject"])
                     setasPending(true)
                 }
@@ -51,7 +49,7 @@ const FriendList = ({navigation}) => {
     }
 
     const PendingFriendsListDisplayer = () => {
-        for (var x = 0; x <= PendingFriendNumber; x++) {
+        for (var x = 0; x <= PendingFriendsArray.length; x++) {
             if (PendingFriendsArray[x] != undefined) {
                 PendingFriendsCards.push(<FriendCardPending key={x} AccountName={UserName} name={PendingFriendsArray[x]} Reason={Fsubject}/>)
             }
@@ -64,7 +62,8 @@ const FriendList = ({navigation}) => {
     }
 
     const FriendsListDisplayer = () => {
-        for (var x = 0; x <= FriendNumber; x++) {
+        console.log(FriendsArray.length)
+        for (var x = 0; x <= FriendsArray.length ; x++) {
             if (FriendsArray[x] != undefined) {
                 FriendsCards.push(<FriendCard key={x} name={FriendsArray[x]}/>)
             }
