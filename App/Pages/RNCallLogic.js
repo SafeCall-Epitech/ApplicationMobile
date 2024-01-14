@@ -16,10 +16,16 @@ import {
 import io from 'socket.io-client';
 import Color from '../color';
 
+<<<<<<< HEAD
 const socket = io.connect(
   'http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:5000/',
 );
 // const socket = io.connect('');
+=======
+
+const socket = io.connect('http://10.68.245.175:5000');
+// const socket = io.connect('https://x2024safecall3173801594000.westeurope.cloudapp.azure.com:5000/');
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
 
 const InCallPage = ({navigation}) => {
   const route = useRoute();
@@ -54,13 +60,19 @@ const InCallPage = ({navigation}) => {
         console.log(err);
       });
 
+<<<<<<< HEAD
     socket.emit('pseudo', {pseudo: Caller});
     setIdToCall(CallWith);
+=======
+        socket.emit("pseudo", {pseudo: Caller});
+        setIdToCall(CallWith);
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
 
     socket.on('me', id => {
       setMe(id);
     });
 
+<<<<<<< HEAD
     socket.on('callReceived', data => {
       console.log(
         'callReceivedèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèè',
@@ -85,6 +97,30 @@ const InCallPage = ({navigation}) => {
       trickle: false,
       stream: stream,
     });
+=======
+        socket.on("callReceived", (data) => {
+          console.log("callReceivedèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèèè")
+          setReceivingCall(true);
+          setCaller(data.from);
+          setCallerSignal(data.signal);
+          answerCall();
+        });
+        // callUser(CallWith);
+    }, []);
+
+    const callUser = (id) => {
+      console.log("CALL = " + id);
+        const peer = new RNSimplePeer({
+            initiator: true,
+            webRTC: {
+                RTCPeerConnection,
+                RTCIceCandidate,
+                RTCSessionDescription
+            },
+            trickle: false,
+            stream: stream
+        })
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
 
     peer.on('signal', data => {
       socket.emit('callUser', {
@@ -100,7 +136,71 @@ const InCallPage = ({navigation}) => {
       setUserStream(str);
     });
 
+<<<<<<< HEAD
     socket.on('callEnded', () => {
+=======
+        socket.on("callEnded", () => {
+            endCall();
+        });
+
+        socket.on("callAccepted", (signal) => {
+            setCallAccepted(true);
+            peer.signal(signal);
+        });
+
+        connectionRef.current = peer;
+    };
+
+    const answerCall = () => {
+        setCallAccepted(true);
+        const peer = new RNSimplePeer({
+            initiator: false,
+            webRTC: {
+                RTCPeerConnection,
+                RTCIceCandidate,
+                RTCSessionDescription
+            },
+            trickle: false,
+            stream: stream
+        });
+        
+
+        peer.on("signal", (data) => {
+          console.log("DATA : " + data);
+            socket.emit("answerCall", {signal: data, to: caller});
+        });
+
+        peer.on("stream", (str) => {
+            str.getAudioTracks()[0].enabled = sound;
+            setUserStream(str);
+          });
+
+        socket.on("callEnded", () => {
+            endCall();
+        });
+
+
+        console.log("CIJAUZGYDAZG8DO0AZGD0 : 1" + callerSignal);
+        peer.signal(callerSignal);
+        console.log("CIJAUZGYDAZG8DO0AZGD0 : 2" + callerSignal);
+
+        connectionRef.current = peer;
+    };
+
+    const endCall = () => {
+      console.log("endCall function")
+      setCallEnded(true);
+      setReceivingCall(false);
+      setCallAccepted(false);
+      if (connectionRef.current && connectionRef.current.srcObject) {
+        connectionRef.current.destroy();
+      }
+    }
+  
+    const leaveCall = () => {
+      console.log("leaveCall function")
+      socket.emit("endCall")
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
       endCall();
     });
 
@@ -130,6 +230,7 @@ const InCallPage = ({navigation}) => {
       socket.emit('answerCall', {signal: data, to: caller});
     });
 
+<<<<<<< HEAD
     peer.on('stream', str => {
       str.getAudioTracks()[0].enabled = sound;
       setUserStream(str);
@@ -235,6 +336,15 @@ const InCallPage = ({navigation}) => {
       </Text>
 
       {/* Cameras */}
+=======
+
+      <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold', position: 'absolute', top: 0, padding: 10, borderRadius: 5,}}>Calling {idToCall}</Text>
+      <Text style={{color: 'white', fontSize: 30, fontWeight: 'bold', position: 'absolute', top: 40, padding: 10, borderRadius: 5,}}>You are {Caller}</Text>
+
+
+
+    {/* Cameras */}
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
       {/* <View style={{ flexDirection: 'row'}}>
           <View style={{ marginRight: 10 }}>
             {stream && !callAccepted ?
@@ -256,7 +366,14 @@ const InCallPage = ({navigation}) => {
 
       {/* <Text style={styles.callwithtext}>{idToCall}</Text>
 
+<<<<<<< HEAD
     { sound ?
+=======
+
+        {/* <Text style={styles.callwithtext}>{idToCall}</Text>
+
+    { sound ? 
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
         <TouchableOpacity style={styles.buttongreen} onPress={() => muteMicro()}>
           <IconF style={{alignSelf: 'center'}} name="mic-off" size={40} color={Color.light3} />
           <Text style={(styles.buttonText, {alignSelf: 'center'})}>mute</Text>
@@ -269,8 +386,14 @@ const InCallPage = ({navigation}) => {
           <IconF style={{alignSelf: 'center'}} name="phone-off" size={40} color={Color.light3} />
           <Text style={(styles.buttonText, {alignSelf: 'center'})}>leave</Text>
         </TouchableOpacity> */}
+<<<<<<< HEAD
     </View>
   );
+=======
+        
+      </View>
+    );
+>>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
 };
 
 const styles = StyleSheet.create({
