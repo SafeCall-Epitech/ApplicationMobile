@@ -49,9 +49,8 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
         isrdvsoon = true;
     }
 const DEBG = () => {
-    navigation.navigate('RNCallLogic', {guest: guest, UserName: UserName});
-    
-    
+    navigation.navigate('Webview', {guest: guest, UserName: UserName});
+    // navigation.navigate('RNCallLogic', {guest: guest, UserName: UserName});
 }
     return (
         <View style={styles2.card}>

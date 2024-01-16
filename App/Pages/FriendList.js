@@ -35,11 +35,6 @@ const FriendList = ({navigation}) => {
             for (var x = 0; x < res.data["fetched"].length; x++) {
                 if (res.data["fetched"][x]["Active"] == true) {
                     setFriendsArray(FriendsArray => [...FriendsArray, res.data["fetched"][x]["Id"]])
-<<<<<<< HEAD
-                    // setFriendNumber(FriendsArray.length + 1)
-=======
-                    setFriendNumber(FriendNumber + 1)
->>>>>>> 3a9cfbdf821cbe45168688e3d8a1d953210b6add
                 }
                 if (res.data["fetched"][x]["Active"] == false && res.data["fetched"][x]["Id"][0] == "?") {
                     setPendingFriendsArray(PendingFriendsArray => [...PendingFriendsArray, res.data["fetched"][x]["Id"]])

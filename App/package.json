@@ -29,6 +29,7 @@
     "react-native-vector-icons": "^9.2.0",
     "react-native-vector-image": "^0.3.3",
     "react-native-webrtc": "^118.0.0",
+    "react-native-webview": "^13.6.4",
     "socket.io-client": "^4.7.3"
   },
   "devDependencies": {
