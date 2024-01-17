@@ -8,7 +8,7 @@ const MyWebComponent = ({navigation}) => {
   const route = useRoute();
   const CallWith = route.params?.guest;
   const Caller = route.params?.UserName;
-  return <WebView source={{ uri: `https://safecall-web.vercel.app/call/${CallWith}` }} style={{ flex: 1 }} />;
+  return <WebView source={{ uri: `https://safecall-web.vercel.app/mobile_call/${CallWith}/${Caller}`, javaScriptEnabled: true, DOMdomStorageEnabled: true, originWhitelist: ["https://*"], mixedContentMode: "always",}} style={{ flex: 1 }} />;
 }
 
 export default MyWebComponent
