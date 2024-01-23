@@ -30,6 +30,7 @@ const Login = ({navigation}) => {
                 navigation.navigate('Home', {name: res.data["success"]});
             }
         }).catch(err => {
+            alert("Login or password incorrect");
             console.log(err);
             setLoading(false);
         })

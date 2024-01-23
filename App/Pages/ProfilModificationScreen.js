@@ -11,6 +11,7 @@ import IconS from 'react-native-vector-icons/EvilIcons';
 import IconB from 'react-native-vector-icons/Entypo';
 import axios from "axios";
 import Color from "../color";
+import { Alert } from "react-native";
 
 const ProfilScreen = ({navigation}) => {
     const route = useRoute();
@@ -24,6 +25,41 @@ const ProfilScreen = ({navigation}) => {
     const [Email, setEmail] = React.useState("");
     const [verified, setVerified] = React.useState(false);
     const [ProfilePic, setProfilePic] = React.useState('none');
+
+
+    const deleteProfile = async () => {
+        console.log("deleteProfile");
+
+        //alert ("Are you sure you want to delete your profile ?");
+        Alert.alert(
+            'WARNING',
+            `Are you sure you want to delete your profile ?`,
+            [
+              {
+                text: 'Delete',
+                onPress: () => {
+                    axios.post('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/delete', JSON.stringify({userID: ProfileAPI}), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+        .then(res => {
+            console.log(res.data);
+            navigation.navigate('Login');
+        })
+                },
+              },
+              {
+                text: 'Cancel',
+                styles: 'cancel',
+              },
+            ],
+            { cancelable: false }
+          );
+
+
+        
+    }
 
     const updateProfile = async () => {
         console.log("updateProfile");
@@ -118,6 +154,7 @@ const ProfilScreen = ({navigation}) => {
         <View style={styles.mainpage}>
             <View style={styles.row}>
             <Icon arrow-back style={{alignSelf: 'flex-start', marginTop: 5, marginLeft: 5}} name="arrow-back" size={40} color={Color.light3} onPress={() => navigation.navigate('Home')}/>
+            <Icon trash style={{alignSelf: 'flex-start', marginTop: 5, marginRight: 5}} name="trash" size={40} color={Color.light3} onPress={() => deleteProfile()}/>
             </View>
             <View style={styles.egg}/>
             <Text style={{alignSelf: 'center', marginTop: 5, top: -40, fontSize: 25, color: Color.light3}}>Modify Profil</Text>

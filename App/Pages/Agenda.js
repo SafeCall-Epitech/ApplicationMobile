@@ -9,7 +9,7 @@ import { ScrollView } from "react-native";
 import { ActivityIndicator } from "react-native";
 
 
-const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, UserName}) => {
+const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject, RDVTime, UserName}) => {
 
     // split the RDVGuests string into an array
     const RDVGuestsArray = RDVGuests.split("+");
@@ -37,7 +37,6 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
     var today = new Date();
     //get the rdv date
     var rdvdate = new Date(RDVDate);
-    console.log(RDVDate);
     //get today's date in the format "dd/mm/yyyy"
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, "0");
@@ -59,7 +58,7 @@ const DEBG = () => {
             </View>
             <View style={styles2.cardBody}>
                 <View style={{flexDirection: 'row', marginBottom: 10}}>
-                    <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate}</Text>
+                    <Text style={styles2.cardBodyTextLeft}>Date: {RDVDate} {RDVTime}</Text>
                     <Text style={styles2.cardBodyTextRight}>With: {guest}</Text>
                 </View>
                 {/* {isrdvsoon ? <Button title="Call" color="green" onPress={() => navigation.navigate('InCallPage', {guest: guest})}/> : null} */}
@@ -131,6 +130,7 @@ const Agenda = ({navigation}) => {
 
     const [isRDVConfirmedArray, setisRDVConfirmedArray] = React.useState([]);
     const [RDVDateArray, setRDVDateArray] = React.useState([]);
+    const [RDVTimeArray, setRDVTimeArray] = React.useState([]);
     const [RDVGuestsArray, setRDVGuestsArray] = React.useState([]);
     const [RDVSubjectArray, setRDVSubjectArray] = React.useState([]);
 
@@ -173,11 +173,21 @@ const Agenda = ({navigation}) => {
                     isRDVConfirmedArray[x] = "Not Confirmed";
                 }
 
-                //of date contain a T
+                console.log(RDVSubjectArray[x] + " :" + RDVDateArray[x]);
 
+
+                //of date contain a T
                 if (RDVDateArray[x].includes("T")) {
                     //split the date to get the format "yyyy/mm/dd"
-                    RDVDateArray[x] = RDVDateArray[x].split("T")[0];
+                    // RDVDateArray[x] = RDVDateArray[x].split("T")[0];
+                    tmpRDV = RDVDateArray[x].split("T")[0];
+                    RDVTimeArray[x] = RDVDateArray[x].split("T")[1];
+                    RDVDateArray[x] = tmpRDV;
+                    //split the time to get the format "hh:mm"
+                    RDVTimeArray[x] = RDVTimeArray[x].split(":")[0] + ":" + RDVTimeArray[x].split(":")[1];
+
+                    console.log(RDVTimeArray[x]);
+
                     //split the date to get the format "yyyy/mm/dd"
                     RDVDateArray[x] = RDVDateArray[x].split("-")[2] + "/" + RDVDateArray[x].split("-")[1] + "/" + RDVDateArray[x].split("-")[0];
                 }
@@ -189,13 +199,13 @@ const Agenda = ({navigation}) => {
                 let dd = new Date().toISOString().slice(8, 10);
 
                 if (RDVDateArray[x].substring(6, 10) < yyyy) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
                 } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) < mm) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
                 } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) == mm && RDVDateArray[x].substring(0, 2) < dd) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
                 } else {
-                    AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} UserName = {UserName}/>)
+                    AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
                 }
             }
         }
