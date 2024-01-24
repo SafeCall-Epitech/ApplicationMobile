@@ -92,6 +92,7 @@ const CallForm = ({navigation}) => {
                         date={date}
                         mode="date"
                         placeholder="select date"
+                        textColor='black'
                         format="YYYY-MM-DD"
                         minDate="2016-05-01"
                         maxDate="2016-06-01"
@@ -116,6 +117,7 @@ const CallForm = ({navigation}) => {
                         date={date}
                         mode="datetime"
                         placeholder="select date"
+                        textColor='black'
                         format="YYYY-MM-DD HH:mm"
                         minDate="2016-05-01"
                         maxDate="2016-06-01"
@@ -203,7 +205,7 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         marginRight: 5,
         height: 80,
-        backgroundColor: Color.dark1,
+        // backgroundColor: Color.dark2,
         borderRadius: 10,
         paddingLeft: 10,
         paddingRight: 10,

@@ -10,6 +10,7 @@ const Register = ({navigation}) => {
     const [loading, setLoading] = useState(false);
     const [UserName, setUserName] = useState();
     const [Password, setPassword] = useState();
+    const [Password2, setPassword2] = useState();
     const [Email, setEmail] = useState();
     const Myresponse = null;
 
@@ -62,6 +63,10 @@ const Register = ({navigation}) => {
         }
         if (UserName.length < 5) {
             alert("Username must be at least 5 characters long");
+            return;
+        }
+        if (Password != Password2) {
+            alert("Passwords don't match");
             return;
         }
         setLoading(true);
@@ -117,6 +122,16 @@ const Register = ({navigation}) => {
                     color={Color.dark3}
                 />}
                 style={styles.input} onChangeText={(Password) => setPassword(Password)} value={Password} 
+                color={Color.dark3}
+            />
+            <TextInput
+                variant="outlined"
+                label="Password"
+                secureTextEntry={true}
+                leading={props => <Icon name="lock" {...props} 
+                    color={Color.dark3}
+                />}
+                style={styles.input} onChangeText={(Password2) => setPassword2(Password2)} value={Password2} 
                 color={Color.dark3}
             />
             <View style={{alignItems: "flex-start", justifyContent: "center", marginLeft: 45}}>

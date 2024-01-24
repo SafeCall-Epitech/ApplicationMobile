@@ -234,6 +234,7 @@ const ProfilScreen = ({navigation}) => {
                 color={Color.dark3}
                 onChangeText={setPhoneNb}
                 value={PhoneNb}
+                keyboardType="phone-pad"
                 // onChangeText={(UserName) => setUserName(UserName)} value={UserName}
                 />
             </View>
