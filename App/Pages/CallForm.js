@@ -22,6 +22,28 @@ const CallForm = ({navigation}) => {
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
 
+    const formatDate = (date) => {
+        console.log(date)
+
+        var d = new Date(date);
+        var month = '' + (d.getMonth() + 1);
+        var day = '' + d.getDate();
+        var year = d.getFullYear();
+        var hour = '' + d.getHours();
+        var minute = '' + d.getMinutes();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        if (hour.length < 2)
+            hour = '0' + hour;
+        if (minute.length < 2)
+            minute = '0' + minute;
+        
+        return [year, month, day].join('-') + ' ' + [hour, minute].join(':');
+    }
+
     const SendCallForm = async () => {
         if (ToAddGuest2 == '') {
             Alert.alert('Error', 'Please enter a contact')
@@ -40,7 +62,7 @@ const CallForm = ({navigation}) => {
             Guest1: UserName,
             Guest2: ToAddGuest2,
             Subject: ToAddObject,
-            Date: date,
+            Date: formatDate(date),
         });
         axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/addEvent`, form, {
             headers: {
@@ -124,7 +146,6 @@ const CallForm = ({navigation}) => {
                         confirmBtnText="Confirm"
                         cancelBtnText="Cancel"
                         androidVariant='nativeAndroid'
-                        timeZoneOffsetInMinutes={0}
                         customStyles={{
                           dateIcon: {
                             position: 'absolute',

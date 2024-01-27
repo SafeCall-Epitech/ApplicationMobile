@@ -22,35 +22,20 @@ const AgendaCard = ({navigation, isRDVConfirmed, RDVDate, RDVGuests, RDVSubject,
         var guest = RDVGuestsArray[0];
     }
 
-
-    // if rdv date is only number and 8 characters long, set it to the format "dd/mm/yyyy"
-    if (RDVDate.length == 8 && !isNaN(RDVDate)) {
-        RDVDate = RDVDate.substring(0, 2) + "/" + RDVDate.substring(2, 4) + "/" + RDVDate.substring(4, 8);
-    }
-    //if rdv date is only number and less or more than 8 characters long, set it to the format "dd/mm/yyyy"
-    else if (RDVDate.length != 8 && !isNaN(RDVDate)) {
-        RDVDate = RDVDate.substring(0, 2) + "/" + RDVDate.substring(2, 4) + "/" + RDVDate.substring(4);
-    }
-
     var isrdvsoon = false;
-    //get the current date
     var today = new Date();
-    //get the rdv date
-    var rdvdate = new Date(RDVDate);
-    //get today's date in the format "dd/mm/yyyy"
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, "0");
-    var yyyy = today.getFullYear();
-    today = dd + "/" + mm + "/" + yyyy;
+    var RDVDateArray = RDVDate.split(" ");
+    var pieceofRDVDateArray = RDVDateArray[0].split("-");
 
-    //if the difference is less than 0, the rdv is in the past
-    if (today == RDVDate) {
+    //if the RDV is today set isrdvsoon to true
+    if (pieceofRDVDateArray[0] == today.getFullYear() && pieceofRDVDateArray[1] == today.getMonth() + 1 && pieceofRDVDateArray[2] == today.getDate()) {
         isrdvsoon = true;
     }
-const DEBG = () => {
-    navigation.navigate('Webview', {guest: guest, UserName: UserName});
-    // navigation.navigate('RNCallLogic', {guest: guest, UserName: UserName});
-}
+
+
+    const DEBG = () => {
+        navigation.navigate('Webview', {guest: guest, UserName: UserName});
+    }
     return (
         <View style={styles2.card}>
             <View style={styles2.cardHeader}>
@@ -138,11 +123,30 @@ const Agenda = ({navigation}) => {
 
     const [isPastEventVisible, setIsPastEventVisible] = React.useState(false);
 
+    const formatDate = (date) => {
+
+        var d = new Date(date);
+        var month = '' + (d.getMonth() + 1);
+        var day = '' + d.getDate();
+        var year = d.getFullYear();
+        var hour = '' + d.getHours();
+        var minute = '' + d.getMinutes();
+
+        if (month.length < 2)
+            month = '0' + month;
+        if (day.length < 2)
+            day = '0' + day;
+        if (hour.length < 2)
+            hour = '0' + hour;
+        if (minute.length < 2)
+            minute = '0' + minute;
+        
+        return [year, month, day].join('-') + ' ' + [hour, minute].join(':');
+    }
+
     const getAgenda = async () => {
-        // console.log("getAgenda");
         axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/listEvent/${UserName}`)
         .then(res => {
-            // console.log(res.data);
             parsedResponse = res.data["Success "];
             if (parsedResponse == null) {
                 return;
@@ -175,38 +179,15 @@ const Agenda = ({navigation}) => {
 
                 console.log(RDVSubjectArray[x] + " :" + RDVDateArray[x]);
 
-
-                //of date contain a T
-                if (RDVDateArray[x].includes("T")) {
-                    //split the date to get the format "yyyy/mm/dd"
-                    // RDVDateArray[x] = RDVDateArray[x].split("T")[0];
-                    tmpRDV = RDVDateArray[x].split("T")[0];
-                    RDVTimeArray[x] = RDVDateArray[x].split("T")[1];
-                    RDVDateArray[x] = tmpRDV;
-                    //split the time to get the format "hh:mm"
-                    RDVTimeArray[x] = RDVTimeArray[x].split(":")[0] + ":" + RDVTimeArray[x].split(":")[1];
-
-                    console.log(RDVTimeArray[x]);
-
-                    //split the date to get the format "yyyy/mm/dd"
-                    RDVDateArray[x] = RDVDateArray[x].split("-")[2] + "/" + RDVDateArray[x].split("-")[1] + "/" + RDVDateArray[x].split("-")[0];
+                //if date is today or in the future add it to the agenda
+                if (RDVDateArray[x].slice(0, 4) >= new Date().toISOString().slice(0, 4) && RDVDateArray[x].slice(5, 7) >= new Date().toISOString().slice(5, 7) && RDVDateArray[x].slice(8, 10) >= new Date().toISOString().slice(8, 10)) {
+                    AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName={UserName}/>);
+                }
+                //if date is in the past add it to the past agenda
+                else {
+                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName={UserName}/>);
                 }
 
-                //if date is in the past, add it to the past agenda cards
-                //splice the date to get the format "yyyy/mm/dd" and then compare it to today's date
-                let yyyy = new Date().toISOString().slice(0, 4);
-                let mm = new Date().toISOString().slice(5, 7);
-                let dd = new Date().toISOString().slice(8, 10);
-
-                if (RDVDateArray[x].substring(6, 10) < yyyy) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
-                } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) < mm) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
-                } else if (RDVDateArray[x].substring(6, 10) == yyyy && RDVDateArray[x].substring(3, 5) == mm && RDVDateArray[x].substring(0, 2) < dd) {
-                    PastAgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
-                } else {
-                    AgendaCards.push(<AgendaCard key={x} navigation={navigation} isRDVConfirmed={isRDVConfirmedArray[x]} RDVDate={RDVDateArray[x]} RDVGuests={RDVGuestsArray[x]} RDVSubject={RDVSubjectArray[x]} RDVTime={RDVTimeArray[x]} UserName = {UserName}/>)
-                }
             }
         }
         return (
