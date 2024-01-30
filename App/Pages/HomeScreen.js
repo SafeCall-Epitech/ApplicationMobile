@@ -101,7 +101,7 @@ const HomeScreen = ({navigation}) => {
             <Icon logout style={{alignSelf: 'flex-start', marginTop: 15, marginRight: 15}} name="user" size={40} color={Color.light3}  onPress={() => navigation.navigate('Profil', {name: User})}/>
 
             </View >
-                <TouchableHighlight onPress={() => navigation.navigate('FeedbackForm')}>
+                <TouchableHighlight onPress={() => navigation.navigate('FeedbackForm' , {name: User}) }>
                 <Image  style={styles.tinyLogoPicto} source={require('../img/SafeCallBlackPicto.png')} />
                 </TouchableHighlight>
             <View style={styles.egg}/>
