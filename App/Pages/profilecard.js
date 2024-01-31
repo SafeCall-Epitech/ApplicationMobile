@@ -26,7 +26,7 @@ function HandleFriend(UserName, ToAddUser, Fsubject, action) {
   .then(res => {
       console.log(res.data);
       // alert("Friend Added");
-      Alert.alert('New contact', `Friend Added ${ToAddUser}`);
+      Alert.alert('New contact', `Contact Added ${ToAddUser}`);
   })
 }
 
