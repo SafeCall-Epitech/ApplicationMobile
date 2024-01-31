@@ -57,7 +57,8 @@ const FriendCard = (props) => {
   const SendMessage = async (friendName) => {
     const response = await axios.get('http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/messages/' + UserName.toLowerCase() + "/" + friendName.toLowerCase());
     console.log(`Button clicked for ${props.name}`);
-    alert(`Create discussion with ${props.name}`);
+    // alert(`Create discussion with ${props.name}`);
+    Alert.alert('New discussion', `Create discussion with ${props.name}`);
   }
 
   const reportcall = async (friendName) => {

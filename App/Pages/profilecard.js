@@ -4,6 +4,7 @@ import { ActivityIndicator, Avatar, Button, TextInput } from '@react-native-mate
 import Icon from 'react-native-vector-icons/AntDesign';
 import Color from '../color';
 import axios from 'axios';
+import { Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 
 function HandleFriend(UserName, ToAddUser, Fsubject, action) {
@@ -24,7 +25,8 @@ function HandleFriend(UserName, ToAddUser, Fsubject, action) {
   })
   .then(res => {
       console.log(res.data);
-      alert("Friend Added");
+      // alert("Friend Added");
+      Alert.alert('New contact', `Friend Added ${ToAddUser}`);
   })
 }
 
