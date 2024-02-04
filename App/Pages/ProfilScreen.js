@@ -3,6 +3,7 @@ import { ActivityIndicator, Avatar } from "@react-native-material/core";
 import { StyleSheet, Text, View, Modal, TextInput, Button, Alert } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/AntDesign';
+import IconM from 'react-native-vector-icons/MaterialIcons';
 import axios from "axios";
 import Color from "../color";
 
@@ -25,9 +26,12 @@ const ProfilScreen = ({navigation}) => {
     const [ProfilePic, setProfilePic] = React.useState('https://www.flaticon.com/free-icon/blank-avatar_18601');
 
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [modalVisibleMail, setModalVisibleMail] = React.useState(false);
+    const [code, setCode] = React.useState("");
     const [oldPassword, setOldPassword] = React.useState("");
     const [newPassword, setNewPassword] = React.useState("");
     const [confirmNewPassword, setConfirmNewPassword] = React.useState("");
+    // const [IsEmailVerified, setIsEmailVerified] = React.useState(false);
     
 
     const haslowercase = (str) => {
@@ -62,6 +66,34 @@ const ProfilScreen = ({navigation}) => {
         return (str.length >= 8);
     }
 
+    const setCodeRequest = async (text) => {
+        if (text == "") {
+            alert("Code is empty");
+            return;
+        }
+        const form = JSON.stringify({
+            Login: User,
+            Code: text,
+        });
+        console.log(form);
+            axios.post(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/verifyAccount`, form, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(res => {
+                console.log(res.data);
+                Alert.alert("INFO", "Email verified");
+                setModalVisibleMail(false);
+                setVerified(true);
+                setCode("");
+            }).catch(err => {
+                console.log(err);
+                setModalVisibleMail(false);
+                Alert.alert("INFO", "incorrect code");
+                setCode("");
+            })
+    }
 
     const getProfile = async () => {
         axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com:80/profile/${User}`)
@@ -76,6 +108,14 @@ const ProfilScreen = ({navigation}) => {
                 setIsLoaded(false);
             } if (res.data["failed"]) {
                 alert ("Error: " + res.data["failed"]);
+            }
+        })
+        axios.get(`https://x2024safecall3173801594000.westeurope.cloudapp.azure.com/verify/${User}`)
+        .then(res => {
+            if (res.data["verified"] == true) {
+                setVerified(true);
+            } else if (res.data["verified"] == false) {
+                setVerified(false);
             }
         })
     }
@@ -143,7 +183,7 @@ const ProfilScreen = ({navigation}) => {
                     marginTop: 40,
                 }}
             >
-            {verified ? <Icon name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
+            {verified ? <IconM name="verified-user" style={styles.verified} size={30} color="green"/> : <></>}
             <Text style={styles.maintext}>
                 Username: {isLoaded ? <ActivityIndicator color="#25101c"/> : ( <Text style={styles.valtext}>{FullName}</Text>)} {/*<IconM name="verified-user" size={20} color="green"/>*/}
             </Text>
@@ -167,22 +207,38 @@ const ProfilScreen = ({navigation}) => {
 
             
             {/* button */}
-            <View style={styles.button}>
+
+            { verified ? 
+                <View style={styles.buttonalone}>
+            <Button
+                    title="Change password"
+                    color={Color.dark2}
+                    onPress={() => setModalVisible(true)}
+                /> 
+                </View>
+            : 
+                <View style={styles.button}>
                 <Button
                     title="Change password"
                     color={Color.dark2}
                     onPress={() => setModalVisible(true)}
                 />
+                <Button
+                    title="Verify email"
+                    color={Color.dark2}
+                    onPress={() => setModalVisibleMail(true)}
+                />
             </View>
+                }
 
             <Modal
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
-                setModalVisible(!modalVisible);
+                    setModalVisible(!modalVisible);
                 }}
-            >
+                >
                 <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <TextInput
@@ -243,6 +299,38 @@ const ProfilScreen = ({navigation}) => {
                     </View>
             </Modal>
 
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisibleMail}
+                onRequestClose={() => {
+                    setModalVisibleMail(!modalVisibleMail);
+                }
+            }>
+                <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+
+                 
+                    <View>
+                    <TextInput style={styles.input}
+                    placeholder="code"
+                    placeholderTextColor={Color.dark2}
+                    onChangeText={text => setCode(text)}
+                    value={code}
+                    />
+                    <Icon.Button name="mail" backgroundColor={Color.light3} color={Color.dark2} onPress={() => setCodeRequest(code)}>
+                        Send code
+                    </Icon.Button>
+                    </View>
+
+                    <Icon.Button name="close" backgroundColor={Color.light3} color={Color.dark2} onPress={() => setModalVisibleMail(!modalVisibleMail)}>
+                        Cancel
+                    </Icon.Button>
+                </View>
+                </View>
+            </Modal>
+
+
         </View>
     );
 };
@@ -287,11 +375,20 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    buttonalone: {
+        marginTop: 20,
+        marginLeft: 50,
+        marginRight: 50,
+        marginBottom: 20,
+    },
+
     button: {
         marginTop: 20,
         marginLeft: 50,
         marginRight: 50,
         marginBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     centeredView: {
         flex: 1,
