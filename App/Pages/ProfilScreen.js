@@ -110,7 +110,7 @@ const ProfilScreen = ({navigation}) => {
                 alert ("Error: " + res.data["failed"]);
             }
         })
-        axios.get(`https://x2024safecall3173801594000.westeurope.cloudapp.azure.com/verify/${User}`)
+        axios.get(`http://x2024safecall3173801594000.westeurope.cloudapp.azure.com/verify/${User}`)
         .then(res => {
             if (res.data["verified"] == true) {
                 setVerified(true);
